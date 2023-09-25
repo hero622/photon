@@ -2,7 +2,7 @@
 
 bool interfaces::init() {
 	console = new i_console();
-	auto h_tier0 = utils::memory::get_module_handle(module(tier0));
+	auto h_tier0 = utils::memory::get_module_handle(tier0);
 	console->msg = utils::memory::get_sym_addr<decltype(i_console::msg)>(h_tier0, "Msg");
 	console->color_msg = utils::memory::get_sym_addr<decltype(i_console::color_msg)>(h_tier0, concolormsg_sym);
 	console->warning = utils::memory::get_sym_addr<decltype(i_console::warning)>(h_tier0, "Warning");

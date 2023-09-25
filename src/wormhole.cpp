@@ -23,6 +23,7 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 }
 
 void c_wormhole::unload() {
+	utils::console::free();
 }
 
 void c_wormhole::pause() {

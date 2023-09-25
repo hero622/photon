@@ -5,7 +5,7 @@
 namespace utils {
 	namespace console {
 		void alloc();
-		void release();
+		void free();
 
 		template <typename... Args>
 		void log(const char *fmt, const Args &...args) {

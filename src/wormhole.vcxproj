@@ -168,6 +168,7 @@
     <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="utils\console.h" />
     <ClInclude Include="utils\memory.h" />
+    <ClInclude Include="utils\platform.h" />
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="wormhole.h" />
   </ItemGroup>

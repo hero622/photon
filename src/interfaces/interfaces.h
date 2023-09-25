@@ -6,17 +6,10 @@
 #include <Windows.h>
 #include <string>
 
-#ifdef _WIN32
-#	define tier0 "tier0"
-#	define concolormsg_sym "?ConColorMsg@@YAXABVColor@@PBDZZ"
-#	define devmsg_sym "?DevMsg@@YAXPBDZZ"
-#	define devwarningmsg_sym "?DevWarning@@YAXPBDZZ"
-#else
-#	define tier0 "libtier0"
-#	define con_olormsg_sym "_Z11ConColorMsgRK5ColorPKcz"
-#	define devmsg_sym "_Z6DevMsgPKcz"
-#	define devwarningmsg_sym "_Z10DevWarningPKcz"
-#endif
+platform_def(tier0, "tier0.dll", "libtier0.so");
+platform_def(concolormsg_sym, "?ConColorMsg@@YAXABVColor@@PBDZZ", "_Z11ConColorMsgRK5ColorPKcz");
+platform_def(devmsg_sym, "?DevMsg@@YAXPBDZZ", "_Z6DevMsgPKcz");
+platform_def(devwarningmsg_sym, "?DevWarning@@YAXPBDZZ", "_Z10DevWarningPKcz");
 
 namespace interfaces {
 	template <typename ret>

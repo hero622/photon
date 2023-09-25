@@ -13,14 +13,6 @@
 #	define MAX_PATH 4096
 #endif
 
-#ifdef _WIN32
-#	define module(name) name ".dll"
-#else
-#	define module(name) name ".so"
-#endif
-
-#define dll_export extern "C" __declspec(dllexport)
-
 namespace utils {
 	namespace memory {
 		struct module_info_t {

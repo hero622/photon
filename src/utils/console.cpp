@@ -14,7 +14,7 @@ void utils::console::alloc() {
 #endif
 }
 
-void utils::console::release() {
+void utils::console::free() {
 #ifdef _WIN32
 	fclose(static_cast<_iobuf *>(__acrt_iob_func(0)));
 	fclose(static_cast<_iobuf *>(__acrt_iob_func(1)));
