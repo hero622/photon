@@ -4,12 +4,12 @@
 
 #include <map>
 
-namespace plugins {
-	inline std::map<std::string, api::i_wormhole_plugin *> plugin_list;
+namespace mods {
+	inline std::map<std::string, api::i_wormhole_mod *> mod_list;
 
 	bool load(const char *name);
 	void unload(const char *name);
 	void unloadall();
 
 	void print();
-}  // namespace plugins
+}  // namespace mods

@@ -1,4 +1,4 @@
-SET "binary=wormhole-example-plugin.dll"
+SET "binary=wormhole-example-mod.dll"
 SET "src=..\bin\%binary%"
 SET "dest=D:\SteamLibrary\SteamApps\common"
 

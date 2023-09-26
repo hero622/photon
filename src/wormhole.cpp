@@ -1,7 +1,7 @@
 #include "wormhole.h"
 
 #include "command.h"
-#include "plugins.h"
+#include "mods.h"
 #include "utils/utils.h"
 
 c_wormhole wormhole;
@@ -25,9 +25,13 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 }
 
 void c_wormhole::unload() {
-	plugins::unloadall();
-
 	portal2->console->msg("Goodbye.\n");
+
+	c_command::unregall();
+
+	mods::unloadall();
+
+	portal2->shutdown();
 }
 
 void c_wormhole::pause() {

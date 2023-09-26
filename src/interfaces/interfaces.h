@@ -39,6 +39,7 @@ public:
 	}
 
 	bool init();
+	void shutdown();
 
 	i_console *console;
 	c_cvar *cvar;

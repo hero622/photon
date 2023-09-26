@@ -165,7 +165,7 @@
     <ClInclude Include="interfaces\cvar.h" />
     <ClInclude Include="interfaces\interfaces.h" />
     <ClInclude Include="interfaces\i_cvar.h" />
-    <ClInclude Include="plugins.h" />
+    <ClInclude Include="mods.h" />
     <ClInclude Include="portal2.h" />
     <ClInclude Include="sdk\color.h" />
     <ClInclude Include="sdk\convar.h" />
@@ -181,7 +181,7 @@
   <ItemGroup>
     <ClCompile Include="command.cpp" />
     <ClCompile Include="interfaces\interfaces.cpp" />
-    <ClCompile Include="plugins.cpp" />
+    <ClCompile Include="mods.cpp" />
     <ClCompile Include="sdk\plugin.cpp" />
     <ClCompile Include="utils\console.cpp" />
     <ClCompile Include="utils\memory.cpp" />

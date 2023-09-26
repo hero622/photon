@@ -39,9 +39,6 @@
     <ClInclude Include="utils\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="plugins.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="wormhole_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,6 +63,9 @@
     <ClInclude Include="portal2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mods.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wormhole.cpp">
@@ -80,13 +80,13 @@
     <ClCompile Include="utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="plugins.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sdk\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

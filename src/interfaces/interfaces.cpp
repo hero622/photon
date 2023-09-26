@@ -19,4 +19,9 @@ bool c_portal2::init() {
 	return true;
 }
 
+void c_portal2::shutdown() {
+	delete_ptr(cvar);
+	delete_ptr(console);
+}
+
 c_portal2 *portal2;

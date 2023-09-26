@@ -2,7 +2,7 @@
 
 #include <wormhole_api.h>
 
-class c_plugin : public api::i_wormhole_plugin {
+class c_wormhole_mod : public api::i_wormhole_mod {
 public:
 	c_wormhole *wormhole;
 
