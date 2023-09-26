@@ -8,18 +8,10 @@
 #else
 #	include <dlfcn.h>
 #	include <sys/mman.h>
-#	define MAX_PATH 4096
 #endif
 
 namespace utils {
 	namespace memory {
-		struct module_info_t {
-			char name[MAX_PATH];
-			uintptr_t base;
-			uintptr_t size;
-			char path[MAX_PATH];
-		};
-
 		template <typename t>
 		__forceinline static t call_virtual(void *name, int offset) {
 			int *table = *(int **)name;

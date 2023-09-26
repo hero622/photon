@@ -25,6 +25,9 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 }
 
 void c_wormhole::unload() {
+	plugins::unloadall();
+
+	portal2->console->msg("Goodbye.\n");
 }
 
 void c_wormhole::pause() {

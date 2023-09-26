@@ -7,13 +7,16 @@
 class i_cvar {
 public:
 	void register_con_command(sdk::con_command_base *p_command_base) {
-		utils::memory::call_virtual<void(__rescall *)(void *, sdk::con_command_base *)>(this, offsets::i_cvar::register_con_command)(this, p_command_base);
+		using fn = void(__rescall *)(void *, sdk::con_command_base *);
+		return utils::memory::call_virtual<fn>(this, offsets::i_cvar::register_con_command)(this, p_command_base);
 	}
 	void unregister_con_command(sdk::con_command_base *p_command_base) {
-		utils::memory::call_virtual<void(__rescall *)(void *, sdk::con_command_base *)>(this, offsets::i_cvar::unregister_con_command)(this, p_command_base);
+		using fn = void(__rescall *)(void *, sdk::con_command_base *);
+		return utils::memory::call_virtual<fn>(this, offsets::i_cvar::unregister_con_command)(this, p_command_base);
 	}
 	sdk::con_command_base *find_command_base(const char *name) {
-		return utils::memory::call_virtual<sdk::con_command_base *(__rescall *)(void *, const char *)>(this, offsets::i_cvar::find_command_base)(this, name);
+		using fn = sdk::con_command_base *(__rescall *)(void *, const char *);
+		return utils::memory::call_virtual<fn>(this, offsets::i_cvar::find_command_base)(this, name);
 	}
 };
 

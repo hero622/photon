@@ -1,12 +1,6 @@
 #pragma once
 
 namespace sdk {
-	template <class t>
-	class c_utl_vector;
-	class c_utl_string;
-
-	class con_command_base;
-
 	class c_command {
 	public:
 		int arg_c() const { return m_n_argc; };
@@ -37,7 +31,10 @@ namespace sdk {
 			, m_psz_help_string(p_help_string)
 			, m_n_flags(flags) {
 		}
-		virtual ~con_command_base(void){};
+		virtual void _dtor(){};
+#ifndef _WIN32
+		virtual void _dtor1(){};
+#endif
 
 	private:
 		con_command_base *m_p_next;

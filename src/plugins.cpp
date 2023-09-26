@@ -49,7 +49,15 @@ void plugins::unload(const char *name) {
 
 	plugin->unload();
 
+	delete_ptr(plugin);
+
 	plugin_list.erase(name);
+}
+
+void plugins::unloadall() {
+	for (const auto &plugin : plugin_list) {
+		plugin.second->unload();
+	}
 }
 
 void plugins::print() {

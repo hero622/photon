@@ -9,7 +9,7 @@ namespace api {
 	class i_wormhole_plugin {
 	public:
 		virtual bool load(c_wormhole *wormhole) = 0;
-		virtual void unload() = 0;;
+		virtual void unload() = 0;
 	};
 }  // namespace api
 

@@ -9,6 +9,7 @@ namespace plugins {
 
 	bool load(const char *name);
 	void unload(const char *name);
+	void unloadall();
 
 	void print();
 }  // namespace plugins

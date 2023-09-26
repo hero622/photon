@@ -9,9 +9,10 @@ private:
 	sdk::con_command *ptr;
 
 public:
+	bool is_registered;
+
 	static std::vector<c_command *> &get_list();
 
-	c_command();
 	c_command(const char *p_name, sdk::fn_command_callback_t callback, const char *p_help_string, int flags = 0, sdk::fn_command_completion_callback completion_func = 0);
 	~c_command();
 
