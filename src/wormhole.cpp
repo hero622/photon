@@ -1,6 +1,7 @@
 #include "wormhole.h"
 
-#include "interfaces/interfaces.h"
+#include "command.h"
+#include "plugins.h"
 #include "utils/utils.h"
 
 c_wormhole wormhole;
@@ -8,13 +9,14 @@ c_wormhole wormhole;
 expose_single_interface_globalvar(c_wormhole, i_server_plugin_callbacks, interfaceversion_iserverplugincallbacks, wormhole);
 
 c_wormhole::c_wormhole() {
+	this->portal2 = ::portal2 = new c_portal2();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
-	utils::console::alloc();
+	if (portal2->init()) {
+		c_command::regall();
 
-	if (interfaces::init()) {
-		interfaces::console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
+		portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
 
 		return true;
 	}
@@ -23,7 +25,6 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 }
 
 void c_wormhole::unload() {
-	utils::console::free();
 }
 
 void c_wormhole::pause() {

@@ -1,4 +1,4 @@
-#include "c_plugin.h"
+#include "plugin.h"
 
 #include "utils/utils.h"
 

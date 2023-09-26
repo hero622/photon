@@ -2,5 +2,6 @@
 
 namespace sdk {}
 
-#include "c_plugin.h"
 #include "color.h"
+#include "convar.h"
+#include "plugin.h"

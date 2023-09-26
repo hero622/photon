@@ -1,8 +1,12 @@
 #pragma once
 
+#include "interfaces/interfaces.h"
 #include "sdk/sdk.h"
 
 class c_wormhole : public sdk::i_server_plugin_callbacks {
+public:
+	c_portal2 *portal2;
+
 public:
 	c_wormhole();
 

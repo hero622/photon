@@ -3,10 +3,8 @@
 #include <cstdint>
 
 #ifdef _WIN32
-// clang-format off
 #	include <windows.h>
 #	include <memoryapi.h>
-// clang-format on
 #else
 #	include <dlfcn.h>
 #	include <sys/mman.h>

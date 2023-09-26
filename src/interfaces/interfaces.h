@@ -1,21 +1,21 @@
 #pragma once
 
-#include "i_console.h"
+#include "console.h"
+#include "cvar.h"
 #include "utils/utils.h"
 
 #include <Windows.h>
 #include <string>
 
 platform_def(tier0, "tier0.dll", "libtier0.so");
-platform_def(concolormsg_sym, "?ConColorMsg@@YAXABVColor@@PBDZZ", "_Z11ConColorMsgRK5ColorPKcz");
-platform_def(devmsg_sym, "?DevMsg@@YAXPBDZZ", "_Z6DevMsgPKcz");
-platform_def(devwarningmsg_sym, "?DevWarning@@YAXPBDZZ", "_Z10DevWarningPKcz");
+platform_def(tier1, "vstdlib.dll", "libvstdlib.so");
 
-namespace interfaces {
+class c_portal2 {
+public:
 	template <typename ret>
 	ret *get_interface(const std::string &module_name, const std::string &interface_name) {
 		using create_interface_fn = void *(*)(const char *, int *);
-		const auto fn = reinterpret_cast<create_interface_fn>(GetProcAddress(GetModuleHandle(module_name.c_str()), "CreateInterface"));
+		const auto fn = utils::memory::get_sym_addr<create_interface_fn>(utils::memory::get_module_handle(module_name.c_str()), "CreateInterface");
 
 		if (fn) {
 			void *result = nullptr;
@@ -31,7 +31,17 @@ namespace interfaces {
 		return nullptr;
 	}
 
+	template <typename ret, typename iface>
+	ret *copy_interface(const std::string &module_name, const std::string &interface_name) {
+		auto c = new ret();
+		c->vtable = get_interface<iface>(module_name, interface_name);
+		return c;
+	}
+
 	bool init();
 
-	inline i_console *console;
-}  // namespace interfaces
+	i_console *console;
+	c_cvar *cvar;
+};
+
+extern c_portal2 *portal2;
