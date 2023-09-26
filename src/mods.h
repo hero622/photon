@@ -5,7 +5,12 @@
 #include <map>
 
 namespace mods {
-	inline std::map<std::string, api::i_wormhole_mod *> mod_list;
+	struct mod_info_t {
+		void *handle;
+		api::i_wormhole_mod *ptr;
+	};
+
+	inline std::map<std::string, mod_info_t> mod_list;
 
 	bool load(const char *name);
 	void unload(const char *name);

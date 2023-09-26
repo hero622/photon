@@ -15,9 +15,9 @@
 
 bool mods::load(const char *name) {
 #ifdef _WIN32
-	auto lib = LoadLibraryA(utils::ssprintf("wormhole/%s.dll", name).c_str());
+	void *lib = LoadLibraryA(utils::ssprintf("wormhole/%s.dll", name).c_str());
 #else
-	auto lib = dlopen(utils::ssprintf("wormhole/%s.so", name).c_str());
+	void *lib = dlopen(utils::ssprintf("wormhole/%s.so", name).c_str(), RTLD_LAZY);
 #endif
 
 	if (lib) {
@@ -27,15 +27,18 @@ bool mods::load(const char *name) {
 		if (fn) {
 			auto mod = fn();
 
-			if (!mod)
-				return false;
+			if (!mod) return false;
 
 			auto result = mod->load(&wormhole);
 
 			if (!result)
 				return false;
 
-			mod_list.insert(std::make_pair(name, mod));
+			auto info = mod_info_t();
+			info.handle = lib;
+			info.ptr = mod;
+
+			mod_list.insert(std::make_pair(name, info));
 
 			return true;
 		}
@@ -47,16 +50,22 @@ bool mods::load(const char *name) {
 void mods::unload(const char *name) {
 	auto mod = mod_list[name];
 
-	mod->unload();
+	mod.ptr->unload();
 
-	delete_ptr(mod);
+	delete_ptr(mod.ptr);
+
+#ifdef _WIN32
+	FreeLibrary((HMODULE)mod.handle);
+#else
+	dlclose(mod.handle);
+#endif
 
 	mod_list.erase(name);
 }
 
 void mods::unloadall() {
 	for (const auto &mod : mod_list) {
-		mod.second->unload();
+		mod.second.ptr->unload();
 	}
 }
 
