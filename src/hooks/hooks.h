@@ -7,6 +7,7 @@ class c_hooks {
 public:
 	decl_hk(int, game_frame, bool simulating);
 	decl_hk(int, frame);
+	decl_hk(int, set_signon_state, int state, int count, void *unk);
 
 	bool init();
 	void shutdown();

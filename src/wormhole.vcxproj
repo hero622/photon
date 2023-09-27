@@ -172,6 +172,8 @@
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="interfaces\console.h" />
     <ClInclude Include="interfaces\cvar.h" />
+    <ClInclude Include="interfaces\engine_api.h" />
+    <ClInclude Include="interfaces\engine_client.h" />
     <ClInclude Include="interfaces\interfaces.h" />
     <ClInclude Include="interfaces\i_cvar.h" />
     <ClInclude Include="interfaces\server_game_dll.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="portal2.h" />
     <ClInclude Include="sdk\color.h" />
     <ClInclude Include="sdk\convar.h" />
+    <ClInclude Include="sdk\misc.h" />
     <ClInclude Include="sdk\plugin.h" />
     <ClInclude Include="sdk\sdk.h" />
     <ClInclude Include="utils\console.h" />

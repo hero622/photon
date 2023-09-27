@@ -15,18 +15,20 @@ void c_wormhole_mod::unload() {
 }
 
 void c_wormhole_mod::on_pre_tick() {
-	wh->portal2->console->msg("Example mod: pre_tick\n");
+	// wh->portal2->console->msg("Example mod: pre_tick\n");
 }
 void c_wormhole_mod::on_post_tick() {
-	wh->portal2->console->msg("Example mod: post_tick\n");
+	// wh->portal2->console->msg("Example mod: post_tick\n");
 }
 void c_wormhole_mod::on_pre_frame() {
-	wh->portal2->console->msg("Example mod: pre_frame\n");
+	// wh->portal2->console->msg("Example mod: pre_frame\n");
 }
 void c_wormhole_mod::on_post_frame() {
-	wh->portal2->console->msg("Example mod: post_frame\n");
+	// wh->portal2->console->msg("Example mod: post_frame\n");
 }
 void c_wormhole_mod::on_session_start() {
+	// wh->portal2->console->msg("Example mod: session_start\n");
 }
 void c_wormhole_mod::on_session_end() {
+	// wh->portal2->console->msg("Example mod: session_end\n");
 }

@@ -26,6 +26,9 @@ namespace offsets {
 	offset(is_running_simulation, 12, 12);
 	offset(frame, 5, 6);
 	offset(eng, 2, 4);
+	offset(client_cmd, 7, 7);
+	offset(get_client_state, 4, 9);
+	offset(set_signon_state, 15, 36);
 }  // namespace offsets
 
 namespace signatures {

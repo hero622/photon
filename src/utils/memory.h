@@ -19,8 +19,14 @@ namespace utils {
 			return (t)(address);
 		}
 
-		inline unsigned int get_virtual(void *_class, unsigned int index) {
+		__forceinline unsigned int get_virtual(void *_class, unsigned int index) {
 			return static_cast<unsigned int>((*static_cast<int **>(_class))[index]);
+		}
+
+		template <typename t>
+		__forceinline t read(uintptr_t source) {
+			auto rel = *reinterpret_cast<int *>(source);
+			return (t)(source + rel + sizeof(rel));
 		}
 
 		template <typename t>
@@ -39,6 +45,7 @@ namespace utils {
 			return dlopen(module_name, RTLD_NOLOAD | RTLD_NOW);
 #endif
 		}
+
 		std::uint8_t *pattern_scan(const char *module_name, const char *signature) noexcept;
 	}  // namespace memory
 }  // namespace utils
