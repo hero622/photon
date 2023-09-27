@@ -1,22 +1,21 @@
 #pragma once
 
 #ifdef _WIN32
+#	define plat_module(name, win, linux) inline const char *name = win
 #	define offset(name, win, linux) inline int name = win
-#else
-#	define offset(name, win, linux) inline int name = linux
-#endif
-
-#ifdef _WIN32
 #	define signature(name, win, linux) inline const char *name = win
-#else
-#	define signature(name, win, linux) inline const char *name = linux
-#endif
-
-#ifdef _WIN32
 #	define symbol(name, win, linux) inline const char *name = win
 #else
+#	define plat_module(name, win, linux) inline const char *name = linux
+#	define offset(name, win, linux) inline int name = linux
+#	define signature(name, win, linux) inline const char *name = linux
 #	define symbol(name, win, linux) inline const char *name = linux
 #endif
+
+namespace modules {
+	plat_module(tier0, "tier0.dll", "libtier0.so");
+	plat_module(tier1, "vstdlib.dll", "libvstdlib.so");
+}  // namespace modules
 
 namespace offsets {
 	namespace i_cvar {
@@ -39,4 +38,4 @@ namespace symbols {
 		symbol(dev_msg, "?DevMsg@@YAXPBDZZ", "_Z6DevMsgPKcz");
 		symbol(dev_warning, "?DevWarning@@YAXPBDZZ", "_Z10DevWarningPKcz");
 	}  // namespace i_console
-}  // namespace sym
+}  // namespace symbols

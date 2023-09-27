@@ -10,7 +10,6 @@
 #else
 #	include <dlfcn.h>
 #	include <sys/mman.h>
-#	define MAX_PATH 4096
 #endif
 
 bool mods::load(const char *name) {

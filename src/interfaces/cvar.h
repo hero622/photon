@@ -26,4 +26,14 @@ public:
 
 	void *con_command_vtable;
 	sdk::con_command_base *cmd_list;
+
+	c_cvar(i_cvar *vtable) {
+		this->vtable = vtable;
+
+		this->cmd_list = *(sdk::con_command_base **)((uintptr_t)this + offsets::i_cvar::cmd_list);
+		auto listdemo = reinterpret_cast<sdk::con_command *>(this->vtable->find_command_base("listdemo"));
+		if (listdemo) {
+			this->con_command_vtable = *(void **)listdemo;
+		}
+	}
 };

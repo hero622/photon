@@ -4,11 +4,7 @@
 #include "cvar.h"
 #include "utils/utils.h"
 
-#include <Windows.h>
 #include <string>
-
-platform_def(tier0, "tier0.dll", "libtier0.so");
-platform_def(tier1, "vstdlib.dll", "libvstdlib.so");
 
 class c_portal2 {
 public:
@@ -33,8 +29,8 @@ public:
 
 	template <typename ret, typename iface>
 	ret *copy_interface(const std::string &module_name, const std::string &interface_name) {
-		auto c = new ret();
-		c->vtable = get_interface<iface>(module_name, interface_name);
+		auto orig_interface = get_interface<iface>(module_name, interface_name);
+		auto c = new ret(orig_interface);
 		return c;
 	}
 

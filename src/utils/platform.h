@@ -6,8 +6,6 @@
 #	define __rescall __thiscall
 
 #	define dll_export extern "C" __declspec(dllexport)
-
-#	define platform_def(name, win, linux) static constexpr const char *name = win;
 #else
 #	define module(name) name ".so"
 
@@ -16,6 +14,4 @@
 #	define __fastcall __attribute__((__fastcall__))
 
 #	define dll_export extern "C" __attribute__((visibility("default")))
-
-#	define platform_def(name, win, linux) static constexpr const char *name = linux;
 #endif
