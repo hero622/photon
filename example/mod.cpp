@@ -21,8 +21,10 @@ void c_wormhole_mod::on_post_tick() {
 	wh->portal2->console->msg("Example mod: post_tick\n");
 }
 void c_wormhole_mod::on_pre_frame() {
+	wh->portal2->console->msg("Example mod: pre_frame\n");
 }
 void c_wormhole_mod::on_post_frame() {
+	wh->portal2->console->msg("Example mod: post_frame\n");
 }
 void c_wormhole_mod::on_session_start() {
 }

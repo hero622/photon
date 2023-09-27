@@ -2,6 +2,7 @@
 
 #include "console.h"
 #include "cvar.h"
+#include "engine.h"
 #include "server_game_dll.h"
 #include "utils/utils.h"
 
@@ -41,6 +42,8 @@ public:
 	i_console *console;
 	c_cvar *cvar;
 	i_server_game_dll *server_game_dll;
+	c_engine_api *engine_api;
+	i_engine *engine;
 };
 
 extern c_portal2 *portal2;

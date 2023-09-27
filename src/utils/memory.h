@@ -19,6 +19,10 @@ namespace utils {
 			return (t)(address);
 		}
 
+		inline unsigned int get_virtual(void *_class, unsigned int index) {
+			return static_cast<unsigned int>((*static_cast<int **>(_class))[index]);
+		}
+
 		template <typename t>
 		__forceinline static t get_sym_addr(void *module_handle, const char *sym) {
 #ifdef _WIN32

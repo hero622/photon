@@ -8,15 +8,15 @@ class i_cvar {
 public:
 	void register_con_command(sdk::con_command_base *p_command_base) {
 		using fn = void(__rescall *)(void *, sdk::con_command_base *);
-		return utils::memory::call_virtual<fn>(this, offsets::i_cvar::register_con_command)(this, p_command_base);
+		return utils::memory::call_virtual<fn>(this, offsets::register_con_command)(this, p_command_base);
 	}
 	void unregister_con_command(sdk::con_command_base *p_command_base) {
 		using fn = void(__rescall *)(void *, sdk::con_command_base *);
-		return utils::memory::call_virtual<fn>(this, offsets::i_cvar::unregister_con_command)(this, p_command_base);
+		return utils::memory::call_virtual<fn>(this, offsets::unregister_con_command)(this, p_command_base);
 	}
 	sdk::con_command_base *find_command_base(const char *name) {
 		using fn = sdk::con_command_base *(__rescall *)(void *, const char *);
-		return utils::memory::call_virtual<fn>(this, offsets::i_cvar::find_command_base)(this, name);
+		return utils::memory::call_virtual<fn>(this, offsets::find_command_base)(this, name);
 	}
 };
 
@@ -30,7 +30,7 @@ public:
 	c_cvar(i_cvar *vtable) {
 		this->vtable = vtable;
 
-		this->cmd_list = *(sdk::con_command_base **)((uintptr_t)this + offsets::i_cvar::cmd_list);
+		this->cmd_list = *(sdk::con_command_base **)((uintptr_t)this + offsets::cmd_list);
 		auto listdemo = reinterpret_cast<sdk::con_command *>(this->vtable->find_command_base("listdemo"));
 		if (listdemo) {
 			this->con_command_vtable = *(void **)listdemo;
