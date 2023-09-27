@@ -14,11 +14,13 @@ c_wormhole::c_wormhole() {
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
 	if (portal2->init()) {
-		c_command::regall();
+		if (hooks->init()) {
+			c_command::regall();
 
-		portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
+			portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
 
-		return true;
+			return true;
+		}
 	}
 
 	return false;
@@ -30,6 +32,8 @@ void c_wormhole::unload() {
 	mods::unloadall();
 
 	portal2->console->msg("Goodbye.\n");
+
+	hooks->shutdown();
 
 	portal2->shutdown();
 }

@@ -24,6 +24,9 @@ namespace offsets {
 		offset(find_command_base, 13, 13);
 		offset(cmd_list, 48, 48);
 	}  // namespace i_cvar
+	namespace i_server_game_dll {
+		offset(game_frame, 4, 4);
+	}  // namespace i_server_game_dll
 }  // namespace offsets
 
 namespace signatures {

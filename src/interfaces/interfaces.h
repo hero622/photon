@@ -2,6 +2,7 @@
 
 #include "console.h"
 #include "cvar.h"
+#include "server_game_dll.h"
 #include "utils/utils.h"
 
 #include <string>
@@ -39,6 +40,7 @@ public:
 
 	i_console *console;
 	c_cvar *cvar;
+	i_server_game_dll *server_game_dll;
 };
 
 extern c_portal2 *portal2;

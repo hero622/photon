@@ -75,6 +75,13 @@ void mods::print() {
 	}
 }
 
+event_handler(on_pre_tick);
+event_handler(on_post_tick);
+event_handler(on_pre_frame);
+event_handler(on_post_frame);
+event_handler(on_session_start);
+event_handler(on_session_end);
+
 create_con_command(wormhole_load, "wormhole_load <mod name> - load a wormhole mod.\n") {
 	if (args.arg_c() >= 2) {
 		mods::load(args[1]);
