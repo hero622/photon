@@ -13,6 +13,8 @@
 
 #	define hk_fn(t, name, ...) \
 		t __fastcall name##_hk(void *thisptr, int edx, __VA_ARGS__)
+
+#	define sleep(ms) Sleep(ms)
 #else
 #	define module(name) name ".so"
 
@@ -20,5 +22,16 @@
 #	define __cdecl __attribute__((__cdecl__))
 #	define __fastcall __attribute__((__fastcall__))
 
+#	define __forceinline inline __attribute__((always_inline))
+
 #	define dll_export extern "C" __attribute__((visibility("default")))
+
+#	define decl_hk(t, name, ...)                                  \
+		static inline t(__rescall *name)(void *thisptr, __VA_ARGS__); \
+		static t __rescall name##_hk(void *thisptr, int edx, __VA_ARGS__)
+
+#	define hk_fn(t, name, ...) \
+		t __rescall name##_hk(void *thisptr, int edx, __VA_ARGS__)
+
+#	define sleep(ms) usleep((ms)*1000)
 #endif

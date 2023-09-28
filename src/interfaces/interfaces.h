@@ -4,7 +4,6 @@
 #include "cvar.h"
 #include "engine_api.h"
 #include "engine_client.h"
-#include "server_game_dll.h"
 #include "utils/utils.h"
 
 #include <string>
@@ -30,9 +29,9 @@ public:
 		return nullptr;
 	}
 
-	template <typename ret, typename iface>
+	template <typename ret>
 	ret *copy_interface(const std::string &module_name, const std::string &interface_name) {
-		auto orig_interface = get_interface<iface>(module_name, interface_name);
+		auto orig_interface = get_interface<void *>(module_name, interface_name);
 		auto c = new ret(orig_interface);
 		return c;
 	}
@@ -42,11 +41,12 @@ public:
 
 	i_console *console;
 	c_cvar *cvar;
-	i_server_game_dll *server_game_dll;
+	void *server_game_dll;
 	c_engine_api *engine_api;
 	void *engine;
 	c_engine_client *engine_client;
 	void *client_state;
+	void *server_plugin_helpers;
 };
 
 extern c_portal2 *portal2;

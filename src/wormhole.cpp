@@ -9,13 +9,17 @@ c_wormhole wormhole;
 expose_single_interface_globalvar(c_wormhole, i_server_plugin_callbacks, interfaceversion_iserverplugincallbacks, wormhole);
 
 c_wormhole::c_wormhole() {
+	this->plugin = new c_plugin();
 	this->portal2 = ::portal2 = new c_portal2();
+	this->hooks = ::hooks = new c_hooks();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
 	if (portal2->init()) {
 		if (hooks->init()) {
 			c_command::regall();
+
+			this->search_plugin();
 
 			portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
 
@@ -26,16 +30,54 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 	return false;
 }
 
+bool c_wormhole::get_plugin() {
+	auto server_plugin_helpers = reinterpret_cast<uintptr_t>(portal2->server_plugin_helpers);
+	auto m_size = *reinterpret_cast<int *>(server_plugin_helpers + c_server_plugin_m_size);
+	if (m_size > 0) {
+		auto m_plugins = *reinterpret_cast<uintptr_t *>(server_plugin_helpers + c_server_plugin_m_plugins);
+		for (auto i = 0; i < m_size; ++i) {
+			auto ptr = *reinterpret_cast<sdk::c_plugin **>(m_plugins + sizeof(uintptr_t) * i);
+			if (!std::strcmp(ptr->m_sz_name, wormhole_plugin_sig)) {
+				this->plugin->ptr = ptr;
+				this->plugin->index = i;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+void c_wormhole::search_plugin() {
+	this->find_plugin_thread = std::thread([this]() {
+		sleep(1000);
+		if (this->get_plugin()) {
+			this->plugin->ptr->m_b_disable = true;
+		}
+	});
+	this->find_plugin_thread.detach();
+}
+
 void c_wormhole::unload() {
-	c_command::unregall();
+	if (unloading) return;
+	unloading = true;
 
 	mods::unloadall();
 
-	portal2->console->msg("Goodbye.\n");
+	c_command::unregall();
 
 	hooks->shutdown();
 
+	if (wormhole.get_plugin()) {
+		auto unload_cmd = std::string("plugin_unload ") + std::to_string(wormhole.plugin->index);
+		portal2->engine_client->addtocmdbuf(unload_cmd.c_str(), safe_unload_delay);
+	}
+
+	portal2->console->msg("Goodbye.\n");
+
 	portal2->shutdown();
+}
+
+create_con_command(wormhole_exit, "unloads wormhole.\n") {
+	wormhole.unload();
 }
 
 void c_wormhole::pause() {
@@ -43,7 +85,7 @@ void c_wormhole::pause() {
 void c_wormhole::un_pause() {
 }
 const char *c_wormhole::get_plugin_description() {
-	return "wormhole";
+	return wormhole_plugin_sig;
 }
 void c_wormhole::level_init(char const *p_map_name) {
 }

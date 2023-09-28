@@ -4,10 +4,30 @@
 #include "interfaces/interfaces.h"
 #include "sdk/sdk.h"
 
+#include <thread>
+
+#define wormhole_plugin_sig "wormhole"
+
+#define c_server_plugin_m_size 16
+#define c_server_plugin_m_plugins 4
+
+#define safe_unload_delay 33
+
+class c_plugin {
+public:
+	sdk::c_plugin *ptr;
+	int index;
+};
+
 class c_wormhole : public sdk::i_server_plugin_callbacks {
 public:
+	c_plugin *plugin;
 	c_portal2 *portal2;
 	c_hooks *hooks;
+
+private:
+	std::thread find_plugin_thread;
+	bool unloading;
 
 public:
 	c_wormhole();
@@ -33,6 +53,9 @@ public:
 	virtual void on_query_cvar_value_finished(int i_cookie, void *p_player_entity, int e_status, const char *p_cvar_name, const char *p_cvar_value);
 	virtual void on_edict_allocated(void *edict);
 	virtual void on_edict_freed(const void *edict);
+
+	bool get_plugin();
+	void search_plugin();
 };
 
 extern c_wormhole wormhole;

@@ -1,14 +1,17 @@
 #include "hooks.h"
 
 #include "mods.h"
+#include "wormhole.h"
 
 bool c_hooks::init() {
 	if (MH_Initialize() != MH_OK)
 		return false;
 
-	hk(portal2->server_game_dll, game_frame, offsets::game_frame);
-	hk(portal2->engine, frame, offsets::frame);
-	hk(portal2->client_state, set_signon_state, offsets::set_signon_state);
+	hk_virtual(portal2->server_game_dll, game_frame, offsets::game_frame);
+	hk_virtual(portal2->engine, frame, offsets::frame);
+	hk_virtual(portal2->client_state, set_signon_state, offsets::set_signon_state);
+
+	hk_cmd(plugin_unload);
 
 	if (MH_EnableHook(MH_ALL_HOOKS) != MH_OK)
 		return false;
@@ -17,6 +20,8 @@ bool c_hooks::init() {
 }
 
 void c_hooks::shutdown() {
+	unhk_cmd(plugin_unload);
+
 	MH_DisableHook(MH_ALL_HOOKS);
 	MH_RemoveHook(MH_ALL_HOOKS);
 	MH_Uninitialize();
@@ -46,3 +51,12 @@ hk_fn(int, c_hooks::set_signon_state, int state, int count, void *unk) {
 
 	return result;
 }
+
+hk_cmd_fn(c_hooks::plugin_unload) {
+	if (args.arg_c() >= 2 && wormhole.get_plugin() && std::atoi(args[1]) == wormhole.plugin->index)
+		portal2->engine_client->client_cmd("wormhole_exit");
+	else
+		c_hooks::plugin_unload(args);
+}
+
+c_hooks *hooks;

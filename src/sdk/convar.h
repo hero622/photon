@@ -7,7 +7,6 @@ namespace sdk {
 		const char *operator[](int n_index) const { return arg(n_index); };
 		const char *arg(int n_index) const { return this->m_pp_argv[n_index]; };
 
-	private:
 		enum {
 			command_max_argc = 64,
 			command_max_length = 512,
@@ -36,7 +35,6 @@ namespace sdk {
 		virtual void _dtor1(){};
 #endif
 
-	private:
 		con_command_base *m_p_next;
 		bool m_b_registered;
 		const char *m_psz_name;
@@ -55,7 +53,6 @@ namespace sdk {
 			, m_b_using_command_callback_interface(false) {
 		}
 
-	private:
 		union {
 			void *m_fn_command_callback_v1;
 			fn_command_callback_t m_fn_command_callback;

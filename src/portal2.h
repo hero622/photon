@@ -29,6 +29,9 @@ namespace offsets {
 	offset(client_cmd, 7, 7);
 	offset(get_client_state, 4, 9);
 	offset(set_signon_state, 15, 36);
+	offset(cbuf_add_text, 46, 35);
+	offset(get_active_split_screen_slot, 127, 127);
+	offset(execute_client_cmd, 104, 104);
 }  // namespace offsets
 
 namespace signatures {
