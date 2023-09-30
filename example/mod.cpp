@@ -7,7 +7,7 @@ expose_wormhole_mod(c_wormhole_mod);
 bool c_wormhole_mod::load(api::c_shared *shared) {
 	::shared = shared;
 
-	if (whmod_hooks::initialize()) {
+	if (whmod_hooks::init()) {
 		shared->portal2->console->msg("example mod loaded.\n");
 	}
 
@@ -15,7 +15,7 @@ bool c_wormhole_mod::load(api::c_shared *shared) {
 }
 
 void c_wormhole_mod::unload() {
-	whmod_hooks::uninitialize();
+	whmod_hooks::shutdown();
 
 	shared->portal2->console->msg("example mod unloaded.\n");
 }

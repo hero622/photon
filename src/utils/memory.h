@@ -10,17 +10,20 @@
 #	include <sys/mman.h>
 #endif
 
+#include "platform.h"
+
 namespace utils {
 	namespace memory {
-		template <typename t>
-		__forceinline static t call_virtual(void *name, int offset) {
-			int *table = *(int **)name;
-			int address = table[offset];
-			return (t)(address);
+		template <typename t, typename... args_t>
+		__forceinline t call_virtual(size_t index, void *name, args_t... args) {
+			using fn_t = t(__rescall *)(void *, args_t...);
+
+			auto fn = (*reinterpret_cast<fn_t **>(name))[index];
+			return fn(name, args...);
 		}
 
-		__forceinline unsigned int get_virtual(void *_class, unsigned int index) {
-			return static_cast<unsigned int>((*static_cast<int **>(_class))[index]);
+		__forceinline unsigned int get_virtual(void *name, unsigned int index) {
+			return static_cast<unsigned int>((*static_cast<int **>(name))[index]);
 		}
 
 		template <typename t>

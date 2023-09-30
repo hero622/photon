@@ -32,6 +32,25 @@ namespace offsets {
 	offset(cbuf_add_text, 46, 35);
 	offset(get_active_split_screen_slot, 127, 127);
 	offset(execute_client_cmd, 104, 104);
+	offset(draw_set_color, 14, 13);
+	offset(draw_filled_rect, 15, 15);
+	offset(draw_outlined_rect, 16, 16);
+	offset(draw_line, 18, 18);
+	offset(draw_set_text_font, 22, 22);
+	offset(draw_set_text_color, 23, 24);
+	offset(get_font_tall, 72, 72);
+	offset(get_text_size, 77, 77);
+	offset(draw_set_texture_file, 35, 35);
+	offset(draw_set_texture_rgba, 36, 36);
+	offset(draw_set_texture, 37, 37);
+	offset(draw_get_texture_size, 38, 38);
+	offset(draw_textured_rect, 39, 39);
+	offset(is_texture_id_valid, 40, 40);
+	offset(create_new_texture_id, 41, 41);
+	offset(paint, 14, 15);
+	offset(paint_traverse_ex, 117, 117);
+	offset(start_drawing, 127, 1341);
+	offset(finish_drawing, 603, 355);
 }  // namespace offsets
 
 namespace signatures {

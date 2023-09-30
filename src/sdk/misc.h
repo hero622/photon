@@ -11,4 +11,11 @@ namespace sdk {
 		signonstate_full = 6,
 		signonstate_changelevel = 7,
 	};
-}
+
+	typedef unsigned long h_font;
+
+	enum paint_mode_t {
+		paint_uipanels = (1 << 0),
+		paint_ingamepanels = (1 << 1),
+	};
+}  // namespace sdk

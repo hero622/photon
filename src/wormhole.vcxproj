@@ -181,6 +181,7 @@
     <ClInclude Include="interfaces\interfaces.h" />
     <ClInclude Include="interfaces\i_cvar.h" />
     <ClInclude Include="interfaces\server_game_dll.h" />
+    <ClInclude Include="interfaces\surface.h" />
     <ClInclude Include="mods.h" />
     <ClInclude Include="portal2.h" />
     <ClInclude Include="sdk\color.h" />

@@ -4,6 +4,7 @@
 #include "cvar.h"
 #include "engine_api.h"
 #include "engine_client.h"
+#include "surface.h"
 #include "utils/utils.h"
 
 #include <string>
@@ -39,7 +40,7 @@ public:
 	bool init();
 	void shutdown();
 
-	i_console *console;
+	c_console *console;
 	c_cvar *cvar;
 	void *server_game_dll;
 	c_engine_api *engine_api;
@@ -47,6 +48,8 @@ public:
 	c_engine_client *engine_client;
 	void *client_state;
 	void *server_plugin_helpers;
+	c_surface *surface;
+	void *i_engine_vgui_internal;
 };
 
 extern c_portal2 *portal2;

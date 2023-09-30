@@ -1,22 +1,21 @@
 #include "hooks.h"
 
 #include "mods.h"
+#include "sdk/sdk.h"
 #include "wormhole.h"
 
 c_hooks *hooks;
 
 bool c_hooks::init() {
-	if (MH_Initialize() != MH_OK)
+	if (!initialize())
 		return false;
 
 	hk_virtual(portal2->server_game_dll, game_frame, offsets::game_frame);
 	hk_virtual(portal2->engine, frame, offsets::frame);
 	hk_virtual(portal2->client_state, set_signon_state, offsets::set_signon_state);
+	hk_virtual(portal2->i_engine_vgui_internal, paint, offsets::paint);
 
 	hk_cmd(plugin_unload);
-
-	if (MH_EnableHook(MH_ALL_HOOKS) != MH_OK)
-		return false;
 
 	return true;
 }
@@ -24,34 +23,47 @@ bool c_hooks::init() {
 void c_hooks::shutdown() {
 	unhk_cmd(plugin_unload);
 
-	MH_DisableHook(MH_ALL_HOOKS);
-	MH_RemoveHook(MH_ALL_HOOKS);
-	MH_Uninitialize();
+	unhk(set_signon_state);
+	unhk(frame);
+	unhk(game_frame);
+
+	uninitialize();
 }
 
-hk_fn(int, c_hooks::game_frame, bool simulating) {
+hk_fn(void, c_hooks::game_frame, bool simulating) {
 	mods::events::on_pre_tick();
-	auto result = c_hooks::game_frame(thisptr, simulating);
+
+	c_hooks::game_frame(thisptr, simulating);
+
 	mods::events::on_post_tick();
-	return result;
 }
 
-hk_fn(int, c_hooks::frame) {
+hk_fn(void, c_hooks::frame) {
 	mods::events::on_pre_frame();
-	auto result = c_hooks::frame(thisptr);
+
+	c_hooks::frame(thisptr);
+
 	mods::events::on_post_frame();
-	return result;
 }
 
-hk_fn(int, c_hooks::set_signon_state, int state, int count, void *unk) {
-	auto result = c_hooks::set_signon_state(thisptr, state, count, unk);
+hk_fn(void, c_hooks::set_signon_state, int state, int count, void *unk) {
+	c_hooks::set_signon_state(thisptr, state, count, unk);
 
 	if (state == sdk::signonstate_full)
 		mods::events::on_session_start();
 	else
 		mods::events::on_session_end();
+}
 
-	return result;
+hk_fn(void, c_hooks::paint, sdk::paint_mode_t mode) {
+	c_hooks::paint(thisptr, mode);
+
+	portal2->surface->start_drawing();
+
+	if (mode == sdk::paint_uipanels) {
+	}
+
+	portal2->surface->finish_drawing();
 }
 
 hk_cmd_fn(c_hooks::plugin_unload) {

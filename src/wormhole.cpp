@@ -75,7 +75,7 @@ void c_wormhole::unload() {
 
 	if (wormhole.get_plugin()) {
 		auto unload_cmd = std::string("plugin_unload ") + std::to_string(wormhole.plugin->index);
-		portal2->engine_client->addtocmdbuf(unload_cmd.c_str(), safe_unload_delay);
+		portal2->engine_client->cbuf_add(unload_cmd.c_str(), safe_unload_delay);
 	}
 
 	portal2->console->msg("Goodbye.\n");
