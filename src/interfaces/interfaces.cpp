@@ -1,5 +1,7 @@
 #include "interfaces.h"
 
+c_portal2 *portal2;
+
 bool c_portal2::init() {
 	console = new i_console(utils::memory::get_module_handle(modules::tier0));
 
@@ -20,5 +22,3 @@ void c_portal2::shutdown() {
 	delete_ptr(cvar);
 	delete_ptr(console);
 }
-
-c_portal2 *portal2;

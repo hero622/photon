@@ -22,8 +22,6 @@ public:
 class c_wormhole : public sdk::i_server_plugin_callbacks {
 public:
 	c_plugin *plugin;
-	c_portal2 *portal2;
-	c_hooks *hooks;
 
 private:
 	std::thread find_plugin_thread;

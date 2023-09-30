@@ -28,7 +28,7 @@ bool mods::load(const char *name) {
 
 			if (!mod) return false;
 
-			auto result = mod->load(&wormhole);
+			auto result = mod->load(shared);
 
 			if (!result)
 				return false;

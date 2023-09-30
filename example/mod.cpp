@@ -1,17 +1,23 @@
 #include "mod.h"
 
+#include "hooks/hooks.h"
+
 expose_wormhole_mod(c_wormhole_mod);
 
-bool c_wormhole_mod::load(c_wormhole *wormhole) {
-	c_wormhole_mod::wh = wormhole;
+bool c_wormhole_mod::load(api::c_shared *shared) {
+	::shared = shared;
 
-	wh->portal2->console->msg("example mod loaded.\n");
+	if (whmod_hooks::initialize()) {
+		shared->portal2->console->msg("example mod loaded.\n");
+	}
 
 	return true;
 }
 
 void c_wormhole_mod::unload() {
-	wh->portal2->console->msg("example mod unloaded.\n");
+	whmod_hooks::uninitialize();
+
+	shared->portal2->console->msg("example mod unloaded.\n");
 }
 
 void c_wormhole_mod::on_pre_tick() {

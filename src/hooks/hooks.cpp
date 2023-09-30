@@ -3,6 +3,8 @@
 #include "mods.h"
 #include "wormhole.h"
 
+c_hooks *hooks;
+
 bool c_hooks::init() {
 	if (MH_Initialize() != MH_OK)
 		return false;
@@ -58,5 +60,3 @@ hk_cmd_fn(c_hooks::plugin_unload) {
 	else
 		c_hooks::plugin_unload(args);
 }
-
-c_hooks *hooks;

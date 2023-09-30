@@ -3,15 +3,22 @@
 #include "command.h"
 #include "mods.h"
 #include "utils/utils.h"
+#include "wormhole_api.h"
 
 c_wormhole wormhole;
 
 expose_single_interface_globalvar(c_wormhole, i_server_plugin_callbacks, interfaceversion_iserverplugincallbacks, wormhole);
 
+api::c_shared *shared;
+
 c_wormhole::c_wormhole() {
 	this->plugin = new c_plugin();
-	this->portal2 = ::portal2 = new c_portal2();
-	this->hooks = ::hooks = new c_hooks();
+	portal2 = new c_portal2();
+	hooks = new c_hooks();
+
+	shared = new api::c_shared();
+	shared->portal2 = portal2;
+	shared->hooks = hooks;
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {

@@ -8,6 +8,7 @@
 #	define dll_export extern "C" __declspec(dllexport)
 
 #	define decl_hk(t, name, ...)                                  \
+		static void *name##_addr;                                     \
 		static inline t(__rescall *name)(void *thisptr, __VA_ARGS__); \
 		static t __fastcall name##_hk(void *thisptr, int edx, __VA_ARGS__)
 
@@ -27,6 +28,7 @@
 #	define dll_export extern "C" __attribute__((visibility("default")))
 
 #	define decl_hk(t, name, ...)                                  \
+		static void *name##_addr;                                     \
 		static inline t(__rescall *name)(void *thisptr, __VA_ARGS__); \
 		static t __rescall name##_hk(void *thisptr, int edx, __VA_ARGS__)
 

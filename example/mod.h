@@ -4,9 +4,7 @@
 
 class c_wormhole_mod : public api::i_wormhole_mod {
 public:
-	c_wormhole *wh;
-
-	virtual bool load(c_wormhole *wormhole);
+	virtual bool load(api::c_shared *shared);
 	virtual void unload();
 	virtual void on_pre_tick();
 	virtual void on_post_tick();
