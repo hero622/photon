@@ -49,6 +49,31 @@ namespace utils {
 #endif
 		}
 
+		__forceinline void unprotect(void *addr, size_t len) {
+#ifdef _WIN32
+			DWORD old_prot;
+			VirtualProtect(addr, len, PAGE_EXECUTE_READWRITE, &old_prot);
+#else
+			uintptr_t start_page = (uintptr_t)addr & 0xFFFFF000;
+			uintptr_t end_page = ((uintptr_t)addr + len) & 0xFFFFF000;
+			uintptr_t page_len = end_page - start_page + 0x1000;
+			mprotect((void *)start_page, page_len, PROT_READ | PROT_WRITE | PROT_EXEC);
+#endif
+		}
+
+		__forceinline void *reserve(void *addr, size_t len) {
+#ifdef _WIN32
+			return VirtualAlloc(0, len, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+#else
+			uintptr_t start_page = (uintptr_t)addr & 0xFFFFF000;
+			uintptr_t end_page = ((uintptr_t)addr + len) & 0xFFFFF000;
+			uintptr_t page_len = end_page - start_page + 0x1000;
+			void *result = mmap((void *)start_page, page_len, PROT_NONE, MAP_PRIVATE | MAP_ANON, -1, 0);
+			mprotect((void *)start_page, page_len, PROT_READ | PROT_WRITE | PROT_EXEC);
+			return result;
+#endif
+		}
+
 		bool detour(char *src, char *dst, const uintptr_t len);
 		char *trampoline_hk(char *src, char *dst, const uintptr_t len);
 
