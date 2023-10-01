@@ -36,7 +36,7 @@ namespace sdk {
 						return;
 					}
 					while ((int)(a)new_allocation_count < allocation_requested) {
-						new_allocationCount = (new_allocation_count + allocation_requested) / 2;
+						new_allocation_count = (new_allocation_count + allocation_requested) / 2;
 					}
 				}
 			}

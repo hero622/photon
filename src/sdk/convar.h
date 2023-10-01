@@ -69,8 +69,6 @@ namespace sdk {
 		bool m_b_using_command_callback_interface : 1;
 	};
 
-	typedef void (*fn_change_callback_t)(i_con_var *var, const char *p_old_value, float fl_old_value);
-
 	class i_con_var {
 	public:
 		virtual void set_value(const char *p_value) = 0;
@@ -79,6 +77,8 @@ namespace sdk {
 		virtual const char *get_name(void) const = 0;
 		virtual bool is_flag_set(int n_flag) const = 0;
 	};
+
+	typedef void (*fn_change_callback_t)(i_con_var *var, const char *p_old_value, float fl_old_value);
 
 	class con_var : con_command_base {
 	public:

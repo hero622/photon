@@ -166,13 +166,6 @@
   <ItemGroup>
     <ClInclude Include="command.h" />
     <ClInclude Include="dependencies\minhook\buffer.h" />
-    <ClInclude Include="dependencies\minhook\hde\hde32.h" />
-    <ClInclude Include="dependencies\minhook\hde\hde64.h" />
-    <ClInclude Include="dependencies\minhook\hde\pstdint.h" />
-    <ClInclude Include="dependencies\minhook\hde\table32.h" />
-    <ClInclude Include="dependencies\minhook\hde\table64.h" />
-    <ClInclude Include="dependencies\minhook\MinHook.h" />
-    <ClInclude Include="dependencies\minhook\trampoline.h" />
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="interfaces\console.h" />
     <ClInclude Include="interfaces\cvar.h" />
@@ -189,27 +182,25 @@
     <ClInclude Include="sdk\misc.h" />
     <ClInclude Include="sdk\plugin.h" />
     <ClInclude Include="sdk\sdk.h" />
+    <ClInclude Include="sdk\utlvector.h" />
     <ClInclude Include="sdk\vector.h" />
     <ClInclude Include="utils\console.h" />
     <ClInclude Include="utils\memory.h" />
     <ClInclude Include="utils\platform.h" />
     <ClInclude Include="utils\utils.h" />
+    <ClInclude Include="variable.h" />
     <ClInclude Include="wormhole.h" />
     <ClInclude Include="wormhole_api.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="command.cpp" />
-    <ClCompile Include="dependencies\minhook\buffer.c" />
-    <ClCompile Include="dependencies\minhook\hde\hde32.c" />
-    <ClCompile Include="dependencies\minhook\hde\hde64.c" />
-    <ClCompile Include="dependencies\minhook\hook.c" />
-    <ClCompile Include="dependencies\minhook\trampoline.c" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="interfaces\interfaces.cpp" />
     <ClCompile Include="mods.cpp" />
     <ClCompile Include="sdk\plugin.cpp" />
     <ClCompile Include="utils\console.cpp" />
     <ClCompile Include="utils\memory.cpp" />
+    <ClCompile Include="variable.cpp" />
     <ClCompile Include="wormhole.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

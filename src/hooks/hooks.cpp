@@ -7,9 +7,6 @@
 c_hooks *hooks;
 
 bool c_hooks::init() {
-	if (!initialize())
-		return false;
-
 	hk_virtual(portal2->server_game_dll, game_frame, offsets::game_frame);
 	hk_virtual(portal2->engine, frame, offsets::frame);
 	hk_virtual(portal2->client_state, set_signon_state, offsets::set_signon_state);
@@ -26,8 +23,6 @@ void c_hooks::shutdown() {
 	unhk(set_signon_state);
 	unhk(frame);
 	unhk(game_frame);
-
-	uninitialize();
 }
 
 hk_fn(void, c_hooks::game_frame, bool simulating) {
