@@ -1,4 +1,4 @@
-.PHONY: all clean cvars
+.PHONY: all
 .FORCE:
 
 CXX=g++-10
@@ -10,6 +10,7 @@ SRCS+=$(wildcard $(SDIR)/hooks/*.cpp)
 SRCS+=$(wildcard $(SDIR)/interfaces/*.cpp)
 SRCS+=$(wildcard $(SDIR)/sdk/*.cpp)
 SRCS+=$(wildcard $(SDIR)/utils/*.cpp)
+SRCS+=$(wildcard $(SDIR)/deps/subhook/*.c)
 
 OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 
