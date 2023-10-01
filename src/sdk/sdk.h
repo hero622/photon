@@ -6,4 +6,5 @@ namespace sdk {}
 #include "convar.h"
 #include "misc.h"
 #include "plugin.h"
+#include "utlvector.h"
 #include "vector.h"

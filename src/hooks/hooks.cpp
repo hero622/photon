@@ -58,7 +58,7 @@ hk_fn(void, c_hooks::set_signon_state, int state, int count, void *unk) {
 hk_fn(void, c_hooks::paint, sdk::paint_mode_t mode) {
 	c_hooks::paint(thisptr, mode);
 
-	portal2->surface->start_drawing();
+	portal2->surface->start_drawing(portal2->surface->ptr);
 
 	if (mode == sdk::paint_uipanels) {
 	}

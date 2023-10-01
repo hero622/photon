@@ -13,6 +13,7 @@ public:
 
 	static std::vector<c_command *> &get_list();
 
+	c_command();
 	c_command(const char *name);
 	c_command(const char *p_name, sdk::fn_command_callback_t callback, const char *p_help_string, int flags = 0, sdk::fn_command_completion_callback completion_func = 0);
 	~c_command();
@@ -20,12 +21,14 @@ public:
 	void reg();
 	void unreg();
 
-	static void regall();
-	static void unregall();
+	void regall();
+	void unregall();
 
-	static bool hook(const char *name, sdk::fn_command_callback_t detour, sdk::fn_command_callback_t &original);
-	static bool unhook(const char *name, sdk::fn_command_callback_t original);
+	bool hook(const char *name, sdk::fn_command_callback_t detour, sdk::fn_command_callback_t &original);
+	bool unhook(const char *name, sdk::fn_command_callback_t original);
 };
+
+extern c_command *cmds;
 
 #define create_con_command(name, description)                     \
 	static void name##_cbk(const sdk::c_command &args);              \

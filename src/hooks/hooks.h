@@ -53,7 +53,7 @@ extern c_hooks *hooks;
 	shared->hooks->remove_hook(name##_addr)
 
 #define hk_cmd(name) \
-	c_command::hook(#name, name##_hk, name);
+	shared->cmds->hook(#name, name##_hk, name);
 
 #define unhk_cmd(name) \
-	c_command::unhook(#name, name);
+	shared->cmds->unhook(#name, name);

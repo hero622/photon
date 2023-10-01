@@ -13,18 +13,16 @@ api::c_shared *shared;
 
 c_wormhole::c_wormhole() {
 	this->plugin = new c_plugin();
-	portal2 = new c_portal2();
-	hooks = new c_hooks();
-
 	shared = new api::c_shared();
-	shared->portal2 = portal2;
-	shared->hooks = hooks;
+	shared->portal2 = portal2 = new c_portal2();
+	shared->hooks = hooks = new c_hooks();
+	shared->cmds = cmds = new c_command();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
 	if (portal2->init()) {
 		if (hooks->init()) {
-			c_command::regall();
+			cmds->regall();
 
 			this->search_plugin();
 
@@ -69,7 +67,7 @@ void c_wormhole::unload() {
 
 	mods::unloadall();
 
-	c_command::unregall();
+	cmds->unregall();
 
 	hooks->shutdown();
 

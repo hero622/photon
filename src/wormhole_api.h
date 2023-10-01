@@ -10,6 +10,7 @@ namespace api {
 	public:
 		c_portal2 *portal2;
 		c_hooks *hooks;
+		c_command *cmds;
 	};
 
 	class i_wormhole_mod {

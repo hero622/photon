@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utlvector.h"
+
 namespace sdk {
 	class c_command {
 	public:
@@ -65,5 +67,48 @@ namespace sdk {
 		bool m_b_has_completion_callback : 1;
 		bool m_b_using_new_command_callback : 1;
 		bool m_b_using_command_callback_interface : 1;
+	};
+
+	typedef void (*fn_change_callback_t)(i_con_var *var, const char *p_old_value, float fl_old_value);
+
+	class i_con_var {
+	public:
+		virtual void set_value(const char *p_value) = 0;
+		virtual void set_value(float fl_value) = 0;
+		virtual void set_value(int n_value) = 0;
+		virtual const char *get_name(void) const = 0;
+		virtual bool is_flag_set(int n_flag) const = 0;
+	};
+
+	class con_var : con_command_base {
+	public:
+		void *con_var_v_table;
+		con_var *m_p_parent;
+		const char *m_psz_default_value;
+		char *m_psz_string;
+		int m_string_length;
+		float m_f_value;
+		int m_n_value;
+		bool m_b_has_min;
+		float m_f_min_val;
+		bool m_b_has_max;
+		float m_f_max_val;
+		c_utl_vector<fn_change_callback_t> m_fn_change_callback;
+
+		con_var(const char *p_name, const char *p_default_value, int flags, const char *p_help_string, bool b_min, float f_min, bool b_max, float f_max)
+			: con_command_base(p_name, p_help_string, flags)
+			, con_var_v_table(nullptr)
+			, m_p_parent(nullptr)
+			, m_psz_default_value(p_default_value)
+			, m_psz_string(nullptr)
+			, m_string_length(0)
+			, m_f_value(0.0f)
+			, m_n_value(0)
+			, m_b_has_min(b_min)
+			, m_f_min_val(f_min)
+			, m_b_has_max(b_max)
+			, m_f_max_val(f_max)
+			, m_fn_change_callback() {
+		}
 	};
 }  // namespace sdk

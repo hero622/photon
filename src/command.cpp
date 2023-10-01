@@ -1,10 +1,16 @@
 #include "command.h"
 
 #include "interfaces/interfaces.h"
+#include "wormhole_api.h"
+
+c_command *cmds;
 
 std::vector<c_command *> &c_command::get_list() {
 	static std::vector<c_command *> list;
 	return list;
+}
+
+c_command::c_command() {
 }
 
 c_command::c_command(const char *name) {
@@ -28,15 +34,15 @@ c_command::~c_command() {
 
 void c_command::reg() {
 	if (!this->is_registered) {
-		*(void **)this->ptr = portal2->cvar->con_command_vtable;
-		portal2->cvar->register_con_command(this->ptr);
+		*(void **)this->ptr = shared->portal2->cvar->con_command_vtable;
+		shared->portal2->cvar->register_con_command(this->ptr);
 	}
 	this->is_registered = true;
 }
 
 void c_command::unreg() {
 	if (this->is_registered)
-		portal2->cvar->unregister_con_command(this->ptr);
+		shared->portal2->cvar->unregister_con_command(this->ptr);
 	this->is_registered = false;
 }
 

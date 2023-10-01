@@ -1,11 +1,15 @@
 #include "memory.h"
 
-#include <Windows.h>
-#include <psapi.h>
+#ifdef _WIN32
+#	include <Windows.h>
+#	include <psapi.h>
+#else
+#endif
+
 #include <vector>
 
 std::uint8_t *utils::memory::pattern_scan(const char *module_name, const char *signature) noexcept {
-	const auto module_handle = GetModuleHandleA(module_name);
+	const auto module_handle = get_module_handle(module_name);
 
 	if (!module_handle)
 		return nullptr;

@@ -7,7 +7,7 @@ class c_surface {
 public:
 	void *ptr;
 
-	void(__rescall *start_drawing)();
+	void(__rescall *start_drawing)(void *thisptr);
 	void(__rescall *finish_drawing)();
 
 	void draw_set_color(int r, int g, int b, int a) {
@@ -62,6 +62,6 @@ public:
 
 		auto paint_traverse_ex = utils::memory::get_virtual(ptr, offsets::paint_traverse_ex);
 		this->start_drawing = utils::memory::read<decltype(start_drawing)>(paint_traverse_ex + offsets::start_drawing);
-		this->finish_drawing = utils::memory::read<decltype(start_drawing)>(paint_traverse_ex + offsets::finish_drawing);
+		this->finish_drawing = utils::memory::read<decltype(finish_drawing)>(paint_traverse_ex + offsets::finish_drawing);
 	}
 };
