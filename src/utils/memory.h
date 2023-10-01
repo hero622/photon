@@ -33,7 +33,7 @@ namespace utils {
 		}
 
 		template <typename t>
-		__forceinline static t get_sym_addr(void *module_handle, const char *sym) {
+		__forceinline t get_sym_addr(void *module_handle, const char *sym) {
 #ifdef _WIN32
 			return (t)GetProcAddress((HMODULE)module_handle, sym);
 #else
@@ -41,13 +41,16 @@ namespace utils {
 #endif
 		}
 
-		__forceinline static void *get_module_handle(const char *module_name) {
+		__forceinline void *get_module_handle(const char *module_name) {
 #ifdef _WIN32
 			return GetModuleHandleA(module_name);
 #else
 			return dlopen(module_name, RTLD_NOLOAD | RTLD_NOW);
 #endif
 		}
+
+		bool detour(char *src, char *dst, const uintptr_t len);
+		char *trampoline_hk(char *src, char *dst, const uintptr_t len);
 
 		std::uint8_t *pattern_scan(const char *module_name, const char *signature) noexcept;
 	}  // namespace memory

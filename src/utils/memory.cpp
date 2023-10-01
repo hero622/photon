@@ -1,12 +1,52 @@
 #include "memory.h"
 
+#include <vector>
+
+bool utils::memory::detour(char *src, char *dst, const uintptr_t len) {
+	if (len < 5) return false;
+
+	int old_prot;
 #ifdef _WIN32
-#	include <Windows.h>
-#	include <psapi.h>
+	VirtualProtect(src, len, PAGE_EXECUTE_READWRITE, (DWORD *)&old_prot);
 #else
+	old_prot = mprotect(src, len, PROT_READ | PROT_WRITE | PROT_EXEC);
 #endif
 
-#include <vector>
+	uintptr_t rel_addr = (uintptr_t)(dst - (uintptr_t)src) - 5;
+
+	*src = 0xE9;
+	*(uintptr_t *)((uintptr_t)src + 1) = rel_addr;
+
+#ifdef _WIN32
+	VirtualProtect(src, len, old_prot, (DWORD *)&old_prot);
+#else
+	old_prot = mprotect(src, len, old_prot);
+#endif
+	return true;
+}
+
+char *utils::memory::trampoline_hk(char *src, char *dst, const uintptr_t len) {
+	if (len < 5) return 0;
+
+#ifdef _WIN32
+	void *trampoline = VirtualAlloc(0, len + 5, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+#else
+	void *trampoline = mmap((void *)0, len + 5, PROT_NONE, MAP_PRIVATE | MAP_ANON, -1, 0);
+	mprotect((void *)0, len + 5, PROT_READ | PROT_WRITE | PROT_EXEC);
+#endif
+
+	memcpy(trampoline, src, len);
+
+	uintptr_t trampoline_rel_addr = ((uintptr_t)src - (uintptr_t)trampoline) - 5;
+
+	*(char *)((uintptr_t)trampoline + len) = 0xE9;
+
+	*(uintptr_t *)((uintptr_t)trampoline + len + 1) = trampoline_rel_addr;
+
+	detour(src, dst, len);
+
+	return (char *)trampoline;
+}
 
 std::uint8_t *utils::memory::pattern_scan(const char *module_name, const char *signature) noexcept {
 	const auto module_handle = get_module_handle(module_name);
