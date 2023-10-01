@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef _WIN32
+#	include <unistd.h>
+#endif
+
 #ifdef _WIN32
 #	define module(name) name ".dll"
 

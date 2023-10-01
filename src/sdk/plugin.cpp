@@ -2,6 +2,7 @@
 
 #include "utils/utils.h"
 
+#include <cstring>
 #include <iostream>
 
 sdk::interface_reg_t *sdk::interface_reg_t::s_p_interface_regs = nullptr;

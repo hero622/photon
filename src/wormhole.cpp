@@ -5,6 +5,8 @@
 #include "utils/utils.h"
 #include "wormhole_api.h"
 
+#include <cstring>
+
 c_wormhole wormhole;
 
 expose_single_interface_globalvar(c_wormhole, i_server_plugin_callbacks, interfaceversion_iserverplugincallbacks, wormhole);
