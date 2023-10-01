@@ -200,6 +200,7 @@
     <ClCompile Include="sdk\plugin.cpp" />
     <ClCompile Include="utils\console.cpp" />
     <ClCompile Include="utils\memory.cpp" />
+    <ClCompile Include="utils\utils.cpp" />
     <ClCompile Include="variable.cpp" />
     <ClCompile Include="wormhole.cpp" />
   </ItemGroup>
