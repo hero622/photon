@@ -10,7 +10,6 @@ SRCS+=$(wildcard $(SDIR)/hooks/*.cpp)
 SRCS+=$(wildcard $(SDIR)/interfaces/*.cpp)
 SRCS+=$(wildcard $(SDIR)/sdk/*.cpp)
 SRCS+=$(wildcard $(SDIR)/utils/*.cpp)
-SRCS+=$(wildcard $(SDIR)/deps/subhook/*.c)
 
 OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 
@@ -18,8 +17,8 @@ OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 DEPS=$(OBJS:%.o=%.d)
 
 WARNINGS=-Wall -Wno-parentheses -Wno-unknown-pragmas -Wno-delete-non-virtual-dtor
-CXXFLAGS=-std=c++17 -m32 $(WARNINGS) -I$(SDIR) -fPIC -D_GNU_SOURCE -fpermissive
-LDFLAGS=-m32 -shared -lstdc++fs
+CXXFLAGS=-std=c++17 -m32 $(WARNINGS) -I$(SDIR) -fPIC -D_GNU_SOURCE -fpermissive -I$(SDIR)/deps/subhook
+LDFLAGS=-m32 -shared -lstdc++fs -L$(SDIR)/deps/subhook -lsubhook
 
 # Import config.mk, which can be used for optional config
 -include config.mk

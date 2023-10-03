@@ -28,7 +28,7 @@ namespace api {
 
 extern api::c_shared *shared;
 
-#define expose_wormhole_mod(class_name)                               \
-	extern "C" __declspec(dllexport) api::i_wormhole_mod *create_mod() { \
-		return new class_name();                                            \
+#define expose_wormhole_mod(class_name)         \
+	dll_export api::i_wormhole_mod *create_mod() { \
+		return new class_name();                      \
 	}

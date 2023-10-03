@@ -7,7 +7,7 @@
 c_hooks *hooks;
 
 bool c_hooks::init() {
-	hk_virtual(portal2->server_game_dll, game_frame, offsets::game_frame);
+	// hk_virtual(portal2->server_game_dll, game_frame, offsets::game_frame);
 	hk_virtual(portal2->engine, frame, offsets::frame);
 	hk_virtual(portal2->client_state, set_signon_state, offsets::set_signon_state);
 	hk_virtual(portal2->i_engine_vgui_internal, paint, offsets::paint);
