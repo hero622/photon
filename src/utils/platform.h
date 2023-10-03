@@ -11,13 +11,13 @@
 
 #	define dll_export extern "C" __declspec(dllexport)
 
-#	define decl_hk(t, name, ...)                                    \
-		static inline subhook_t name##_hk;                              \
-		static inline t(__rescall *name)(void *thisptr, ##__VA_ARGS__); \
-		static t __fastcall name##_hk_fn(void *thisptr, int edx, ##__VA_ARGS__)
+#	define decl_hk(t, name, ...)                                  \
+		static inline subhook_t name##_hk;                            \
+		static inline t(__rescall *name)(void *thisptr, __VA_ARGS__); \
+		static t __fastcall name##_hk_fn(void *thisptr, int edx, __VA_ARGS__)
 
 #	define hk_fn(t, name, ...) \
-		t __fastcall name##_hk_fn(void *thisptr, int edx, ##__VA_ARGS__)
+		t __fastcall name##_hk_fn(void *thisptr, int edx, __VA_ARGS__)
 
 #	define sleep(ms) Sleep(ms)
 #else

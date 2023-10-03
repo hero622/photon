@@ -1,8 +1,9 @@
 #pragma once
 
-#include "console.h"
 #include "memory.h"
 #include "platform.h"
+
+#include <string>
 
 namespace utils {
 	std::string ssprintf(const char *fmt, ...);

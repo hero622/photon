@@ -20,6 +20,7 @@ bool c_hooks::init() {
 void c_hooks::shutdown() {
 	unhk_cmd(plugin_unload);
 
+	unhk(paint);
 	unhk(set_signon_state);
 	unhk(frame);
 	unhk(game_frame);
