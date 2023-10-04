@@ -128,7 +128,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>call ..\copy.bat</Command>
+      <Command>call ..\copy_library.bat</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -176,7 +176,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>call ..\copy.bat</Command>
+      <Command>call ..\copy_library.bat</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -202,6 +202,7 @@
     <ClInclude Include="sdk\vector.h" />
     <ClInclude Include="utils\memory.h" />
     <ClInclude Include="utils\platform.h" />
+    <ClInclude Include="utils\string.h" />
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="variable.h" />
     <ClInclude Include="wormhole.h" />
@@ -214,7 +215,7 @@
     <ClCompile Include="mods.cpp" />
     <ClCompile Include="sdk\plugin.cpp" />
     <ClCompile Include="utils\memory.cpp" />
-    <ClCompile Include="utils\utils.cpp" />
+    <ClCompile Include="utils\string.cpp" />
     <ClCompile Include="variable.cpp" />
     <ClCompile Include="wormhole.cpp" />
   </ItemGroup>

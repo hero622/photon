@@ -14,9 +14,9 @@
 
 bool mods::load(const char *name) {
 #ifdef _WIN32
-	void *lib = LoadLibraryA(utils::ssprintf("wormhole/%s.dll", name).c_str());
+	void *lib = LoadLibraryA(utils::string::ssprintf("wormhole/%s.dll", name).c_str());
 #else
-	void *lib = dlopen(utils::ssprintf("wormhole/%s.so", name).c_str(), RTLD_LAZY);
+	void *lib = dlopen(utils::string::ssprintf("wormhole/%s.so", name).c_str(), RTLD_LAZY);
 #endif
 
 	if (lib) {
@@ -33,7 +33,7 @@ bool mods::load(const char *name) {
 			if (!result)
 				return false;
 
-			auto info = mod_info_t();
+			mod_info_t info;
 			info.handle = lib;
 			info.ptr = mod;
 

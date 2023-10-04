@@ -39,5 +39,5 @@
 #	define hk_fn(t, name, ...) \
 		t __rescall name##_hk_fn(void *thisptr, ##__VA_ARGS__)
 
-#	define sleep(ms) usleep((ms) * 1000)
+#	define sleep(ms) usleep((ms)*1000)
 #endif
