@@ -6,10 +6,12 @@ An example mod can be found here: [wh-example-mod](https://github.com/Zyntex1/wh
 - Download the **Wormhole SDK**.
 - Include `wormhole.h` in your main header file.
 - Add a class that derives from `wh::i_wormhole_mod`.
+- Use the `expose_wormhole_mod` macro, pass your class type, not a pointer.
 - Setup `load` and `unload` callbacks.
-- A pointer to shared classes gets passed to `load`, these classes are:
-    - `portal2`: Contains some interfaces of the game like `console` or `engine`.
-    - `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
+	- A pointer to shared classes gets passed to `load`, these classes are:
+    	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
+    	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
+	- You should probably expose this pointer globally.
 - Example of a simple mod:
 ```cpp
 // mod.h
