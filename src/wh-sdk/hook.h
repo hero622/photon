@@ -23,7 +23,7 @@ extern c_hook *hook;
 	shared->hook->remove_hook(name##_hk)
 
 #define hk_cmd(name) \
-	shared->cvar->cmds->hook(#name, name##_hk, name);
+	c_command::hook(#name, name##_hk, name);
 
 #define unhk_cmd(name) \
-	shared->cvar->cmds->unhook(#name, name);
+	c_command::unhook(#name, name);

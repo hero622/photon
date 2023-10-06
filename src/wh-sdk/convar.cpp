@@ -1,8 +1,6 @@
-#include "wh-sdk/convar.h"
+#include "convar.h"
 
-#include "wh-sdk/wormhole.h"
-
-c_convar *cvar;
+#include "wormhole.h"
 
 std::vector<c_command *> &c_command::get_list() {
 	static std::vector<c_command *> list;
@@ -13,7 +11,7 @@ c_command::c_command() {
 }
 
 c_command::c_command(const char *name) {
-	this->ptr = reinterpret_cast<sdk::con_command *>(portal2->cvar->find_command_base(name));
+	this->ptr = reinterpret_cast<sdk::con_command *>(shared->portal2->cvar->find_command_base(name));
 	this->is_registered = false;
 	this->is_reference = true;
 }

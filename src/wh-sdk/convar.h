@@ -16,16 +16,16 @@ public:
 	c_command();
 	c_command(const char *name);
 	c_command(const char *p_name, sdk::fn_command_callback_t callback, const char *p_help_string, int flags = 0, sdk::fn_command_completion_callback completion_func = 0);
-	virtual ~c_command();
+	~c_command();
 
-	virtual void reg();
-	virtual void unreg();
+	void reg();
+	void unreg();
 
-	virtual void regall();
-	virtual void unregall();
+	static void regall();
+	static void unregall();
 
-	virtual bool hook(const char *name, sdk::fn_command_callback_t detour, sdk::fn_command_callback_t &original);
-	virtual bool unhook(const char *name, sdk::fn_command_callback_t original);
+	static bool hook(const char *name, sdk::fn_command_callback_t detour, sdk::fn_command_callback_t &original);
+	static bool unhook(const char *name, sdk::fn_command_callback_t original);
 };
 
 class c_variable {
@@ -37,14 +37,6 @@ class c_variable {
 
 	// 	static std::vector<c_command *> &get_list();
 };
-
-class c_convar {
-public:
-	c_command *cmds;
-	c_variable *vars;
-};
-
-extern c_convar *cvar;
 
 #define create_con_command(name, description)                     \
 	static void name##_cbk(const sdk::c_command &args);              \

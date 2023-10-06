@@ -127,7 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\hooks.cpp" />
-    <ClCompile Include="core\impl\convar.cpp" />
     <ClCompile Include="core\impl\hook.cpp" />
     <ClCompile Include="core\impl\portal2.cpp" />
     <ClCompile Include="core\interfaces\console.cpp" />
@@ -138,6 +137,7 @@
     <ClCompile Include="core\interfaces\surface.cpp" />
     <ClCompile Include="core\mods.cpp" />
     <ClCompile Include="core\plugin.cpp" />
+    <ClCompile Include="wh-sdk\convar.cpp" />
     <ClCompile Include="wh-sdk\utils\memory.cpp" />
     <ClCompile Include="wh-sdk\utils\string.cpp" />
     <ClCompile Include="core\wormhole.cpp" />

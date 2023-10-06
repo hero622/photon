@@ -11,7 +11,6 @@ namespace wh {
 	public:
 		c_portal2 *portal2;
 		c_hook *hook;
-		c_convar *cvar;
 	};
 
 	class i_wormhole_mod {

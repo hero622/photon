@@ -17,15 +17,12 @@ c_wormhole::c_wormhole() {
 	shared = new wh::c_shared();
 	shared->portal2 = portal2 = new c_portal2();
 	shared->hook = hook = new c_hook();
-	shared->cvar = cvar = new c_convar();
-	shared->cvar->cmds = new c_command();
-	shared->cvar->vars = new c_variable();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
 	if (interfaces::initialize()) {
 		if (hooks::initialize()) {
-			cvar->cmds->regall();
+			c_command::regall();
 
 			this->search_plugin();
 
@@ -70,7 +67,7 @@ void c_wormhole::unload() {
 
 	mods::unloadall();
 
-	cvar->cmds->unregall();
+	c_command::unregall();
 
 	hooks::uninitialize();
 

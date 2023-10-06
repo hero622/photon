@@ -131,10 +131,10 @@
     <ClCompile Include="core\impl\hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\impl\convar.cpp">
+    <ClCompile Include="core\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\plugin.cpp">
+    <ClCompile Include="wh-sdk\convar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
