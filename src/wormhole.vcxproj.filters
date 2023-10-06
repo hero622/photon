@@ -15,114 +15,126 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sdk\sdk.h">
+    <ClInclude Include="core\wormhole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole.h">
+    <ClInclude Include="wh-sdk\utils\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\memory.h">
+    <ClInclude Include="wh-sdk\source-sdk\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\utils.h">
+    <ClInclude Include="wh-sdk\utils\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\interfaces.h">
+    <ClInclude Include="wh-sdk\source-sdk\convar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\color.h">
+    <ClInclude Include="wh-sdk\interfaces\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\platform.h">
+    <ClInclude Include="wh-sdk\interfaces\cvar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole_api.h">
+    <ClInclude Include="core\portal2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\plugin.h">
+    <ClInclude Include="core\mods.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\convar.h">
+    <ClInclude Include="wh-sdk\interfaces\engine_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\i_cvar.h">
+    <ClInclude Include="wh-sdk\interfaces\engine_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="command.h">
+    <ClInclude Include="wh-sdk\source-sdk\misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\console.h">
+    <ClInclude Include="wh-sdk\source-sdk\vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\cvar.h">
+    <ClInclude Include="wh-sdk\interfaces\surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="portal2.h">
+    <ClInclude Include="wh-sdk\source-sdk\utlvector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mods.h">
+    <ClInclude Include="wh-sdk\utils\string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hooks\hooks.h">
+    <ClInclude Include="wh-sdk\wormhole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dependencies\minhook\buffer.h">
+    <ClInclude Include="wh-sdk\convar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\server_game_dll.h">
+    <ClInclude Include="wh-sdk\hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\engine_api.h">
+    <ClInclude Include="wh-sdk\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\engine_client.h">
+    <ClInclude Include="wh-sdk\source_sdk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\misc.h">
+    <ClInclude Include="wh-sdk\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\vector.h">
+    <ClInclude Include="core\hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces\surface.h">
+    <ClInclude Include="core\interfaces\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="variable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\utlvector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\string.h">
+    <ClInclude Include="core\plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="wormhole.cpp">
+    <ClCompile Include="core\wormhole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils\memory.cpp">
+    <ClCompile Include="wh-sdk\utils\memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="interfaces\interfaces.cpp">
+    <ClCompile Include="core\mods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sdk\plugin.cpp">
+    <ClCompile Include="wh-sdk\utils\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="command.cpp">
+    <ClCompile Include="core\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mods.cpp">
+    <ClCompile Include="core\interfaces\surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\hooks.cpp">
+    <ClCompile Include="core\interfaces\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="variable.cpp">
+    <ClCompile Include="core\interfaces\cvar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils\string.cpp">
+    <ClCompile Include="core\interfaces\engine_api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\interfaces\engine_client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\interfaces\interfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\impl\portal2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\impl\hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\impl\convar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

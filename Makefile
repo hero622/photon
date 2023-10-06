@@ -5,11 +5,10 @@ CXX=g++-10
 SDIR=src
 ODIR=obj
 
-SRCS=$(wildcard $(SDIR)/*.cpp)
-SRCS+=$(wildcard $(SDIR)/hooks/*.cpp)
-SRCS+=$(wildcard $(SDIR)/interfaces/*.cpp)
-SRCS+=$(wildcard $(SDIR)/sdk/*.cpp)
-SRCS+=$(wildcard $(SDIR)/utils/*.cpp)
+SRCS=$(wildcard $(SDIR)/wh-sdk/utils/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/impl/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/interfaces/*.cpp)
 
 OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 
