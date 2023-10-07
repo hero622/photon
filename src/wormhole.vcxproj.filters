@@ -125,16 +125,13 @@
     <ClCompile Include="core\interfaces\interfaces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\impl\portal2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\impl\hook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="core\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wh-sdk\convar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

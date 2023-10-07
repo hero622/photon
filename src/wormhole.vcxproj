@@ -126,9 +126,8 @@
     <ClInclude Include="wh-sdk\wormhole.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\hook.cpp" />
     <ClCompile Include="core\hooks.cpp" />
-    <ClCompile Include="core\impl\hook.cpp" />
-    <ClCompile Include="core\impl\portal2.cpp" />
     <ClCompile Include="core\interfaces\console.cpp" />
     <ClCompile Include="core\interfaces\cvar.cpp" />
     <ClCompile Include="core\interfaces\engine_api.cpp" />

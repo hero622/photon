@@ -48,5 +48,3 @@ public:
 	c_surface *surface;
 	void *i_engine_vgui_internal;
 };
-
-extern c_portal2 *portal2;

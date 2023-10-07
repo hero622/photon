@@ -11,8 +11,6 @@ public:
 	virtual int disable_hook(void *hook);
 };
 
-extern c_hook *hook;
-
 #define hk_virtual(vtable, name, off) \
 	shared->hook->create_hook(reinterpret_cast<void *>(utils::memory::get_virtual(vtable, off)), reinterpret_cast<void *>(name##_hk_fn), name##_hk, reinterpret_cast<void **>(&name));
 

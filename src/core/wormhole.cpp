@@ -15,8 +15,8 @@ wh::c_shared *shared;
 c_wormhole::c_wormhole() {
 	this->plugin = new c_plugin();
 	shared = new wh::c_shared();
-	shared->portal2 = portal2 = new c_portal2();
-	shared->hook = hook = new c_hook();
+	shared->portal2 = new c_portal2();
+	shared->hook = new c_hook();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
@@ -26,7 +26,7 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 
 			this->search_plugin();
 
-			portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
+			shared->portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
 
 			return true;
 		}
@@ -36,12 +36,12 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 }
 
 bool c_wormhole::get_plugin() {
-	auto server_plugin_helpers = reinterpret_cast<uintptr_t>(portal2->server_plugin_helpers);
-	auto m_size = *reinterpret_cast<int *>(server_plugin_helpers + c_server_plugin_size);
-	if (m_size > 0) {
-		auto m_plugins = *reinterpret_cast<uintptr_t *>(server_plugin_helpers + c_server_plugin_plugins);
-		for (auto i = 0; i < m_size; ++i) {
-			auto ptr = *reinterpret_cast<sdk::c_plugin **>(m_plugins + sizeof(uintptr_t) * i);
+	auto server_plugin_helpers = reinterpret_cast<uintptr_t>(shared->portal2->server_plugin_helpers);
+	auto size = *reinterpret_cast<int *>(server_plugin_helpers + c_server_plugin_size);
+	if (size > 0) {
+		auto plugins = *reinterpret_cast<uintptr_t *>(server_plugin_helpers + c_server_plugin_plugins);
+		for (auto i = 0; i < size; ++i) {
+			auto ptr = *reinterpret_cast<sdk::c_plugin **>(plugins + sizeof(uintptr_t) * i);
 			if (!std::strcmp(ptr->name, wormhole_plugin_sig)) {
 				this->plugin->ptr = ptr;
 				this->plugin->index = i;
@@ -73,10 +73,10 @@ void c_wormhole::unload() {
 
 	if (wormhole.get_plugin()) {
 		auto unload_cmd = std::string("plugin_unload ") + std::to_string(wormhole.plugin->index);
-		portal2->engine_client->cbuf_add(unload_cmd.c_str(), safe_unload_delay);
+		shared->portal2->engine_client->cbuf_add(unload_cmd.c_str(), safe_unload_delay);
 	}
 
-	portal2->console->msg("Goodbye.\n");
+	shared->portal2->console->msg("Goodbye.\n");
 
 	interfaces::uninitialize();
 }

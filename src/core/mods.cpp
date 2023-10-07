@@ -65,9 +65,9 @@ void mods::unloadall() {
 }
 
 void mods::print() {
-	portal2->console->msg("Loaded wormhole mods (%d):\n", mod_list.size());
+	shared->portal2->console->msg("Loaded wormhole mods (%d):\n", mod_list.size());
 	for (const auto &mod : mod_list) {
-		portal2->console->msg("%s\n", mod.first.c_str());
+		shared->portal2->console->msg("%s\n", mod.first.c_str());
 	}
 }
 

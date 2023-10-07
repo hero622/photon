@@ -2,8 +2,6 @@
 
 #include "deps/subhook/subhook.h"
 
-c_hook *hook;
-
 int c_hook::create_hook(void *src, void *dst, void *&hook, void **orig) {
 	hook = subhook_new(src, dst, SUBHOOK_TRAMPOLINE);
 	*orig = subhook_get_trampoline((subhook_t)hook);
