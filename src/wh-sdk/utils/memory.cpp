@@ -52,9 +52,9 @@ bool utils::memory::get_module_info(const char *module_name, module_info_t *modu
 			auto index = name.find_last_of("\\/");
 			name = name.substr(index + 1, name.length() - index);
 
-			mod_info.name = name;
-			mod_info.path = info->dlpi_name;
-			mod_info.addr = info->dlpi_addr + _info->dlpi_phdr[0].p_vaddr;
+			std::strncpy(mod_info.name, name.c_str(), sizeof(mod_info.name));
+			std::strncpy(mod_info.path, info->dlpi_name, sizeof(mod_info.path));
+			mod_info.addr = info->dlpi_addr + info->dlpi_phdr[0].p_vaddr;
 			mod_info.size = info->dlpi_phdr[0].p_memsz;
 
 			g_module_info.push_back(mod_info);
@@ -66,7 +66,7 @@ bool utils::memory::get_module_info(const char *module_name, module_info_t *modu
 	}
 
 	for (const auto &info : g_module_info) {
-		if (_stricmp(info.name, module_name))
+		if (std::strcmp(info.name, module_name))
 			continue;
 
 		if (module_info != nullptr) {

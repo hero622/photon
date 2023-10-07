@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 #ifdef _WIN32
@@ -59,9 +60,9 @@ namespace utils {
 			if (!get_module_info(module_name, &info))
 				return nullptr;
 #ifdef _WIN32
-			return GetModuleHandleA(info.name);
+			return GetModuleHandleA(info.path);
 #else
-			return dlopen(info.name, RTLD_NOLOAD | RTLD_NOW);
+			return dlopen(info.path, RTLD_NOLOAD | RTLD_NOW);
 #endif
 		}
 	}  // namespace memory

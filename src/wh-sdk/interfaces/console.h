@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../source_sdk.h"
+#include "../utils.h"
 
 class c_console {
 public:
