@@ -2,13 +2,13 @@
 
 ## Building
 
-## Windows
+### Windows
 - Visual Studio 2019
 - MSVC Toolset v142
 - Configure SDK version in `src/wormhole.vcxproj`
 - Configure paths in `copy.bat`
 
-## Linux
+### Linux
 - g++ 8.3.0
 - g++-8-multilib
 - Make 4.1

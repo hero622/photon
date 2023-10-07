@@ -11,7 +11,7 @@ An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
 	- A pointer to shared classes gets passed to `load`, these classes are:
     	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
     	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
-	- You should probably expose this pointer globally.
+	- You should expose this pointer globally (most macros assume that it's named `shared`).
 - Example of a simple mod:
 ```cpp
 // mod.h
