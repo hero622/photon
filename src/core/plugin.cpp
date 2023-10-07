@@ -1,6 +1,6 @@
 #include "plugin.h"
 
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/utils.h"
 
 #include <cstring>
 #include <iostream>

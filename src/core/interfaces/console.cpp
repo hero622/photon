@@ -1,7 +1,7 @@
-#include "wh-sdk/interfaces/console.h"
+#include "wormhole-sdk/interfaces/console.h"
 
 #include "../portal2.h"
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/utils.h"
 
 c_console::c_console(void *ptr) {
 	this->msg = utils::memory::get_sym_addr<decltype(msg)>(ptr, symbols::msg);

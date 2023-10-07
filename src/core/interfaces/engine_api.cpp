@@ -1,7 +1,7 @@
-#include "wh-sdk/interfaces/engine_api.h"
+#include "wormhole-sdk/interfaces/engine_api.h"
 
 #include "../portal2.h"
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/utils.h"
 
 c_engine_api::c_engine_api(void *ptr) {
 	this->ptr = ptr;

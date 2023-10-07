@@ -18,22 +18,22 @@
     <ClInclude Include="core\wormhole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\utils\memory.h">
+    <ClInclude Include="wormhole-sdk\utils\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\source-sdk\color.h">
+    <ClInclude Include="wormhole-sdk\source-sdk\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\utils\platform.h">
+    <ClInclude Include="wormhole-sdk\utils\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\source-sdk\convar.h">
+    <ClInclude Include="wormhole-sdk\source-sdk\convar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\interfaces\console.h">
+    <ClInclude Include="wormhole-sdk\interfaces\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\interfaces\cvar.h">
+    <ClInclude Include="wormhole-sdk\interfaces\cvar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\portal2.h">
@@ -42,43 +42,43 @@
     <ClInclude Include="core\mods.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\interfaces\engine_api.h">
+    <ClInclude Include="wormhole-sdk\interfaces\engine_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\interfaces\engine_client.h">
+    <ClInclude Include="wormhole-sdk\interfaces\engine_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\source-sdk\misc.h">
+    <ClInclude Include="wormhole-sdk\source-sdk\misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\source-sdk\vector.h">
+    <ClInclude Include="wormhole-sdk\source-sdk\vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\interfaces\surface.h">
+    <ClInclude Include="wormhole-sdk\interfaces\surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\source-sdk\utlvector.h">
+    <ClInclude Include="wormhole-sdk\source-sdk\utlvector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\utils\string.h">
+    <ClInclude Include="wormhole-sdk\utils\string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\wormhole.h">
+    <ClInclude Include="wormhole-sdk\wormhole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\convar.h">
+    <ClInclude Include="wormhole-sdk\convar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\hook.h">
+    <ClInclude Include="wormhole-sdk\hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\interfaces.h">
+    <ClInclude Include="wormhole-sdk\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\source_sdk.h">
+    <ClInclude Include="wormhole-sdk\source_sdk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wh-sdk\utils.h">
+    <ClInclude Include="wormhole-sdk\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\hooks.h">
@@ -95,13 +95,13 @@
     <ClCompile Include="core\wormhole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wh-sdk\utils\memory.cpp">
+    <ClCompile Include="wormhole-sdk\utils\memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\mods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wh-sdk\utils\string.cpp">
+    <ClCompile Include="wormhole-sdk\utils\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\hooks.cpp">
@@ -128,7 +128,7 @@
     <ClCompile Include="core\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wh-sdk\convar.cpp">
+    <ClCompile Include="wormhole-sdk\convar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\hook.cpp">

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "plugin.h"
-#include "wh-sdk/wormhole.h"
+#include "wormhole-sdk/wormhole.h"
 
 #include <thread>
 

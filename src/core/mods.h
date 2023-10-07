@@ -1,6 +1,6 @@
 #pragma once
 
-#include "wh-sdk/wormhole.h"
+#include "wormhole-sdk/wormhole.h"
 
 #include <map>
 

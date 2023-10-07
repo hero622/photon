@@ -1,8 +1,8 @@
-#include "wh-sdk/interfaces/cvar.h"
+#include "wormhole-sdk/interfaces/cvar.h"
 
 #include "../portal2.h"
-#include "wh-sdk/source_sdk.h"
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/source_sdk.h"
+#include "wormhole-sdk/utils.h"
 
 void c_cvar::register_con_command(sdk::con_command_base *p_command_base) {
 	return utils::memory::call_virtual<void>(offsets::register_con_command, ptr, p_command_base);

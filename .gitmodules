@@ -1,0 +1,3 @@
+[submodule "src/wormhole-sdk"]
+	path = src/wormhole-sdk
+	url = https://github.com/Zyntex1/wormhole-sdk.git

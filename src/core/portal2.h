@@ -1,6 +1,6 @@
 #pragma once
 
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/utils.h"
 
 namespace modules {
 	plat_module(tier0, "tier0.dll", "libtier0.so");

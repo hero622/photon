@@ -1,7 +1,7 @@
-#include "wh-sdk/interfaces/engine_client.h"
+#include "wormhole-sdk/interfaces/engine_client.h"
 
 #include "../portal2.h"
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/utils.h"
 
 void c_engine_client::client_cmd(const char *sz_cmd_string) {
 	return utils::memory::call_virtual<void>(offsets::client_cmd, ptr, sz_cmd_string);

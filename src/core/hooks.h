@@ -1,6 +1,6 @@
 #pragma once
 
-#include "wh-sdk/hook.h"
+#include "wormhole-sdk/hook.h"
 
 namespace hooks {
 	decl_hk(void, game_frame, bool simulating);

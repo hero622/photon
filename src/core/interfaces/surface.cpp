@@ -1,8 +1,8 @@
-#include "wh-sdk/interfaces/surface.h"
+#include "wormhole-sdk/interfaces/surface.h"
 
 #include "../portal2.h"
-#include "wh-sdk/source_sdk.h"
-#include "wh-sdk/utils.h"
+#include "wormhole-sdk/source_sdk.h"
+#include "wormhole-sdk/utils.h"
 
 void c_surface::draw_set_color(int r, int g, int b, int a) {
 	return utils::memory::call_virtual<void>(offsets::draw_set_color, ptr, r, g, b, a);

@@ -1,7 +1,7 @@
 #include "interfaces.h"
 
 #include "../portal2.h"
-#include "wh-sdk/wormhole.h"
+#include "wormhole-sdk/wormhole.h"
 
 bool interfaces::initialize() {
 	shared->portal2->console = new c_console(utils::memory::get_module_handle(modules::tier0));
