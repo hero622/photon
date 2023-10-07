@@ -1,9 +1,9 @@
 # Creating mods
 
-An example mod can be found here: [wh-example-mod](https://github.com/Zyntex1/wh-example-mod)
+An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
 
 ## Setup
-- Download the **Wormhole SDK**.
+- Download the [Wormhole SDK](https://github.com/Zyntex1/wormhole-sdk).
 - Include `wormhole.h` in your main header file.
 - Add a class that derives from `wh::i_wormhole_mod`.
 - Use the `expose_wormhole_mod` macro, pass your class type, not a pointer.

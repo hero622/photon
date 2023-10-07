@@ -11,5 +11,6 @@
 - Load mods by typing `wormhole_load <mod name>` in the console.
 
 ## For developers
+- [SDK](https://github.com/Zyntex1/wormhole-sdk)
 - [Creating mods](docs/creating_mods.md)
 - [Contributing](docs/contributing.md)
