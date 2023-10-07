@@ -14,10 +14,10 @@ public:
 extern c_hook *hook;
 
 #define hk_virtual(vtable, name, off) \
-	shared->hook->create_hook(reinterpret_cast<void *>(utils::memory::get_virtual(vtable, off)), name##_hk_fn, name##_hk, reinterpret_cast<void **>(&name));
+	shared->hook->create_hook(reinterpret_cast<void *>(utils::memory::get_virtual(vtable, off)), reinterpret_cast<void *>(name##_hk_fn), name##_hk, reinterpret_cast<void **>(&name));
 
 #define hk_addr(name, addr) \
-	shared->hook->create_hook(reinterpret_cast<void *>(addr), name##_hk_fn, name##_hk, reinterpret_cast<void **>(&name));
+	shared->hook->create_hook(reinterpret_cast<void *>(addr), reinterpret_cast<void *>(name##_hk_fn), name##_hk, reinterpret_cast<void **>(&name));
 
 #define unhk(name) \
 	shared->hook->remove_hook(name##_hk)

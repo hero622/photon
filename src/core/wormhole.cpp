@@ -37,12 +37,12 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 
 bool c_wormhole::get_plugin() {
 	auto server_plugin_helpers = reinterpret_cast<uintptr_t>(portal2->server_plugin_helpers);
-	auto m_size = *reinterpret_cast<int *>(server_plugin_helpers + c_server_plugin_m_size);
+	auto m_size = *reinterpret_cast<int *>(server_plugin_helpers + c_server_plugin_size);
 	if (m_size > 0) {
-		auto m_plugins = *reinterpret_cast<uintptr_t *>(server_plugin_helpers + c_server_plugin_m_plugins);
+		auto m_plugins = *reinterpret_cast<uintptr_t *>(server_plugin_helpers + c_server_plugin_plugins);
 		for (auto i = 0; i < m_size; ++i) {
 			auto ptr = *reinterpret_cast<sdk::c_plugin **>(m_plugins + sizeof(uintptr_t) * i);
-			if (!std::strcmp(ptr->m_sz_name, wormhole_plugin_sig)) {
+			if (!std::strcmp(ptr->name, wormhole_plugin_sig)) {
 				this->plugin->ptr = ptr;
 				this->plugin->index = i;
 				return true;
@@ -55,7 +55,7 @@ void c_wormhole::search_plugin() {
 	this->find_plugin_thread = std::thread([this]() {
 		sleep(1000);
 		if (this->get_plugin()) {
-			this->plugin->ptr->m_b_disable = true;
+			this->plugin->ptr->disable = true;
 		}
 	});
 	this->find_plugin_thread.detach();

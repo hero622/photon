@@ -4,7 +4,7 @@
 
 namespace sdk {
 	template <class t, class a = int>
-	class c_utl_memory {
+	class utl_memory {
 	public:
 		inline bool is_idx_valid(a i) const {
 			long x = i;
@@ -21,12 +21,33 @@ namespace sdk {
 			return allocation_count;
 		}
 
+		inline int utl_memory_calc_new_allocation_count(int n_allocation_count, int n_grow_size, int n_new_size, int n_bytes_item) {
+			if (n_grow_size) {
+				n_allocation_count = ((1 + ((n_new_size - 1) / n_grow_size)) * n_grow_size);
+			} else {
+				if (!n_allocation_count) {
+					// compute an allocation which is at least as big as a cache line...
+					n_allocation_count = (31 + n_bytes_item) / n_bytes_item;
+				}
+
+				while (n_allocation_count < n_new_size) {
+					int n_new_allocation_count = (n_allocation_count * 9) / 8;  // 12.5 %
+					if (n_new_allocation_count > n_allocation_count)
+						n_allocation_count = n_new_allocation_count;
+					else
+						n_allocation_count *= 2;
+				}
+			}
+
+			return n_allocation_count;
+		}
+
 		void grow(int num) {
 			assert(num > 0);
 
 			auto old_allocation_count = allocation_count;
 			int allocation_requested = allocation_count + num;
-			int new_allocation_count = c_utl_memory_calc_new_allocation_count(allocation_count, grow_size, allocation_requested, sizeof(t));
+			int new_allocation_count = utl_memory_calc_new_allocation_count(allocation_count, grow_size, allocation_requested, sizeof(t));
 			if ((int)(a)new_allocation_count < allocation_requested) {
 				if ((int)(a)new_allocation_count == 0 && (int)(a)(new_allocation_count - 1) >= allocation_requested) {
 					--new_allocation_count;
@@ -56,19 +77,19 @@ namespace sdk {
 	};
 
 	template <class t, class a>
-	inline t &c_utl_memory<t, a>::operator[](a i) {
+	inline t &utl_memory<t, a>::operator[](a i) {
 		assert(is_idx_valid(i));
 		return memory[i];
 	}
 
 	template <class t, class a>
-	inline const t &c_utl_memory<t, a>::operator[](a i) const {
+	inline const t &utl_memory<t, a>::operator[](a i) const {
 		assert(is_idx_valid(i));
 		return memory[i];
 	}
 
-	template <class t, class a = c_utl_memory<t>>
-	class c_utl_vector {
+	template <class t, class a = utl_memory<t>>
+	class utl_vector {
 		typedef a c_allocator;
 		typedef t *iterator;
 		typedef const t *const_iterator;
@@ -134,13 +155,13 @@ namespace sdk {
 	};
 
 	template <typename t, class a>
-	inline t &c_utl_vector<t, a>::operator[](int i) {
+	inline t &utl_vector<t, a>::operator[](int i) {
 		assert(i < size);
 		return memory[i];
 	}
 
 	template <typename t, class a>
-	inline const t &c_utl_vector<t, a>::operator[](int i) const {
+	inline const t &utl_vector<t, a>::operator[](int i) const {
 		assert(i < size);
 		return memory[i];
 	}

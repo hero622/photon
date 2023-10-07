@@ -58,8 +58,8 @@ void c_command::unregall() {
 bool c_command::hook(const char *name, sdk::fn_command_callback_t detour, sdk::fn_command_callback_t &original) {
 	c_command cc(name);
 	if (cc.ptr != nullptr) {
-		original = cc.ptr->m_fn_command_callback;
-		cc.ptr->m_fn_command_callback = detour;
+		original = cc.ptr->fn_command_callback;
+		cc.ptr->fn_command_callback = detour;
 		return true;
 	}
 	return false;
@@ -68,7 +68,7 @@ bool c_command::hook(const char *name, sdk::fn_command_callback_t detour, sdk::f
 bool c_command::unhook(const char *name, sdk::fn_command_callback_t original) {
 	c_command cc(name);
 	if (cc.ptr != nullptr && original) {
-		cc.ptr->m_fn_command_callback = original;
+		cc.ptr->fn_command_callback = original;
 		return true;
 	}
 	return false;
