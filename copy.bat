@@ -2,4 +2,4 @@ SET "binary=wormhole.dll"
 SET "src=..\bin\%binary%"
 SET "dest=D:\SteamLibrary\SteamApps\common"
 
-copy /Y "%src%" "%dest%\Portal 2\%binary%"
+REM copy /Y "%src%" "%dest%\Portal 2\%binary%"
