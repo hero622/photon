@@ -36,13 +36,7 @@
     <ClInclude Include="wormhole-sdk\interfaces\cvar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\portal2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="core\mods.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\engine_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\interfaces\engine_client.h">
@@ -90,6 +84,15 @@
     <ClInclude Include="core\plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wormhole-sdk\portal2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wormhole-sdk\utils\console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\interfaces.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\wormhole.cpp">
@@ -107,24 +110,6 @@
     <ClCompile Include="core\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\interfaces\surface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\interfaces\console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\interfaces\cvar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\interfaces\engine_api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\interfaces\engine_client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\interfaces\interfaces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="core\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,6 +117,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wormhole-sdk\utils\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\interfaces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

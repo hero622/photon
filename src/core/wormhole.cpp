@@ -1,7 +1,7 @@
 #include "wormhole.h"
 
 #include "hooks.h"
-#include "interfaces/interfaces.h"
+#include "interfaces.h"
 #include "mods.h"
 
 #include <cstring>
@@ -20,6 +20,10 @@ c_wormhole::c_wormhole() {
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
+#ifdef _DEBUG
+	utils::console::alloc();
+#endif
+
 	if (interfaces::initialize()) {
 		if (hooks::initialize()) {
 			c_command::regall();
@@ -79,6 +83,10 @@ void c_wormhole::unload() {
 	shared->portal2->console->msg("Goodbye.\n");
 
 	interfaces::uninitialize();
+
+#ifdef _DEBUG
+	utils::console::free();
+#endif
 }
 
 create_con_command(wormhole_exit, "unloads wormhole.\n") {

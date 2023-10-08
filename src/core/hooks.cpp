@@ -1,7 +1,7 @@
 #include "hooks.h"
 
 #include "mods.h"
-#include "portal2.h"
+#include "wormhole-sdk/portal2.h"
 #include "wormhole.h"
 
 bool hooks::initialize() {
@@ -52,7 +52,7 @@ hk_fn(void, hooks::set_signon_state, int state, int count, void *unk) {
 hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 	paint(thisptr, mode);
 
-	shared->portal2->surface->start_drawing(shared->portal2->surface->ptr);
+	shared->portal2->surface->start_drawing();
 
 	if (mode == sdk::paint_uipanels) {
 	}
