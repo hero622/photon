@@ -53,22 +53,6 @@ void c_wormhole_mod::unload() {
 ```cpp
 engine_client = get_interface<i_engine_client>(module("engine"), "VEngineClient015");
 ```
-### Create an instance of a class that has a pointer to the interface:
-```cpp
-class c_engine_client {
-public:
-	void *ptr;
-
-	// important: the function will always pass the pointer 
-	// of the interface as an argument to the constructor
-	c_engine_client(void *ptr) {
-		this->ptr = ptr;
-	}
-};
-c_engine_client *engine_client;
-
-engine_client = copy_interface<c_engine_client>(module("engine"), "VEngineClient015");
-```
 
 ## Calling conventions
 Windows uses `__stdcall` for global functions and `__thiscall` for member functions.
