@@ -25,28 +25,28 @@ void hooks::uninitialize() {
 }
 
 hk_fn(void, hooks::game_frame, bool simulating) {
-	wh->events->post("pre_tick");
+	wh->events->post(&wormhole, "pre_tick");
 
 	game_frame(ecx, simulating);
 
-	wh->events->post("post_tick");
+	wh->events->post(&wormhole, "post_tick");
 }
 
 hk_fn(void, hooks::frame) {
-	wh->events->post("pre_frame");
+	wh->events->post(&wormhole, "pre_frame");
 
 	frame(ecx);
 
-	wh->events->post("post_frame");
+	wh->events->post(&wormhole, "post_frame");
 }
 
 hk_fn(void, hooks::set_signon_state, int state, int count, void *unk) {
 	set_signon_state(ecx, state, count, unk);
 
 	if (state == sdk::signonstate_full)
-		wh->events->post("session_start");
+		wh->events->post(&wormhole, "session_start");
 	else
-		wh->events->post("session_end");
+		wh->events->post(&wormhole, "session_end");
 }
 
 hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
@@ -55,7 +55,7 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 	wh->portal2->surface->start_drawing();
 
 	if (mode == sdk::paint_uipanels) {
-		wh->events->post("paint");
+		wh->events->post(&wormhole, "paint");
 	}
 
 	wh->portal2->surface->finish_drawing();

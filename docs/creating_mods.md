@@ -6,28 +6,37 @@ An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
 - Download the [Wormhole SDK](https://github.com/Zyntex1/wormhole-sdk).
 - Include `wormhole.h` in your main header file.
 - Add a class that derives from `wh_api::i_wormhole_mod`.
-- Use the `expose_wormhole_mod` macro, pass your class type, not a pointer.
+- Create a global variable for your class.
+- Use the `expose_wormhole_mod` macro, pass your class type and your class global var.
+- Setup class variables like `name`.
 - Setup `load` and `unload` callbacks.
 	- A pointer to shared classes gets passed to `load`, these classes are:
     	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
     	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
 	- You should expose this pointer globally (most macros assume that it's named `wh`).
-- Example of a simple mod:
+	
+Example of a simple mod:
 ```cpp
 // mod.h
 #include <wormhole.h>
 
 class c_wormhole_mod : public wh_api::i_wormhole_mod {
 public:
+	const char *name = "example-mod";
+
 	virtual bool load(wh_api::c_shared *wh);
 	virtual void unload();
 	virtual void on_event(const char *msg);
 };
 
+extern c_wormhole_mod mod;
+
 // mod.cpp
 #include "mod.h"
 
-expose_wormhole_mod(c_wormhole_mod); 
+c_wormhole_mod mod;
+
+expose_wormhole_mod(c_wormhole_mod, mod); 
 
 wh_api::c_shared *wh;
 
@@ -42,7 +51,45 @@ bool c_wormhole_mod::load(wh_api::c_shared *wh) {
 void c_wormhole_mod::unload() {
 	wh->portal2->console->msg("example mod unloaded.\n");
 }
+
+void c_wormhole_mod::on_event(const char *msg) {
+	// draws a white square in the top left corner
+	if (!strcmp(msg, "paint")) {
+		wh->portal2->surface->draw_set_color(255, 255, 255, 255);
+		wh->portal2->surface->draw_filled_rect(0, 0, 100, 100);
+	}
+}
 ```
+## Events
+Wormhole posts events to all mods by default:
+- `pre_tick`: called before `CServerGameDLL::GameFrame`
+- `post_tick`: called after `CServerGameDLL::GameFrame`
+- `pre_frame`: called before `CEngine::Frame`
+- `post_frame`: called after `CEngine::Frame`
+- `session_start`: called on `SIGNONSTATE_FULL`
+- `session_end`: called on `!SIGNONSTATE_FULL`
+- `paint`: called in `ISurface::PaintTraverse` in between `ISurface::StartDrawing` and `ISurface::FinishDrawing`
+
+Mods can also post their on events to all other mods, these are syntaxed as `modname:eventname`.
+Mods receive their events in the `on_event` function, with the message being the only argument.
+
+### Receiving events
+```cpp
+// draws a white square in the top left corner
+void c_wormhole_mod::on_event(const char *msg) {
+	if (!strcmp(msg, "paint")) {
+		wh->portal2->surface->draw_set_color(255, 255, 255, 255);
+		wh->portal2->surface->draw_filled_rect(0, 0, 100, 100);
+	}
+}
+```
+
+### Posting events
+```cpp
+// other mods will receive this as `example-mod:example-event`
+wh->events->post("example-event");
+```
+
 ## Interfaces
 ### Getting a direct pointer to the interface:
 ```cpp
@@ -51,9 +98,10 @@ engine_client = get_interface<i_engine_client>(module("engine"), "VEngineClient0
 
 ## Calling conventions
 Windows uses `__stdcall` for global functions and `__thiscall` for member functions.
+For hooks on Windows we use `__fastcall`, with the `ecx` register being the pointer to the class object and `edx` just being unused.
 Linux uses `__cdecl` all the time.
-Use the `__rescall` macro to automatically resolve the calling convention for both platforms.
-**Note**: functions with **varargs** should always use `__cdecl`. 
+Use the `__rescall` macro to automatically resolve `__thiscall` or `__cdecl` for the two platforms.
+**Note**: functions with **varargs** should always use `__cdecl`.
 
 ## Memory
 ### Calling virtual functions
@@ -107,9 +155,9 @@ decl_hk(void, game_frame, bool simulating);
 ```cpp
 // hooks.cpp
 
-// expands to void __thiscall game_frame(void *thisptr, int edx, bool simulating)
+// expands to void __fastcall game_frame(void *ecx, int edx, bool simulating)
 // on Windows, edx register is unused
-// expands to void __cdecl game_frame(void *thisptr, bool simulating) on Linux
+// expands to void __cdecl game_frame(void *ecx, bool simulating) on Linux
 hk_fn(void, game_frame, bool simulating);
 ```
 

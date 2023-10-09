@@ -1,5 +1,7 @@
 #include "mods.h"
 
+#include "wormhole.h"
+
 #ifdef _WIN32
 #	include <windows.h>
 #	include <memoryapi.h>
@@ -71,8 +73,14 @@ void mods::print() {
 	}
 }
 
-void mods::post_event(const char *msg) {
+void mods::post_event(void *sender, const char *msg) {
 	for (const auto &mod : mod_list) {
+		auto msg_s = std::string(msg);
+
+		if (sender != &wormhole) {
+			msg_s = std::string(mod.second.ptr->name) + std::string(":") + msg_s;
+		}
+
 		mod.second.ptr->on_event(msg);
 	}
 }

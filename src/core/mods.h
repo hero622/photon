@@ -18,5 +18,5 @@ namespace mods {
 
 	void print();
 
-	void post_event(const char *msg);
+	void post_event(void *sender, const char *msg);
 }  // namespace mods
