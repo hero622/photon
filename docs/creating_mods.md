@@ -5,28 +5,23 @@ An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
 ## Setup
 - Download the [Wormhole SDK](https://github.com/Zyntex1/wormhole-sdk).
 - Include `wormhole.h` in your main header file.
-- Add a class that derives from `wh::i_wormhole_mod`.
+- Add a class that derives from `wh_api::i_wormhole_mod`.
 - Use the `expose_wormhole_mod` macro, pass your class type, not a pointer.
 - Setup `load` and `unload` callbacks.
 	- A pointer to shared classes gets passed to `load`, these classes are:
     	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
     	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
-	- You should expose this pointer globally (most macros assume that it's named `shared`).
+	- You should expose this pointer globally (most macros assume that it's named `wh`).
 - Example of a simple mod:
 ```cpp
 // mod.h
 #include <wormhole.h>
 
-class c_wormhole_mod : public wh::i_wormhole_mod {
+class c_wormhole_mod : public wh_api::i_wormhole_mod {
 public:
-	virtual bool load(wh::c_shared *shared);  // called on plugin load
-	virtual void unload();                    // called on plugin unload
-	virtual void on_pre_tick();               // called before CServerGameDLL::GameFrame
-	virtual void on_post_tick();              // called after CServerGameDll::GameFrame
-	virtual void on_pre_frame();              // called before CEngine::Frame
-	virtual void on_post_frame();             // called after CEngine::Frame
-	virtual void on_session_start();          // called on SIGNONSTATE_FULL
-	virtual void on_session_end();            // called on !SIGNONSTATE_FULL
+	virtual bool load(wh_api::c_shared *wh);
+	virtual void unload();
+	virtual void on_event(const char *msg);
 };
 
 // mod.cpp
@@ -34,18 +29,18 @@ public:
 
 expose_wormhole_mod(c_wormhole_mod); 
 
-wh::c_shared *shared;
+wh_api::c_shared *wh;
 
-bool c_wormhole_mod::load(wh::c_shared *shared) {
-	::shared = shared;
+bool c_wormhole_mod::load(wh_api::c_shared *wh) {
+	::wh = wh;
 
-	shared->portal2->console->msg("example mod loaded.\n");
+	wh->portal2->console->msg("example mod loaded.\n");
 
 	return true;
 }
 
 void c_wormhole_mod::unload() {
-	shared->portal2->console->msg("example mod unloaded.\n");
+	wh->portal2->console->msg("example mod unloaded.\n");
 }
 ```
 ## Interfaces
@@ -121,7 +116,7 @@ hk_fn(void, game_frame, bool simulating);
 ### Hooking virtual functions
 ```cpp
 // hk_virtual(ptr_to_object, hook function, offset)
-hk_virtual(shared->portal2->server_game_dll, game_frame, offsets::game_frame);
+hk_virtual(wh->portal2->server_game_dll, game_frame, offsets::game_frame);
 ```
 
 ### Hooking functions by address
@@ -133,7 +128,7 @@ hk_addr(game_frame, 0xdeadbeef);
 ### Creating commands
 ```cpp
 create_con_command(example_command, "prints hello to the console.\n") {
-    shared->portal2->console->msg("hello.");
+    wh->portal2->console->msg("hello.");
 }
 ```
 

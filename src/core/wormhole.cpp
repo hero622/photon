@@ -10,13 +10,14 @@ c_wormhole wormhole;
 
 expose_single_interface_globalvar(c_wormhole, i_server_plugin_callbacks, interfaceversion_iserverplugincallbacks, wormhole);
 
-wh::c_shared *shared;
+wh_api::c_shared *wh;
 
 c_wormhole::c_wormhole() {
 	this->plugin = new c_plugin();
-	shared = new wh::c_shared();
-	shared->portal2 = new c_portal2();
-	shared->hook = new c_hook();
+	wh = new wh_api::c_shared();
+	wh->portal2 = new c_portal2();
+	wh->hook = new c_hook();
+	wh->events = new c_events();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
@@ -30,7 +31,7 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 
 			this->search_plugin();
 
-			shared->portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
+			wh->portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
 
 			return true;
 		}
@@ -40,7 +41,7 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 }
 
 bool c_wormhole::get_plugin() {
-	auto server_plugin_helpers = reinterpret_cast<uintptr_t>(shared->portal2->server_plugin_helpers);
+	auto server_plugin_helpers = reinterpret_cast<uintptr_t>(wh->portal2->server_plugin_helpers);
 	auto size = *reinterpret_cast<int *>(server_plugin_helpers + c_server_plugin_size);
 	if (size > 0) {
 		auto plugins = *reinterpret_cast<uintptr_t *>(server_plugin_helpers + c_server_plugin_plugins);
@@ -77,10 +78,10 @@ void c_wormhole::unload() {
 
 	if (wormhole.get_plugin()) {
 		auto unload_cmd = std::string("plugin_unload ") + std::to_string(wormhole.plugin->index);
-		shared->portal2->engine_client->cbuf_add(unload_cmd.c_str(), safe_unload_delay);
+		wh->portal2->engine_client->cbuf_add(unload_cmd.c_str(), safe_unload_delay);
 	}
 
-	shared->portal2->console->msg("Goodbye.\n");
+	wh->portal2->console->msg("Goodbye.\n");
 
 	interfaces::uninitialize();
 

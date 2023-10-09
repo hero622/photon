@@ -9,7 +9,7 @@
 - Configure paths in `copy.bat`
 
 ### Linux
-- g++ 8.3.0
+- g++ 10
 - g++-8-multilib
 - Make 4.1
 - Configure paths in `config.mk`

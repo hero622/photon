@@ -104,6 +104,7 @@
     <ClInclude Include="core\interfaces\interfaces.h" />
     <ClInclude Include="core\plugin.h" />
     <ClInclude Include="wormhole-sdk\convar.h" />
+    <ClInclude Include="wormhole-sdk\events.h" />
     <ClInclude Include="wormhole-sdk\hook.h" />
     <ClInclude Include="wormhole-sdk\interfaces.h" />
     <ClInclude Include="wormhole-sdk\interfaces\console.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="wormhole-sdk\wormhole.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\events.cpp" />
     <ClCompile Include="core\hook.cpp" />
     <ClCompile Include="core\hooks.cpp" />
     <ClCompile Include="core\interfaces.cpp" />

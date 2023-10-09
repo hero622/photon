@@ -16,7 +16,7 @@ bool mods::load(const char *name) {
 #endif
 
 	if (lib) {
-		using create_mod_fn = wh::i_wormhole_mod *(*)();
+		using create_mod_fn = wh_api::i_wormhole_mod *(*)();
 		const auto fn = utils::memory::get_sym_addr<create_mod_fn>(lib, "create_mod");
 
 		if (fn) {
@@ -24,7 +24,7 @@ bool mods::load(const char *name) {
 
 			if (!mod) return false;
 
-			auto result = mod->load(shared);
+			auto result = mod->load(wh);
 
 			if (!result)
 				return false;
@@ -65,18 +65,17 @@ void mods::unloadall() {
 }
 
 void mods::print() {
-	shared->portal2->console->msg("Loaded wormhole mods (%d):\n", mod_list.size());
+	wh->portal2->console->msg("Loaded wormhole mods (%d):\n", mod_list.size());
 	for (const auto &mod : mod_list) {
-		shared->portal2->console->msg("%s\n", mod.first.c_str());
+		wh->portal2->console->msg("%s\n", mod.first.c_str());
 	}
 }
 
-event_handler(on_pre_tick);
-event_handler(on_post_tick);
-event_handler(on_pre_frame);
-event_handler(on_post_frame);
-event_handler(on_session_start);
-event_handler(on_session_end);
+void mods::post_event(const char *msg) {
+	for (const auto &mod : mod_list) {
+		mod.second.ptr->on_event(msg);
+	}
+}
 
 create_con_command(wormhole_load, "wormhole_load <mod name> - load a wormhole mod.\n") {
 	if (args.arg_c() >= 2) {
