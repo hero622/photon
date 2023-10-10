@@ -2,7 +2,7 @@
 
 #include "wormhole-sdk/wormhole.h"
 
-#include <map>
+#include <unordered_map>
 
 namespace mods {
 	struct mod_info_t {
@@ -10,7 +10,7 @@ namespace mods {
 		wh_api::i_wormhole_mod *ptr;
 	};
 
-	inline std::map<std::string, mod_info_t> mod_list;
+	inline std::unordered_map<std::string, mod_info_t> mod_list;
 
 	bool load(const char *name);
 	void unload(const char *name);

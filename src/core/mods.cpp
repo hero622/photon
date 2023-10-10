@@ -11,6 +11,8 @@
 #endif
 
 bool mods::load(const char *name) {
+	if (mod_list.count(name)) return false;
+
 #ifdef _WIN32
 	void *lib = LoadLibraryA(utils::string::ssprintf("wormhole/%s.dll", name).c_str());
 #else
@@ -45,11 +47,11 @@ bool mods::load(const char *name) {
 }
 
 void mods::unload(const char *name) {
+	if (!mod_list.count(name)) return;
+
 	auto mod = mod_list[name];
 
 	mod.ptr->unload();
-
-	delete_ptr(mod.ptr);
 
 #ifdef _WIN32
 	FreeLibrary((HMODULE)mod.handle);
