@@ -91,7 +91,7 @@ wh->events->post("example-event");
 ```
 
 ## Interfaces
-### Getting a direct pointer to the interface:
+### Getting a direct pointer to the interface
 ```cpp
 engine_client = get_interface<i_engine_client>(module("engine"), "VEngineClient015");
 ```
@@ -125,7 +125,7 @@ this->client_state = get_client_state();
 ```
 
 ### Getting module handles
-Use `module` macro to automatically resolve module name for Windows and Linux.
+Use `module` macro to automatically resolve module extension for Windows and Linux.
 ```cpp
 void *module_handle = utils::memory::get_module_handle(module("client"));
 ```

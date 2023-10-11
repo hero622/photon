@@ -96,6 +96,9 @@
     <ClInclude Include="wormhole-sdk\events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wormhole-sdk\interfaces\mem_alloc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\wormhole.cpp">

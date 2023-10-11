@@ -29,6 +29,8 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 		if (hooks::initialize()) {
 			c_command::regall();
 
+			c_variable::regall();
+
 			this->search_plugin();
 
 			wh->portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
@@ -71,6 +73,8 @@ void c_wormhole::unload() {
 	unloading = true;
 
 	mods::unloadall();
+
+	c_variable::unregall();
 
 	c_command::unregall();
 

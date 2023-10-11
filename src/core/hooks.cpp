@@ -8,7 +8,7 @@ bool hooks::initialize() {
 	hk_virtual(wh->portal2->server_game_dll, game_frame, offsets::game_frame);
 	hk_virtual(wh->portal2->engine, frame, offsets::frame);
 	hk_virtual(wh->portal2->client_state, set_signon_state, offsets::set_signon_state);
-	hk_virtual(wh->portal2->i_engine_vgui_internal, paint, offsets::paint);
+	hk_virtual(wh->portal2->engine_vgui_internal, paint, offsets::paint);
 
 	hk_cmd(plugin_unload);
 

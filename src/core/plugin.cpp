@@ -7,20 +7,20 @@
 
 sdk::interface_reg_t *sdk::interface_reg_t::interface_regs = nullptr;
 
-dll_export void *CreateInterface(const char *p_name, int *p_return_code) {
-	sdk::interface_reg_t *p_cur;
+dll_export void *CreateInterface(const char *name, int *return_code) {
+	sdk::interface_reg_t *cur;
 
-	for (p_cur = sdk::interface_reg_t::interface_regs; p_cur; p_cur = p_cur->next) {
-		if (!std::strcmp(p_cur->name, p_name)) {
-			if (p_return_code) {
-				*p_return_code = 0;
+	for (cur = sdk::interface_reg_t::interface_regs; cur; cur = cur->next) {
+		if (!std::strcmp(cur->name, name)) {
+			if (return_code) {
+				*return_code = 0;
 			}
-			return p_cur->create_fn();
+			return cur->create_fn();
 		}
 	}
 
-	if (p_return_code) {
-		*p_return_code = 1;
+	if (return_code) {
+		*return_code = 1;
 	}
 	return nullptr;
 }
