@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\wormhole.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="wormhole-sdk\utils\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -34,9 +31,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\interfaces\cvar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\mods.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\interfaces\engine_client.h">
@@ -75,22 +69,13 @@
     <ClInclude Include="wormhole-sdk\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\hooks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="core\interfaces\interfaces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\portal2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\utils\console.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\events.h">
@@ -102,54 +87,66 @@
     <ClInclude Include="wormhole-sdk\hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\huds.h">
+    <ClInclude Include="wormhole-sdk\utils\render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\utils\render.h">
+    <ClInclude Include="core\hooks\hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\huds\huds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\mods\mods.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\source-sdk\plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\wormhole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\wormhole.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wormhole-sdk\utils\memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\mods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wormhole-sdk\utils\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\hooks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\plugin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wormhole-sdk\convar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wormhole-sdk\utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\interfaces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\events.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\hud.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\huds.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wormhole-sdk\utils\render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\hooks\hooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\huds\huds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\interfaces\interfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\mods\mods.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\shared\events.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\shared\hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\shared\hud.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\source-sdk\plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\wormhole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

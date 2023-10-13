@@ -8,6 +8,12 @@ ODIR=obj
 SRCS=$(wildcard $(SDIR)/wormhole-sdk/*.cpp)
 SRCS+=$(wildcard $(SDIR)/wormhole-sdk/utils/*.cpp)
 SRCS+=$(wildcard $(SDIR)/core/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/hooks/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/huds/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/interfaces/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/mods/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/shared/*.cpp)
+SRCS+=$(wildcard $(SDIR)/core/source-sdk/*.cpp)
 
 OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 

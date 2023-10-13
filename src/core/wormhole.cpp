@@ -1,8 +1,8 @@
 #include "wormhole.h"
 
-#include "hooks.h"
-#include "interfaces.h"
-#include "mods.h"
+#include "core/hooks/hooks.h"
+#include "core/interfaces/interfaces.h"
+#include "core/mods/mods.h"
 
 #include <cstring>
 
@@ -94,7 +94,7 @@ void c_wormhole::unload() {
 #endif
 }
 
-create_con_command(wormhole_exit, "unloads wormhole.\n") {
+create_con_command(wh_exit, "unloads wormhole.\n") {
 	wormhole.unload();
 }
 

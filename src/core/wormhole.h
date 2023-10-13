@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugin.h"
+#include "core/source-sdk/plugin.h"
 #include "wormhole-sdk/wormhole.h"
 
 #include <thread>

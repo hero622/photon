@@ -1,8 +1,8 @@
 #include "hooks.h"
 
-#include "mods.h"
+#include "core/mods/mods.h"
+#include "core/wormhole.h"
 #include "wormhole-sdk/portal2.h"
-#include "wormhole.h"
 
 bool hooks::initialize() {
 	hk_virtual(wh->portal2->server_game_dll, game_frame, offsets::game_frame);
@@ -65,7 +65,7 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 
 hk_cmd_fn(hooks::plugin_unload) {
 	if (args.arg_c() >= 2 && wormhole.get_plugin() && (!strcmp(args[1], "wormhole") || std::atoi(args[1]) == wormhole.plugin->index))
-		wh->portal2->engine_client->client_cmd("wormhole_exit");
+		wh->portal2->engine_client->client_cmd("wh_exit");
 	else
 		plugin_unload(args);
 }

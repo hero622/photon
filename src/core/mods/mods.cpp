@@ -1,6 +1,6 @@
 #include "mods.h"
 
-#include "wormhole.h"
+#include "core/wormhole.h"
 
 #ifdef _WIN32
 #	include <windows.h>
@@ -87,18 +87,22 @@ void mods::post_event(void *sender, const char *msg) {
 	}
 }
 
-create_con_command(wormhole_load, "wormhole_load <mod name> - load a wormhole mod.\n") {
+create_con_command(wh_load, "wh_load <mod name> - load a wormhole mod.\n") {
 	if (args.arg_c() >= 2) {
 		mods::load(args[1]);
+	} else {
+		wh->portal2->console->msg(wh_load_cmd.ptr->help_string);
 	}
 }
 
-create_con_command(wormhole_unload, "wormhole_unload <mod name> - unload a wormhole mod.\n") {
+create_con_command(wh_unload, "wh_unload <mod name> - unload a wormhole mod.\n") {
 	if (args.arg_c() >= 2) {
 		mods::unload(args[1]);
+	} else {
+		wh->portal2->console->msg(wh_unload_cmd.ptr->help_string);
 	}
 }
 
-create_con_command(wormhole_print, "prints a list of all loaded wormhole mods.\n") {
+create_con_command(wh_print, "prints a list of all loaded wormhole mods.\n") {
 	mods::print();
 }

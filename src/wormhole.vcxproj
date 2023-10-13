@@ -99,11 +99,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="core\hooks.h" />
-    <ClInclude Include="core\huds.h" />
-    <ClInclude Include="core\interfaces.h" />
+    <ClInclude Include="core\hooks\hooks.h" />
+    <ClInclude Include="core\huds\huds.h" />
     <ClInclude Include="core\interfaces\interfaces.h" />
-    <ClInclude Include="core\plugin.h" />
+    <ClInclude Include="core\mods\mods.h" />
+    <ClInclude Include="core\source-sdk\plugin.h" />
+    <ClInclude Include="core\wormhole.h" />
     <ClInclude Include="wormhole-sdk\convar.h" />
     <ClInclude Include="wormhole-sdk\events.h" />
     <ClInclude Include="wormhole-sdk\hook.h" />
@@ -114,7 +115,6 @@
     <ClInclude Include="wormhole-sdk\interfaces\engine_client.h" />
     <ClInclude Include="wormhole-sdk\interfaces\mem_alloc.h" />
     <ClInclude Include="wormhole-sdk\interfaces\surface.h" />
-    <ClInclude Include="core\mods.h" />
     <ClInclude Include="wormhole-sdk\portal2.h" />
     <ClInclude Include="wormhole-sdk\source-sdk\color.h" />
     <ClInclude Include="wormhole-sdk\source-sdk\convar.h" />
@@ -128,24 +128,23 @@
     <ClInclude Include="wormhole-sdk\utils\platform.h" />
     <ClInclude Include="wormhole-sdk\utils\render.h" />
     <ClInclude Include="wormhole-sdk\utils\string.h" />
-    <ClInclude Include="core\wormhole.h" />
     <ClInclude Include="wormhole-sdk\wormhole.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\events.cpp" />
-    <ClCompile Include="core\hook.cpp" />
-    <ClCompile Include="core\hooks.cpp" />
-    <ClCompile Include="core\hud.cpp" />
-    <ClCompile Include="core\huds.cpp" />
-    <ClCompile Include="core\interfaces.cpp" />
-    <ClCompile Include="core\mods.cpp" />
-    <ClCompile Include="core\plugin.cpp" />
+    <ClCompile Include="core\hooks\hooks.cpp" />
+    <ClCompile Include="core\huds\huds.cpp" />
+    <ClCompile Include="core\interfaces\interfaces.cpp" />
+    <ClCompile Include="core\mods\mods.cpp" />
+    <ClCompile Include="core\shared\events.cpp" />
+    <ClCompile Include="core\shared\hook.cpp" />
+    <ClCompile Include="core\shared\hud.cpp" />
+    <ClCompile Include="core\source-sdk\plugin.cpp" />
+    <ClCompile Include="core\wormhole.cpp" />
     <ClCompile Include="wormhole-sdk\convar.cpp" />
     <ClCompile Include="wormhole-sdk\utils\console.cpp" />
     <ClCompile Include="wormhole-sdk\utils\memory.cpp" />
     <ClCompile Include="wormhole-sdk\utils\render.cpp" />
     <ClCompile Include="wormhole-sdk\utils\string.cpp" />
-    <ClCompile Include="core\wormhole.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
