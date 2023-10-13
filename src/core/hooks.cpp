@@ -55,6 +55,8 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 	wh->portal2->surface->start_drawing();
 
 	if (mode == sdk::paint_uipanels) {
+		wh->huds->paint_all();
+
 		wh->events->post(&wormhole, "paint");
 	}
 
@@ -62,7 +64,7 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 }
 
 hk_cmd_fn(hooks::plugin_unload) {
-	if (args.arg_c() >= 2 && wormhole.get_plugin() && std::atoi(args[1]) == wormhole.plugin->index)
+	if (args.arg_c() >= 2 && wormhole.get_plugin() && (!strcmp(args[1], "wormhole") || std::atoi(args[1]) == wormhole.plugin->index))
 		wh->portal2->engine_client->client_cmd("wormhole_exit");
 	else
 		plugin_unload(args);

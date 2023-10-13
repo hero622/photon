@@ -100,12 +100,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="core\hooks.h" />
+    <ClInclude Include="core\huds.h" />
     <ClInclude Include="core\interfaces.h" />
     <ClInclude Include="core\interfaces\interfaces.h" />
     <ClInclude Include="core\plugin.h" />
     <ClInclude Include="wormhole-sdk\convar.h" />
     <ClInclude Include="wormhole-sdk\events.h" />
     <ClInclude Include="wormhole-sdk\hook.h" />
+    <ClInclude Include="wormhole-sdk\hud.h" />
     <ClInclude Include="wormhole-sdk\interfaces.h" />
     <ClInclude Include="wormhole-sdk\interfaces\console.h" />
     <ClInclude Include="wormhole-sdk\interfaces\cvar.h" />
@@ -124,6 +126,7 @@
     <ClInclude Include="wormhole-sdk\utils\console.h" />
     <ClInclude Include="wormhole-sdk\utils\memory.h" />
     <ClInclude Include="wormhole-sdk\utils\platform.h" />
+    <ClInclude Include="wormhole-sdk\utils\render.h" />
     <ClInclude Include="wormhole-sdk\utils\string.h" />
     <ClInclude Include="core\wormhole.h" />
     <ClInclude Include="wormhole-sdk\wormhole.h" />
@@ -132,12 +135,15 @@
     <ClCompile Include="core\events.cpp" />
     <ClCompile Include="core\hook.cpp" />
     <ClCompile Include="core\hooks.cpp" />
+    <ClCompile Include="core\hud.cpp" />
+    <ClCompile Include="core\huds.cpp" />
     <ClCompile Include="core\interfaces.cpp" />
     <ClCompile Include="core\mods.cpp" />
     <ClCompile Include="core\plugin.cpp" />
     <ClCompile Include="wormhole-sdk\convar.cpp" />
     <ClCompile Include="wormhole-sdk\utils\console.cpp" />
     <ClCompile Include="wormhole-sdk\utils\memory.cpp" />
+    <ClCompile Include="wormhole-sdk\utils\render.cpp" />
     <ClCompile Include="wormhole-sdk\utils\string.cpp" />
     <ClCompile Include="core\wormhole.cpp" />
   </ItemGroup>
