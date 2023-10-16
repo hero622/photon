@@ -1,5 +1,6 @@
 #include "hooks.h"
 
+#include "core/menu/menu.h"
 #include "core/mods/mods.h"
 #include "core/wormhole.h"
 #include "wormhole-sdk/portal2.h"
@@ -55,9 +56,13 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 	wh->portal2->surface->start_drawing();
 
 	if (mode == sdk::paint_uipanels) {
-		wh->huds->paint_all();
+		wh->input->poll_input();  // not sure if this is the best place to call this
+
+		wh->huds->paint();
 
 		wh->events->post(&wormhole, "paint");
+
+		menu::paint();
 	}
 
 	wh->portal2->surface->finish_drawing();

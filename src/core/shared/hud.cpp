@@ -1,22 +1,44 @@
-#include "wormhole-sdk/hud.h"
+#include "wormhole-sdk/wormhole.h"
 
-std::vector<wh_api::c_hud *> &c_huds::get_list() {
-	static std::vector<wh_api::c_hud *> list;
+#include <unordered_map>
+
+std::unordered_map<wh_api::i_hud *, hud_instance_t> &c_huds::get_huds() {
+	static std::unordered_map<wh_api::i_hud *, hud_instance_t> list;
 	return list;
 }
 
-void c_huds::reg(wh_api::c_hud *hud) {
-	c_huds::get_list().push_back(hud);
+std::unordered_map<wh_api::i_thud *, thud_instance_t> &c_huds::get_thuds() {
+	static std::unordered_map<wh_api::i_thud *, thud_instance_t> list;
+	return list;
 }
 
-void c_huds::unreg(wh_api::c_hud *hud) {
-	std::vector<wh_api::c_hud *>::iterator it = std::find(c_huds::get_list().begin(), c_huds::get_list().end(), hud);
-	if (it != c_huds::get_list().end())
-		c_huds::get_list().erase(it);
+void c_huds::reg(wh_api::i_hud *hud) {
+	auto instance = hud_instance_t();
+	get_huds()[hud] = instance;
 }
 
-void c_huds::paint_all() {
-	for (const auto &hud : c_huds::get_list()) {
-		hud->paint();
+void c_huds::reg(wh_api::i_thud *hud) {
+	auto instance = thud_instance_t();
+	get_thuds()[hud] = instance;
+}
+
+void c_huds::unreg(wh_api::i_hud *hud) {
+	get_huds().erase(hud);
+}
+
+void c_huds::unreg(wh_api::i_thud *hud) {
+	get_thuds().erase(hud);
+}
+
+void c_huds::paint() {
+	for (const auto &hud : get_huds()) {
+		hud.first->paint();
+	}
+
+	for (const auto &thud : get_thuds()) {
+		// resolve hud position based on alignment later
+		// have some formatting system
+		// read font in later
+		wh->render->text(thud.second.pos.x, thud.second.pos.y, 5, {255, 255, 255, 255}, false, utils::string::ssprintf("%s:%s", thud.first->get_name(), thud.first->get_text()));
 	}
 }

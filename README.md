@@ -8,7 +8,7 @@
 
 ## Mods
 - Install mods by putting them in the `wormhole` folder inside the Portal 2 directory.
-- Load mods by typing `wormhole_load <mod name>` in the console.
+- Load mods by typing `wh_load <mod name>` in the console.
 
 ## For developers
 - [SDK](https://github.com/Zyntex1/wormhole-sdk)

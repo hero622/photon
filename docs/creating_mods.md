@@ -8,11 +8,14 @@ An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
 - Add a class that derives from `wh_api::i_wormhole_mod`.
 - Create a global variable for your class.
 - Use the `expose_wormhole_mod` macro, pass your class type and your class global var.
-- Setup class variables like `name`.
-- Setup `load` and `unload` callbacks.
+- Setup callbacks.
 	- A pointer to shared classes gets passed to `load`, these classes are:
     	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
     	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
+    	- `events`: You can post events to other mods through this.
+			- `huds`: Register your custom huds through this.
+			- `render`: Render wrapper around Portal 2's renderer.
+			- `input`: Input wrapper around Portal 2's input system.
 	- You should expose this pointer globally (most macros assume that it's named `wh`).
 	
 Example of a simple mod:
@@ -22,11 +25,10 @@ Example of a simple mod:
 
 class c_wormhole_mod : public wh_api::i_wormhole_mod {
 public:
-	const char *name = "example-mod";
-
 	virtual bool load(wh_api::c_shared *wh);
 	virtual void unload();
 	virtual void on_event(const char *msg);
+	virtual const char *get_name();
 };
 
 extern c_wormhole_mod mod;
@@ -58,6 +60,10 @@ void c_wormhole_mod::on_event(const char *msg) {
 		wh->portal2->surface->draw_set_color(255, 255, 255, 255);
 		wh->portal2->surface->draw_filled_rect(0, 0, 100, 100);
 	}
+}
+
+const char *c_wormhole_mod::get_name() {
+	return "example-mod";
 }
 ```
 ## Events
@@ -98,16 +104,19 @@ engine_client = get_interface<i_engine_client>(module("engine"), "VEngineClient0
 
 ## Calling conventions
 Windows uses `__stdcall` for global functions and `__thiscall` for member functions.
+Functions with **varargs** should always use `__cdecl`.
 For hooks on Windows we use `__fastcall`, with the `ecx` register being the pointer to the class object and `edx` just being unused.
-Linux uses `__cdecl` all the time.
+
+Linux uses `__cdecl` everywhere.
+For hooks the `ecx` register still gets passed in, but not the `edx` register (since that only comes from `__fastcall`).
+
 Use the `__rescall` macro to automatically resolve `__thiscall` or `__cdecl` for the two platforms.
-**Note**: functions with **varargs** should always use `__cdecl`.
 
 ## Memory
 ### Calling virtual functions
 ```cpp
 // utils::memory::call_virtual<return_type>(offset, ptr_to_object, args...);
-utils::memory::call_virtual<void>(offsets::client_cmd, ptr, sz_cmd_string);
+utils::memory::call_virtual<void>(offsets::client_cmd, ptr, cmd_string);
 ```
 
 ### Reading addresses of virtual functions
@@ -158,7 +167,10 @@ decl_hk(void, game_frame, bool simulating);
 // expands to void __fastcall game_frame(void *ecx, int edx, bool simulating)
 // on Windows, edx register is unused
 // expands to void __cdecl game_frame(void *ecx, bool simulating) on Linux
-hk_fn(void, game_frame, bool simulating);
+hk_fn(void, game_frame, bool simulating) {
+	// calling original function, pass in ecx and all the other variables
+	game_frame(ecx, simulating);
+}
 ```
 
 ### Hooking virtual functions
@@ -176,8 +188,20 @@ hk_addr(game_frame, 0xdeadbeef);
 ### Creating commands
 ```cpp
 create_con_command(example_command, "prints hello to the console.\n") {
-    wh->portal2->console->msg("hello.");
+	wh->portal2->console->msg("hello.");
 }
+
+// in your mod load function
+c_command::regall();
+```
+
+### Creating convars
+```cpp
+// c_variable(convar_name, default_value_as_string, min_value, max_value, help_string)
+c_variable example_convar("example_convar", "0", 0, 1, "this is an example convar.\n");
+
+// in your mod load function
+c_variable::regall();
 ```
 
 ## TBD

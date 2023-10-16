@@ -80,7 +80,7 @@ void mods::post_event(void *sender, const char *msg) {
 		auto msg_s = std::string(msg);
 
 		if (sender != &wormhole) {
-			msg_s = std::string(mod.second.ptr->name) + std::string(":") + msg_s;
+			msg_s = std::string(mod.second.ptr->get_name()) + std::string(":") + msg_s;
 		}
 
 		mod.second.ptr->on_event(msg);

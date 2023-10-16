@@ -18,6 +18,9 @@ c_wormhole::c_wormhole() {
 	wh->portal2 = new c_portal2();
 	wh->hook = new c_hook();
 	wh->events = new c_events();
+	wh->huds = new c_huds();
+	wh->render = new c_render();
+	wh->input = new c_input();
 }
 
 bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory) {
