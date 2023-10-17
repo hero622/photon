@@ -2,6 +2,8 @@
 
 #include "core/huds/huds.h"
 
+#include <iterator>
+
 void c_huds::reg(wh_api::i_hud *hud) {
 	huds::huds.push_back(hud);
 }
