@@ -83,7 +83,7 @@ void mods::post_event(void *sender, const char *msg) {
 			msg_s = std::string(mod.second.ptr->get_name()) + std::string(":") + msg_s;
 		}
 
-		mod.second.ptr->on_event(msg);
+		mod.second.ptr->on_event(msg_s.c_str());
 	}
 }
 

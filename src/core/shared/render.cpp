@@ -1,5 +1,9 @@
 #include "wormhole-sdk/wormhole.h"
 
+sdk::vec2_t screen_pos(float x, float y) {
+	return {0, 0};
+}
+
 void c_render::draw_filled_rect(int x, int y, int w, int h, sdk::color_t color) {
 	wh->portal2->surface->draw_set_color(color.r, color.g, color.b, color.a);
 	wh->portal2->surface->draw_filled_rect(x, y, x + w, y + h);
@@ -20,7 +24,7 @@ bool c_render::create_font(sdk::h_font &font, const char *font_name, int size, b
 	return wh->portal2->surface->set_font_glyph_set(font, font_name, size, bold ? 800 : 0, 0, 0, flags);
 }
 
-void c_render::text(int x, int y, sdk::h_font font, sdk::color_t color, bool center, std::string text) {
+void c_render::draw_text(int x, int y, sdk::h_font font, sdk::color_t color, bool center, std::string text) {
 	int text_x = x;
 	int text_y = y;
 	int text_width, text_height;

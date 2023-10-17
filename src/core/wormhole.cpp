@@ -34,8 +34,6 @@ bool c_wormhole::load(sdk::create_interface_fn interface_factory, sdk::create_in
 
 			c_variable::regall();
 
-			this->search_plugin();
-
 			wh->portal2->console->color_msg({0, 255, 0, 255}, "Wormhole loaded.\n");
 
 			return true;
@@ -60,15 +58,6 @@ bool c_wormhole::get_plugin() {
 		}
 	}
 	return false;
-}
-void c_wormhole::search_plugin() {
-	this->find_plugin_thread = std::thread([this]() {
-		sleep(1000);
-		if (this->get_plugin()) {
-			this->plugin->ptr->disable = true;
-		}
-	});
-	this->find_plugin_thread.detach();
 }
 
 void c_wormhole::unload() {

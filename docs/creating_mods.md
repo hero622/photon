@@ -12,10 +12,10 @@ An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
 	- A pointer to shared classes gets passed to `load`, these classes are:
     	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
     	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
-    	- `events`: You can post events to other mods through this.
-			- `huds`: Register your custom huds through this.
-			- `render`: Render wrapper around Portal 2's renderer.
-			- `input`: Input wrapper around Portal 2's input system.
+      - `events`: You can post events to other mods through this.
+      - `huds`: Register your custom huds through this.
+      - `render`: Render wrapper around Portal 2's renderer.
+      - `input`: Input wrapper around Portal 2's input system.
 	- You should expose this pointer globally (most macros assume that it's named `wh`).
 	
 Example of a simple mod:

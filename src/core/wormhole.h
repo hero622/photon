@@ -23,7 +23,6 @@ public:
 	c_plugin *plugin;
 
 private:
-	std::thread find_plugin_thread;
 	bool unloading;
 
 public:
@@ -52,7 +51,6 @@ public:
 	virtual void on_edict_freed(const void *edict);
 
 	bool get_plugin();
-	void search_plugin();
 };
 
 extern c_wormhole wormhole;
