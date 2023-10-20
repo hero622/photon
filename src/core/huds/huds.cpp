@@ -30,7 +30,7 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 			if (i % 2 != j % 2)
 				continue;
 
-			if (abs(hud_rect[i] - other_hud_rect[j]) < 16) {
+			if (abs(hud_rect[i] - other_hud_rect[j]) < 8) {
 				hud_rect[i] = other_hud_rect[j];
 
 				switch (j) {

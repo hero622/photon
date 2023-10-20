@@ -11,6 +11,9 @@ bool hooks::initialize() {
 	hk_virtual(wh->portal2->engine, frame, offsets::frame);
 	hk_virtual(wh->portal2->client_state, set_signon_state, offsets::set_signon_state);
 	hk_virtual(wh->portal2->engine_vgui_internal, paint, offsets::paint);
+	hk_virtual(wh->portal2->surface, lock_cursor, offsets::lock_cursor);
+	hk_virtual(wh->portal2->base_client_dll, in_key_event, offsets::in_key_event);
+	hk_virtual(wh->portal2->surface, on_screen_size_changed, offsets::on_screen_size_changed);
 
 	hk_cmd(plugin_unload);
 
@@ -68,6 +71,27 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 	}
 
 	wh->portal2->surface->finish_drawing();
+}
+
+hk_fn(void, hooks::lock_cursor) {
+	if (menu::open)
+		wh->portal2->surface->unlock_cursor();
+	else
+		lock_cursor(ecx);
+}
+
+hk_fn(int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding) {
+	if (menu::open)
+		return 0;
+
+	return in_key_event(ecx, eventcode, keynum, current_binding);
+}
+
+hk_fn(void, hooks::on_screen_size_changed, int old_width, int old_height) {
+	on_screen_size_changed(ecx, old_width, old_height);
+
+	// recreate fonts
+	menu::initialize();
 }
 
 hk_cmd_fn(hooks::plugin_unload) {

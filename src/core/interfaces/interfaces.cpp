@@ -14,10 +14,13 @@ bool interfaces::initialize() {
 	wh->portal2->surface = get_interface<i_surface>(module("vguimatsurface"), "VGUI_Surface031");
 	wh->portal2->engine_vgui_internal = get_interface<void *>(module("engine"), "VEngineVGui001");
 	wh->portal2->input_system = get_interface<i_input_system>(module("inputsystem"), "InputSystemVersion001");
+	wh->portal2->base_client_dll = get_interface<void *>(module("client"), "VClient016");
+	wh->portal2->scheme_manager = get_interface<i_scheme_manager>(module("vgui2"), "VGUI_Scheme010");
 
 	wh->portal2->engine = **reinterpret_cast<void ***>(utils::memory::get_virtual(wh->portal2->engine_api, offsets::is_running_simulation) + offsets::eng);
 	wh->portal2->client_state = utils::memory::read<void *(*)()>(utils::memory::get_virtual(wh->portal2->engine_client, offsets::client_cmd) + offsets::get_client_state)();
 	wh->portal2->mem_alloc = *utils::memory::get_sym_addr<i_mem_alloc **>(utils::memory::get_module_handle(modules::tier0), "g_pMemAlloc");
+	wh->portal2->scheme = wh->portal2->scheme_manager->get_i_scheme(1);
 
 	return true;
 }

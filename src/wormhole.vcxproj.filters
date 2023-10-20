@@ -114,6 +114,12 @@
     <ClInclude Include="core\huds\huds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wormhole-sdk\interfaces\input_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wormhole-sdk\interfaces\scheme.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wormhole-sdk\utils\memory.cpp">

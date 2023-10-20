@@ -116,7 +116,9 @@
     <ClInclude Include="wormhole-sdk\interfaces\console.h" />
     <ClInclude Include="wormhole-sdk\interfaces\cvar.h" />
     <ClInclude Include="wormhole-sdk\interfaces\engine_client.h" />
+    <ClInclude Include="wormhole-sdk\interfaces\input_system.h" />
     <ClInclude Include="wormhole-sdk\interfaces\mem_alloc.h" />
+    <ClInclude Include="wormhole-sdk\interfaces\scheme.h" />
     <ClInclude Include="wormhole-sdk\interfaces\surface.h" />
     <ClInclude Include="wormhole-sdk\portal2.h" />
     <ClInclude Include="wormhole-sdk\render.h" />

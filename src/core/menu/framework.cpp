@@ -84,9 +84,11 @@ bool menu::framework::button(sdk::vec2_t size, std::string title) {
 }
 
 void menu::framework::modlist(std::vector<std::string> items) {
+	cur_menu.cursor.x = 12;
+
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t(676, 40);
+	const auto size = sdk::vec2_t(cur_menu.size.x - 24, 40);
 
 	for (const auto &mod : items) {
 		bool hover = wh->input->is_cursor_in_area(cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y);
@@ -96,7 +98,7 @@ void menu::framework::modlist(std::vector<std::string> items) {
 
 		wh->render->draw_text(cur_pos.x + 8, cur_pos.y + 2, fonts::title, colors::white, false, mod);
 
-		cur_menu.cursor.x = 676 - 80;
+		cur_menu.cursor.x = cur_menu.size.x - 24 - 80;
 		cur_menu.cursor.y += 8;
 		if (!mods::mod_list.count(mod)) {
 			if (button(sdk::vec2_t(80, 24), "load"))

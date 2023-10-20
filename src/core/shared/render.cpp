@@ -63,3 +63,9 @@ sdk::vec2_t c_render::get_screen_size() {
 
 	return sdk::vec2_t(w, h);
 }
+
+sdk::h_font c_render::get_font(int id) {
+	auto default_font = wh->portal2->scheme->get_font("DefaultFixedOutline");
+
+	return default_font + id;
+}

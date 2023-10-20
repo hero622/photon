@@ -1,12 +1,13 @@
 #include "wormhole-sdk/hud.h"
 
 #include "core/huds/huds.h"
+#include "wormhole-sdk/wormhole.h"
 
 void c_huds::reg(wh_api::i_hud *hud) {
 	huds::huds.push_back(hud);
 }
 void c_huds::reg(wh_api::i_thud *thud) {
-	thud->font = 6;
+	thud->font = wh->render->get_font(0);
 	huds::thuds.push_back(thud);
 }
 void c_huds::unreg(wh_api::i_hud *hud) {
