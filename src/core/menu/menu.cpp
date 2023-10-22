@@ -50,4 +50,6 @@ void menu::paint() {
 		}
 		menu::framework::modlist(mods);
 	}
+
+	menu::framework::end();
 }

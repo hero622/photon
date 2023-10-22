@@ -12,9 +12,14 @@ void menu::framework::begin(sdk::vec2_t pos, sdk::vec2_t size) {
 
 	wh->render->draw_outlined_rect(cur_menu.pos.x, cur_menu.pos.y, cur_menu.size.x, cur_menu.size.y, colors::dark);
 	wh->render->draw_filled_rect(cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.size.x - 2, cur_menu.size.y - 2, colors::bg);
+
+	wh->portal2->surface->enable_clipping = true;
+	wh->portal2->surface->set_clip_rect(cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.pos.x + cur_menu.size.x - 1, cur_menu.pos.y + cur_menu.size.y - 1);
 }
 
 void menu::framework::end() {
+	wh->portal2->surface->set_clip_rect(0, 0, wh->render->get_screen_size().x, wh->render->get_screen_size().y);
+	wh->portal2->surface->enable_clipping = false;
 }
 
 bool menu::framework::tab(int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title) {
@@ -23,6 +28,8 @@ bool menu::framework::tab(int &selected, sdk::vec2_t pos, sdk::vec2_t size, std:
 	if (active)
 		selected = cur_menu.tab_count;
 
+	wh->portal2->surface->set_clip_rect(0, 0, wh->render->get_screen_size().x, wh->render->get_screen_size().y);
+
 	wh->render->draw_outlined_rect(pos.x, pos.y, size.x, size.y, active ? colors::white : hover ? colors::dark
 	                                                                                            : colors::darker);
 	wh->render->draw_filled_rect(pos.x + 1, pos.y + 1, size.x - 2, size.y - 2, colors::bg);
@@ -30,6 +37,8 @@ bool menu::framework::tab(int &selected, sdk::vec2_t pos, sdk::vec2_t size, std:
 	const auto text_size = wh->render->get_text_size(fonts::title, title);
 
 	wh->render->draw_text(pos.x + size.x / 2, pos.y + size.y / 2 - text_size.y / 2, fonts::title, colors::white, true, title);
+
+	wh->portal2->surface->set_clip_rect(cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.pos.x + cur_menu.size.x - 1, cur_menu.pos.y + cur_menu.size.y - 1);
 
 	++cur_menu.tab_count;
 
