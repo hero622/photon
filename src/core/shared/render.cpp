@@ -1,9 +1,5 @@
 #include "wormhole-sdk/wormhole.h"
 
-sdk::vec2_t screen_pos(float x, float y) {
-	return {0, 0};
-}
-
 void c_render::draw_filled_rect(int x, int y, int w, int h, sdk::color_t color) {
 	wh->portal2->surface->draw_set_color(color.r, color.g, color.b, color.a);
 	wh->portal2->surface->draw_filled_rect(x, y, x + w, y + h);
@@ -68,4 +64,16 @@ sdk::h_font c_render::get_font(int id) {
 	auto default_font = wh->portal2->scheme->get_font("DefaultFixedOutline");
 
 	return default_font + id;
+}
+
+sdk::vec2_t c_render::normalize(sdk::vec2_t vec) {
+	const auto screen_size = get_screen_size();
+
+	return sdk::vec2_t(vec.x / screen_size.x, vec.y / screen_size.y);
+}
+
+sdk::vec2_t c_render::to_screen(sdk::vec2_t vec) {
+	const auto screen_size = get_screen_size();
+
+	return sdk::vec2_t(vec.x * screen_size.x, vec.y * screen_size.y);
 }

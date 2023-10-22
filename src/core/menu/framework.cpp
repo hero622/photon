@@ -39,7 +39,7 @@ bool menu::framework::tab(int &selected, sdk::vec2_t pos, sdk::vec2_t size, std:
 bool menu::framework::mod(std::string title, std::string subtitle) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t(220, 102);
+	const auto size = sdk::vec2_t(220, 100);
 
 	bool hover = wh->input->is_cursor_in_area(cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y);
 

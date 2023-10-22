@@ -27,12 +27,13 @@ void menu::paint() {
 
 	const auto screen_size = wh->render->get_screen_size();
 
-	const auto menu_size = sdk::vec2_t(700, 350);
 	const int tab_height = 50;
+	const auto menu_size = sdk::vec2_t(700, 0.32f * screen_size.y);
+	const auto menu_pos = sdk::vec2_t(screen_size.x / 2 - menu_size.x / 2, screen_size.y / 2 + tab_height / 2 + 8);
 
 	static int tab = 1;
 
-	menu::framework::begin(sdk::vec2_t(screen_size.x / 2 - menu_size.x / 2, screen_size.y / 2 - menu_size.y / 2 + 208), menu_size);
+	menu::framework::begin(menu_pos, menu_size);
 
 	if (menu::framework::tab(tab, sdk::vec2_t(screen_size.x / 2 - 100 - 130 - 6, screen_size.y / 2 - tab_height / 2), sdk::vec2_t(130, tab_height), "profiles")) {
 	}
