@@ -16,7 +16,7 @@ bool mods::load(const char *name) {
 #ifdef _WIN32
 	void *lib = LoadLibraryA(utils::string::ssprintf("wormhole/%s.dll", name).c_str());
 #else
-	void *lib = dlopen(utils::string::ssprintf("wormhole/%s.so", name).c_str(), RTLD_LAZY);
+	void *lib = dlopen(utils::string::ssprintf("wormhole/%s.so", name).c_str(), RTLD_NOW);
 #endif
 
 	if (lib) {
@@ -42,6 +42,12 @@ bool mods::load(const char *name) {
 			return true;
 		}
 	}
+
+#ifdef _WIN32
+	wh->portal2->console->msg("Failed to load library (%lu).\n", GetLastError());
+#else
+	wh->portal2->console->msg("Failed to load library (%s).\n", dlerror());
+#endif
 
 	return false;
 }
