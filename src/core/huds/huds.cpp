@@ -19,34 +19,50 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 	const auto hud_pos = abs_pos(hud);
 	const auto other_hud_pos = abs_pos(other_hud);
 
-	int hud_rect[4] = {hud_pos.x, hud_pos.y, hud_pos.x + hud->bounds.x, hud_pos.y + hud->bounds.y};
-	int other_hud_rect[4] = {other_hud_pos.x, other_hud_pos.y, other_hud_pos.x + other_hud->bounds.x, other_hud_pos.y + other_hud->bounds.y};
+	int hud_rect[6] = {
+		hud_pos.x,
+		hud_pos.y,
+		hud_pos.x + hud->bounds.x,
+		hud_pos.y + hud->bounds.y,
+		hud_pos.x + hud->bounds.x / 2,
+		hud_pos.y + hud->bounds.y / 2};
+	int other_hud_rect[6] = {
+		other_hud_pos.x,
+		other_hud_pos.y,
+		other_hud_pos.x + other_hud->bounds.x,
+		other_hud_pos.y + other_hud->bounds.y,
+		other_hud_pos.x + other_hud->bounds.x / 2,
+		other_hud_pos.y + other_hud->bounds.y / 2};
+	int safezone_rect[6] = {
+		huds::safezone.x,
+		huds::safezone.y,
+		screen_size.x - huds::safezone.x,
+		screen_size.y - huds::safezone.y,
+		screen_size.x / 2,
+		screen_size.y / 2};
 
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int i = 0; i < 6; ++i) {
+		for (int j = 0; j < 6; ++j) {
 			if (i % 2 != j % 2)
 				continue;
 
-			if (abs(hud_rect[i] - other_hud_rect[j]) < 8) {
-				hud_rect[i] = other_hud_rect[j];
+			if (abs(hud_rect[i] - safezone_rect[j]) < 8) {
+				if (j % 2 == 0) {
+					hud->pos.x = (safezone_rect[j] - (hud_rect[i] - hud_rect[0])) / screen_size.x;
+					wh->render->draw_line(safezone_rect[j], 0, 0, screen_size.y, clr);
+				} else {
+					hud->pos.y = (safezone_rect[j] - (hud_rect[i] - hud_rect[1])) / screen_size.y;
+					wh->render->draw_line(0, safezone_rect[j], screen_size.x, 0, clr);
+				}
+			}
 
-				switch (j) {
-				case 0:
-					hud->pos.x = (other_hud_rect[j] - (i == 0 ? 0 : hud->bounds.x)) / screen_size.x;
-					wh->render->draw_line(other_hud_rect[j] - 1, 0, 0, screen_size.y, clr);
-					break;
-				case 1:
-					hud->pos.y = (other_hud_rect[j] - (i == 1 ? 0 : hud->bounds.y)) / screen_size.y;
-					wh->render->draw_line(0, other_hud_rect[j] - 1, screen_size.x, 0, clr);
-					break;
-				case 2:
-					hud->pos.x = (other_hud_rect[j] - (i == 0 ? 0 : hud->bounds.x)) / screen_size.x;
+			if (abs(hud_rect[i] - other_hud_rect[j]) < 8) {
+				if (j % 2 == 0) {
+					hud->pos.x = (other_hud_rect[j] - (hud_rect[i] - hud_rect[0])) / screen_size.x;
 					wh->render->draw_line(other_hud_rect[j], 0, 0, screen_size.y, clr);
-					break;
-				case 3:
-					hud->pos.y = (other_hud_rect[j] - (i == 1 ? 0 : hud->bounds.y)) / screen_size.y;
+				} else {
+					hud->pos.y = (other_hud_rect[j] - (hud_rect[i] - hud_rect[1])) / screen_size.y;
 					wh->render->draw_line(0, other_hud_rect[j], screen_size.x, 0, clr);
-					break;
 				}
 			}
 		}
