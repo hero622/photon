@@ -82,13 +82,13 @@ void mods::print() {
 }
 
 void mods::post_event(void *sender, const char *msg) {
+	auto msg_s = std::string(msg);
+
+	if (sender != &wormhole) {
+		msg_s = std::string(((wh_api::i_wormhole_mod *)sender)->get_name()) + std::string(":") + msg_s;
+	}
+
 	for (const auto &mod : mod_list) {
-		auto msg_s = std::string(msg);
-
-		if (sender != &wormhole) {
-			msg_s = std::string(mod.second.ptr->get_name()) + std::string(":") + msg_s;
-		}
-
 		mod.second.ptr->on_event(msg_s.c_str());
 	}
 }

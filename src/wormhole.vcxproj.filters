@@ -120,6 +120,9 @@
     <ClInclude Include="wormhole-sdk\interfaces\scheme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wormhole-sdk\draw_call.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wormhole-sdk\utils\memory.cpp">
@@ -171,6 +174,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\huds\huds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wormhole-sdk\draw_call.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

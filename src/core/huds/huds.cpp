@@ -2,20 +2,11 @@
 
 #include "wormhole-sdk/wormhole.h"
 
-void *g_active_hud;
+sdk::vec2_t abs_pos(wh_api::hud_t *hud) {
+	const auto pos = wh->render->to_screen(hud->pos);
+	const auto anchor = hud->anchor * hud->bounds;
 
-void huds::paint() {
-	for (const auto &hud : huds) {
-		hud->paint();
-	}
-
-	for (const auto &thud : thuds) {
-		// resolve hud position based on alignment later
-		// have some formatting system
-		// read font in later
-		const auto pos = wh->render->to_screen(thud->pos);
-		wh->render->draw_text(pos.x, pos.y, wh->render->get_font(thud->font), {255, 255, 255, 255}, false, thud->get_text());
-	}
+	return pos - anchor;
 }
 
 void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
@@ -23,8 +14,8 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 
 	const auto clr = sdk::color_t(255, 0, 255, 255);
 
-	const auto hud_pos = wh->render->to_screen(hud->pos);
-	const auto other_hud_pos = wh->render->to_screen(other_hud->pos);
+	const auto hud_pos = abs_pos(hud);
+	const auto other_hud_pos = abs_pos(other_hud);
 
 	int hud_rect[4] = {hud_pos.x, hud_pos.y, hud_pos.x + hud->bounds.x, hud_pos.y + hud->bounds.y};
 	int other_hud_rect[4] = {other_hud_pos.x, other_hud_pos.y, other_hud_pos.x + other_hud->bounds.x, other_hud_pos.y + other_hud->bounds.y};
@@ -60,6 +51,43 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 	}
 }
 
+void huds::paint() {
+	for (const auto &hud : huds) {
+		hud->paint();
+
+		for (const auto &draw_call : hud->draw_calls) {
+			hud->bounds.x = max(hud->bounds.x, draw_call->x + draw_call->w);
+			hud->bounds.y = max(hud->bounds.y, draw_call->y + draw_call->h);
+		}
+		for (const auto &draw_call : hud->draw_calls) {
+			const auto pos = abs_pos(hud);
+
+			draw_call->x += pos.x;
+			draw_call->y += pos.y;
+
+			draw_call->call();
+		}
+
+		hud->draw_calls.clear();
+	}
+
+	for (const auto &thud : thuds) {
+		// todo: some formatting system
+		auto text = std::string(thud->format);
+
+		utils::string::replace(text, "{name}", std::string(thud->get_name()));
+		utils::string::replace(text, "{value}", std::string(thud->get_text()));
+
+		const auto font = wh->render->get_font(thud->font);
+
+		thud->bounds = wh->render->get_text_size(font, text);
+
+		const auto pos = abs_pos(thud);
+
+		wh->render->draw_text(pos.x, pos.y, font, {255, 255, 255, 255}, false, text);
+	}
+}
+
 void huds::paint_ui() {
 	const auto clr = sdk::color_t(0, 255, 255, 255);
 
@@ -71,10 +99,11 @@ void huds::paint_ui() {
 	for (const auto &hud : huds) {
 		sdk::vec2_t orig_cur_pos;
 
-		const auto pos = wh->render->to_screen(hud->pos);
+		const auto pos = abs_pos(hud);
 
 		if (wh->input->is_cursor_in_area(pos.x, pos.y, pos.x + hud->bounds.x, pos.y + hud->bounds.y)) {
 			wh->render->draw_outlined_rect(pos.x - 1, pos.y - 1, hud->bounds.x + 2, hud->bounds.y + 2, clr);
+			wh->render->draw_filled_rect(pos.x + hud->anchor.x * hud->bounds.x - 3, pos.y + hud->anchor.y * hud->bounds.y - 3, 6, 6, clr);
 
 			if (wh->input->get_key_press(sdk::mouse_left)) {
 				cur_hud = hud;
@@ -86,10 +115,11 @@ void huds::paint_ui() {
 	for (const auto &thud : thuds) {
 		sdk::vec2_t orig_cur_pos;
 
-		const auto pos = wh->render->to_screen(thud->pos);
+		const auto pos = abs_pos(thud);
 
 		if (wh->input->is_cursor_in_area(pos.x, pos.y, pos.x + thud->bounds.x, pos.y + thud->bounds.y)) {
 			wh->render->draw_outlined_rect(pos.x - 1, pos.y - 1, thud->bounds.x + 2, thud->bounds.y + 2, clr);
+			wh->render->draw_filled_rect(pos.x + thud->anchor.x * thud->bounds.x - 3, pos.y + thud->anchor.y * thud->bounds.y - 3, 6, 6, clr);
 
 			if (wh->input->get_key_press(sdk::mouse_left)) {
 				cur_hud = thud;

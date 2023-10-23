@@ -32,5 +32,5 @@ sdk::vec2_t c_input::get_cursor_position() {
 }
 
 bool c_input::is_cursor_in_area(int x0, int y0, int x1, int y1) {
-	return g_cursor_x > x0 && g_cursor_y > y0 && g_cursor_x < x1 && g_cursor_y < y1;
+	return g_cursor_x >= x0 && g_cursor_y >= y0 && g_cursor_x <= x1 && g_cursor_y <= y1;
 }
