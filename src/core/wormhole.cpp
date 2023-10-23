@@ -91,10 +91,6 @@ void c_wormhole::unload() {
 #endif
 }
 
-create_con_command(wh_exit, "unloads wormhole.\n") {
-	wormhole.unload();
-}
-
 void c_wormhole::pause() {
 }
 void c_wormhole::un_pause() {

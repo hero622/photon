@@ -98,7 +98,7 @@ hk_fn(void, hooks::on_screen_size_changed, int old_width, int old_height) {
 
 hk_cmd_fn(hooks::plugin_unload) {
 	if (args.arg_c() >= 2 && wormhole.get_plugin() && (!strcmp(args[1], "wormhole") || std::atoi(args[1]) == wormhole.plugin->index))
-		wh->portal2->engine_client->client_cmd("wh_exit");
+		wormhole.unload();
 	else
 		plugin_unload(args);
 }
