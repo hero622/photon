@@ -74,10 +74,17 @@ hk_fn(void, hooks::paint, sdk::paint_mode_t mode) {
 }
 
 hk_fn(void, hooks::lock_cursor) {
-	if (menu::open)
+	static void *input_ctx = wh->portal2->engine_client->get_input_context(0);
+
+	if (menu::open) {
 		wh->portal2->surface->unlock_cursor();
-	else
+
+		wh->portal2->input_stack_system->set_cursor_visible(input_ctx, true);
+	} else {
 		lock_cursor(ecx);
+
+		wh->portal2->input_stack_system->set_cursor_visible(input_ctx, false);
+	}
 }
 
 hk_fn(int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding) {

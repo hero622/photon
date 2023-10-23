@@ -16,6 +16,7 @@ bool interfaces::initialize() {
 	wh->portal2->input_system = get_interface<i_input_system>(module("inputsystem"), "InputSystemVersion001");
 	wh->portal2->base_client_dll = get_interface<void *>(module("client"), "VClient016");
 	wh->portal2->scheme_manager = get_interface<i_scheme_manager>(module("vgui2"), "VGUI_Scheme010");
+	wh->portal2->input_stack_system = get_interface<i_input_stack_system>(module("inputsystem"), "InputStackSystemVersion001");
 
 	wh->portal2->engine = **reinterpret_cast<void ***>(utils::memory::get_virtual(wh->portal2->engine_api, offsets::is_running_simulation) + offsets::eng);
 	wh->portal2->client_state = utils::memory::read<void *(*)()>(utils::memory::get_virtual(wh->portal2->engine_client, offsets::client_cmd) + offsets::get_client_state)();
