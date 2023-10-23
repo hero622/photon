@@ -2,7 +2,7 @@
 
 #include "wormhole-sdk/wormhole.h"
 
-#include <algorithm>
+#include <cmath>
 
 sdk::vec2_t abs_pos(wh_api::hud_t *hud) {
 	const auto pos = wh->render->to_screen(hud->pos);
