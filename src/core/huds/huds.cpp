@@ -4,11 +4,37 @@
 
 #include <cmath>
 
-sdk::vec2_t abs_pos(wh_api::hud_t *hud) {
+sdk::vec2_t get_abs_pos(wh_api::hud_t *hud) {
 	const auto pos = wh->render->to_screen(hud->pos);
 	const auto anchor = hud->anchor * hud->bounds;
 
 	return pos - anchor;
+}
+
+void set_abs_pos(wh_api::hud_t *hud, sdk::vec2_t pos) {
+	const auto anchor = hud->anchor * hud->bounds;
+
+	hud->pos = wh->render->normalize(pos + anchor);
+}
+
+void set_hud_alignment(wh_api::hud_t *hud) {
+	const auto screen_size = wh->render->get_screen_size();
+
+	const auto center = get_abs_pos(hud) + sdk::vec2_t(hud->bounds.x / 2, hud->bounds.y / 2);
+
+	if ((int)center.x < screen_size.x / 2)
+		hud->anchor.x = 0.0f;
+	if ((int)center.x == screen_size.x / 2)
+		hud->anchor.x = 0.5f;
+	if ((int)center.x > screen_size.x / 2)
+		hud->anchor.x = 1.0f;
+
+	if ((int)center.y < screen_size.y / 2)
+		hud->anchor.y = 0.0f;
+	if ((int)center.y == screen_size.y / 2)
+		hud->anchor.y = 0.5f;
+	if ((int)center.y > screen_size.y / 2)
+		hud->anchor.y = 1.0f;
 }
 
 void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
@@ -16,8 +42,8 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 
 	const auto clr = sdk::color_t(255, 0, 255, 255);
 
-	const auto hud_pos = abs_pos(hud);
-	const auto other_hud_pos = abs_pos(other_hud);
+	const auto hud_pos = get_abs_pos(hud);
+	const auto other_hud_pos = get_abs_pos(other_hud);
 
 	int hud_rect[6] = {
 		hud_pos.x,
@@ -48,20 +74,20 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 
 			if (abs(hud_rect[i] - safezone_rect[j]) < 8) {
 				if (j % 2 == 0) {
-					hud->pos.x = (safezone_rect[j] - (hud_rect[i] - hud_rect[0])) / screen_size.x;
+					hud->pos.x = (safezone_rect[j] - (hud_rect[i] - hud_rect[0]) + hud->anchor.x * hud->bounds.x) / screen_size.x;
 					wh->render->draw_line(safezone_rect[j], 0, 0, screen_size.y, clr);
 				} else {
-					hud->pos.y = (safezone_rect[j] - (hud_rect[i] - hud_rect[1])) / screen_size.y;
+					hud->pos.y = (safezone_rect[j] - (hud_rect[i] - hud_rect[1]) + hud->anchor.y * hud->bounds.y) / screen_size.y;
 					wh->render->draw_line(0, safezone_rect[j], screen_size.x, 0, clr);
 				}
 			}
 
 			if (abs(hud_rect[i] - other_hud_rect[j]) < 8) {
 				if (j % 2 == 0) {
-					hud->pos.x = (other_hud_rect[j] - (hud_rect[i] - hud_rect[0])) / screen_size.x;
+					hud->pos.x = (other_hud_rect[j] - (hud_rect[i] - hud_rect[0]) + hud->anchor.x * hud->bounds.x) / screen_size.x;
 					wh->render->draw_line(other_hud_rect[j], 0, 0, screen_size.y, clr);
 				} else {
-					hud->pos.y = (other_hud_rect[j] - (hud_rect[i] - hud_rect[1])) / screen_size.y;
+					hud->pos.y = (other_hud_rect[j] - (hud_rect[i] - hud_rect[1]) + hud->anchor.y * hud->bounds.y) / screen_size.y;
 					wh->render->draw_line(0, other_hud_rect[j], screen_size.x, 0, clr);
 				}
 			}
@@ -78,7 +104,7 @@ void huds::paint() {
 			hud->bounds.y = std::fmax(hud->bounds.y, draw_call->y + draw_call->h);
 		}
 		for (const auto &draw_call : hud->draw_calls) {
-			const auto pos = abs_pos(hud);
+			const auto pos = get_abs_pos(hud);
 
 			draw_call->x += pos.x;
 			draw_call->y += pos.y;
@@ -100,7 +126,7 @@ void huds::paint() {
 
 		thud->bounds = wh->render->get_text_size(font, text);
 
-		const auto pos = abs_pos(thud);
+		const auto pos = get_abs_pos(thud);
 
 		wh->render->draw_text(pos.x, pos.y, font, {255, 255, 255, 255}, false, text);
 	}
@@ -117,7 +143,7 @@ void huds::paint_ui() {
 	for (const auto &hud : huds) {
 		sdk::vec2_t orig_cur_pos;
 
-		const auto pos = abs_pos(hud);
+		const auto pos = get_abs_pos(hud);
 
 		if (wh->input->is_cursor_in_area(pos.x, pos.y, pos.x + hud->bounds.x, pos.y + hud->bounds.y)) {
 			wh->render->draw_outlined_rect(pos.x - 1, pos.y - 1, hud->bounds.x + 2, hud->bounds.y + 2, clr);
@@ -133,7 +159,7 @@ void huds::paint_ui() {
 	for (const auto &thud : thuds) {
 		sdk::vec2_t orig_cur_pos;
 
-		const auto pos = abs_pos(thud);
+		const auto pos = get_abs_pos(thud);
 
 		if (wh->input->is_cursor_in_area(pos.x, pos.y, pos.x + thud->bounds.x, pos.y + thud->bounds.y)) {
 			wh->render->draw_outlined_rect(pos.x - 1, pos.y - 1, thud->bounds.x + 2, thud->bounds.y + 2, clr);
@@ -148,9 +174,11 @@ void huds::paint_ui() {
 
 	if (cur_hud) {
 		if (wh->input->get_key_held(sdk::mouse_left)) {
-			auto hud = cur_hud;
+			const auto hud = cur_hud;
 
-			hud->pos = wh->render->normalize(wh->input->get_cursor_position() - grab_pos);
+			set_hud_alignment(hud);
+
+			set_abs_pos(hud, wh->input->get_cursor_position() - grab_pos);
 
 			for (const auto &other_hud : huds) {
 				if (hud == other_hud)
