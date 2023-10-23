@@ -14,7 +14,7 @@ void huds::paint() {
 		// have some formatting system
 		// read font in later
 		const auto pos = wh->render->to_screen(thud->pos);
-		wh->render->draw_text(pos.x, pos.y, thud->font, {255, 255, 255, 255}, false, thud->get_text());
+		wh->render->draw_text(pos.x, pos.y, wh->render->get_font(thud->font), {255, 255, 255, 255}, false, thud->get_text());
 	}
 }
 

@@ -68,13 +68,14 @@ const char *c_wormhole_mod::get_name() {
 ```
 ## Events
 Wormhole posts events to all mods by default:
-- `pre_tick`: called before `CServerGameDLL::GameFrame`
-- `post_tick`: called after `CServerGameDLL::GameFrame`
-- `pre_frame`: called before `CEngine::Frame`
-- `post_frame`: called after `CEngine::Frame`
-- `session_start`: called on `SIGNONSTATE_FULL`
-- `session_end`: called on `!SIGNONSTATE_FULL`
-- `paint`: called in `ISurface::PaintTraverse` in between `ISurface::StartDrawing` and `ISurface::FinishDrawing`
+- `pre_tick`: called before `CServerGameDLL::GameFrame`.
+- `post_tick`: called after `CServerGameDLL::GameFrame`.
+- `pre_frame`: called before `CEngine::Frame`.
+- `post_frame`: called after `CEngine::Frame`.
+- `session_start`: called on `SIGNONSTATE_FULL`.
+- `session_end`: called on `!SIGNONSTATE_FULL`.
+- `paint`: called in `CMatSystemSurface::PaintTraverse` in between `CMatSystemSurface::StartDrawing` and `CMatSystemSurface::FinishDrawing`, you should do all your drawing (excluding huds) in here.
+- `on_screen_size_changed`: called in `CMatSystemSurface::OnScreenSizeChanged`, you should recreate your fonts here.
 
 Mods can also post their on events to all other mods, these are syntaxed as `modname:eventname`.
 Mods receive their events in the `on_event` function, with the message being the only argument.

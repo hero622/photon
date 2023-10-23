@@ -90,6 +90,8 @@ hk_fn(int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const 
 hk_fn(void, hooks::on_screen_size_changed, int old_width, int old_height) {
 	on_screen_size_changed(ecx, old_width, old_height);
 
+	wh->events->post(&wormhole, "on_screen_size_changed");
+
 	// recreate fonts
 	menu::initialize();
 }
