@@ -2,6 +2,8 @@
 
 #include "wormhole-sdk/wormhole.h"
 
+#include <algorithm>
+
 sdk::vec2_t abs_pos(wh_api::hud_t *hud) {
 	const auto pos = wh->render->to_screen(hud->pos);
 	const auto anchor = hud->anchor * hud->bounds;
@@ -56,8 +58,8 @@ void huds::paint() {
 		hud->paint();
 
 		for (const auto &draw_call : hud->draw_calls) {
-			hud->bounds.x = max(hud->bounds.x, draw_call->x + draw_call->w);
-			hud->bounds.y = max(hud->bounds.y, draw_call->y + draw_call->h);
+			hud->bounds.x = std::fmax(hud->bounds.x, draw_call->x + draw_call->w);
+			hud->bounds.y = std::fmax(hud->bounds.y, draw_call->y + draw_call->h);
 		}
 		for (const auto &draw_call : hud->draw_calls) {
 			const auto pos = abs_pos(hud);
