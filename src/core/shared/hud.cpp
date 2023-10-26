@@ -7,7 +7,6 @@ void c_huds::reg(wh_api::i_hud *hud) {
 	huds::huds.push_back(hud);
 }
 void c_huds::reg(wh_api::i_thud *thud) {
-	thud->font = wh->render->get_font(0);
 	huds::thuds.push_back(thud);
 }
 void c_huds::unreg(wh_api::i_hud *hud) {
@@ -15,7 +14,6 @@ void c_huds::unreg(wh_api::i_hud *hud) {
 		if (huds::huds[i] == hud)
 			huds::huds.erase(huds::huds.begin() + i);
 	}
-	// huds::huds.erase(hud);
 }
 void c_huds::unreg(wh_api::i_thud *thud) {
 	for (int i = 0; i < huds::thuds.size(); ++i) {

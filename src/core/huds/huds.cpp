@@ -17,24 +17,24 @@ void set_abs_pos(wh_api::hud_t *hud, sdk::vec2_t pos) {
 	hud->pos = wh->render->normalize(pos + anchor);
 }
 
-void set_hud_alignment(wh_api::hud_t *hud) {
+void set_hud_anchor(wh_api::hud_t *hud) {
 	const auto screen_size = wh->render->get_screen_size();
 
 	const auto center = get_abs_pos(hud) + sdk::vec2_t(hud->bounds.x / 2, hud->bounds.y / 2);
 
 	if ((int)center.x < screen_size.x / 2)
 		hud->anchor.x = 0.0f;
-	if ((int)center.x == screen_size.x / 2)
-		hud->anchor.x = 0.5f;
-	if ((int)center.x > screen_size.x / 2)
+	else if ((int)center.x > screen_size.x / 2)
 		hud->anchor.x = 1.0f;
+	else
+		hud->anchor.x = 0.5f;
 
 	if ((int)center.y < screen_size.y / 2)
 		hud->anchor.y = 0.0f;
-	if ((int)center.y == screen_size.y / 2)
-		hud->anchor.y = 0.5f;
-	if ((int)center.y > screen_size.y / 2)
+	else if ((int)center.y > screen_size.y / 2)
 		hud->anchor.y = 1.0f;
+	else
+		hud->anchor.y = 0.5f;
 }
 
 void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
@@ -59,28 +59,11 @@ void align_hud_element(wh_api::hud_t *hud, wh_api::hud_t *other_hud) {
 		other_hud_pos.y + other_hud->bounds.y,
 		other_hud_pos.x + other_hud->bounds.x / 2,
 		other_hud_pos.y + other_hud->bounds.y / 2};
-	int safezone_rect[6] = {
-		huds::safezone.x,
-		huds::safezone.y,
-		screen_size.x - huds::safezone.x,
-		screen_size.y - huds::safezone.y,
-		screen_size.x / 2,
-		screen_size.y / 2};
 
 	for (int i = 0; i < 6; ++i) {
 		for (int j = 0; j < 6; ++j) {
 			if (i % 2 != j % 2)
 				continue;
-
-			if (abs(hud_rect[i] - safezone_rect[j]) < 8) {
-				if (j % 2 == 0) {
-					hud->pos.x = (safezone_rect[j] - (hud_rect[i] - hud_rect[0]) + hud->anchor.x * hud->bounds.x) / screen_size.x;
-					wh->render->draw_line(safezone_rect[j], 0, 0, screen_size.y, clr);
-				} else {
-					hud->pos.y = (safezone_rect[j] - (hud_rect[i] - hud_rect[1]) + hud->anchor.y * hud->bounds.y) / screen_size.y;
-					wh->render->draw_line(0, safezone_rect[j], screen_size.x, 0, clr);
-				}
-			}
 
 			if (abs(hud_rect[i] - other_hud_rect[j]) < 8) {
 				if (j % 2 == 0) {
@@ -176,9 +159,15 @@ void huds::paint_ui() {
 		if (wh->input->get_key_held(sdk::mouse_left)) {
 			const auto hud = cur_hud;
 
-			set_hud_alignment(hud);
+			set_hud_anchor(hud);
 
 			set_abs_pos(hud, wh->input->get_cursor_position() - grab_pos);
+
+			// dummy hud element for safezone
+			auto safezone = wh_api::hud_t();
+			safezone.pos = wh->render->normalize(huds::safezone);
+			safezone.bounds = screen_size - huds::safezone * 2;
+			align_hud_element(hud, &safezone);
 
 			for (const auto &other_hud : huds) {
 				if (hud == other_hud)

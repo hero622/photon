@@ -8,7 +8,7 @@ void menu::framework::begin(sdk::vec2_t pos, sdk::vec2_t size) {
 	cur_menu.pos = pos;
 	cur_menu.size = size;
 
-	cur_menu.cursor = {12, 12};
+	cur_menu.cursor = sdk::vec2_t(12, 12);
 
 	wh->render->draw_outlined_rect(cur_menu.pos.x, cur_menu.pos.y, cur_menu.size.x, cur_menu.size.y, colors::dark);
 	wh->render->draw_filled_rect(cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.size.x - 2, cur_menu.size.y - 2, colors::bg);

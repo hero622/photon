@@ -23,6 +23,9 @@ bool hooks::initialize() {
 void hooks::uninitialize() {
 	unhk_cmd(plugin_unload);
 
+	unhk(on_screen_size_changed);
+	unhk(in_key_event);
+	unhk(lock_cursor);
 	unhk(paint);
 	unhk(set_signon_state);
 	unhk(frame);
