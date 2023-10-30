@@ -12,11 +12,11 @@ namespace mods {
 
 	inline std::unordered_map<std::string, mod_info_t> mod_list;
 
-	bool load(const char *name);
-	void unload(const char *name);
-	void unloadall();
+	bool load( const char *name );
+	void unload( const char *name );
+	void unloadall( );
 
-	void print();
+	void print( );
 
-	void post_event(void *sender, const char *msg);
+	void post_event( void *sender, const char *msg );
 }  // namespace mods

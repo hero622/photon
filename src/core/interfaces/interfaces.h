@@ -3,6 +3,6 @@
 #include <string>
 
 namespace interfaces {
-	bool initialize();
-	void uninitialize();
-};
+	bool initialize( );
+	void uninitialize( );
+};  // namespace interfaces

@@ -7,10 +7,10 @@
 namespace menu {
 	namespace framework {
 		namespace colors {
-			inline sdk::color_t bg = sdk::color_t(0, 0, 0, 200);
-			inline sdk::color_t white = sdk::color_t(255, 255, 255, 255);
-			inline sdk::color_t dark = sdk::color_t(64, 64, 64, 255);
-			inline sdk::color_t darker = sdk::color_t(32, 32, 32, 255);
+			inline sdk::color_t bg = sdk::color_t( 0, 0, 0, 200 );
+			inline sdk::color_t white = sdk::color_t( 255, 255, 255, 255 );
+			inline sdk::color_t dark = sdk::color_t( 64, 64, 64, 255 );
+			inline sdk::color_t darker = sdk::color_t( 32, 32, 32, 255 );
 		}  // namespace colors
 
 		namespace fonts {
@@ -30,11 +30,11 @@ namespace menu {
 		};
 		inline menu_t cur_menu;
 
-		void begin(sdk::vec2_t pos, sdk::vec2_t size);
-		void end();
-		bool tab(int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title);
-		bool mod(std::string title, std::string subtitle);
-		bool button(sdk::vec2_t size, std::string title);
-		void modlist(std::vector<std::string> items);
+		void begin( sdk::vec2_t pos, sdk::vec2_t size );
+		void end( );
+		bool tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title );
+		bool mod( std::string title, std::string subtitle );
+		bool button( sdk::vec2_t size, std::string title );
+		void modlist( std::vector<std::string> items );
 	}  // namespace framework
 }  // namespace menu

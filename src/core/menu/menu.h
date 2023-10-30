@@ -3,8 +3,8 @@
 namespace menu {
 	inline bool open = false;
 
-	bool initialize();
-	void uninitialize();
+	bool initialize( );
+	void uninitialize( );
 
-	void paint();
+	void paint( );
 };  // namespace menu
