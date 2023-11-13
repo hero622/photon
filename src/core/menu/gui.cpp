@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "gui.h"
 
 #include "core/mods/mods.h"
 #include "framework.h"
@@ -7,18 +7,18 @@
 #include <filesystem>
 #include <iostream>
 
-bool menu::initialize( ) {
+bool gui::initialize( ) {
 	wh->render->create_font( framework::fonts::normal, "Segoe UI Light", 22, false, sdk::fontflag_antialias );
 	wh->render->create_font( framework::fonts::title, "Segoe UI Light", 30, false, sdk::fontflag_antialias );
 
 	return true;
 }
 
-void menu::uninitialize( ) {
+void gui::uninitialize( ) {
 	// delete fonts here
 }
 
-void menu::paint( ) {
+void gui::paint( ) {
 	if ( wh->input->get_key_press( sdk::key_insert ) )
 		open = !open;
 
@@ -34,28 +34,31 @@ void menu::paint( ) {
 	static int tab = 1;
 	static wh_api::i_wormhole_mod *cur_mod;
 
-	menu::framework::begin( menu_pos, menu_size );
+	framework::begin( menu_pos, menu_size );
 
-	if ( menu::framework::tab( tab, sdk::vec2_t( screen_size.x / 2 - 90 - 130 - 6, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 130, tab_height ), "profiles" ) ) {
+	if ( framework::tab( tab, sdk::vec2_t( screen_size.x / 2 - 90 - 130 - 6, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 130, tab_height ), "profiles" ) ) {
 	}
-	if ( menu::framework::tab( tab, sdk::vec2_t( screen_size.x / 2 - 90, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 180, tab_height ), "modules" ) ) {
+	if ( framework::tab( tab, sdk::vec2_t( screen_size.x / 2 - 90, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 180, tab_height ), "modules" ) ) {
 		if ( !cur_mod ) {
 			for ( const auto &mod : mods::mod_list ) {
-				if ( menu::framework::mod( mod.second.ptr->get_name( ), mod.first ) )
+				if ( framework::mod( mod.second.ptr->get_info( )->name, mod.first ) )
 					cur_mod = mod.second.ptr;
 			}
 		} else {
-			if ( menu::framework::button( sdk::vec2_t( 80, 30 ), "back" ) )
+			if ( framework::button( sdk::vec2_t( 80, 30 ), "back" ) )
 				cur_mod = nullptr;
+
+			if ( cur_mod )
+				cur_mod->paint_menu( );
 		}
 	}
-	if ( menu::framework::tab( tab, sdk::vec2_t( screen_size.x / 2 + 90 + 6, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 130, tab_height ), "settings" ) ) {
+	if ( framework::tab( tab, sdk::vec2_t( screen_size.x / 2 + 90 + 6, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 130, tab_height ), "settings" ) ) {
 		std::vector<std::string> mods;
 		for ( const auto &entry : std::filesystem::directory_iterator( "wormhole" ) ) {
 			mods.push_back( entry.path( ).stem( ).string( ) );
 		}
-		menu::framework::modlist( mods );
+		framework::modlist( mods );
 	}
 
-	menu::framework::end( );
+	framework::end( );
 }

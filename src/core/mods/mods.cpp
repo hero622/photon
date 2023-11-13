@@ -85,7 +85,7 @@ void mods::post_event( void *sender, const char *msg ) {
 	auto msg_s = std::string( msg );
 
 	if ( sender != &wormhole ) {
-		msg_s = std::string( ( ( wh_api::i_wormhole_mod * ) sender )->get_name( ) ) + std::string( ":" ) + msg_s;
+		msg_s = std::string( ( ( wh_api::i_wormhole_mod * ) sender )->get_info( )->name ) + std::string( ":" ) + msg_s;
 	}
 
 	for ( const auto &mod : mod_list ) {

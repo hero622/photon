@@ -2,7 +2,7 @@
 
 #include "core/mods/mods.h"
 
-void menu::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
+void gui::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
 	cur_menu = menu_t( );
 
 	cur_menu.pos = pos;
@@ -17,12 +17,12 @@ void menu::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
 	wh->portal2->surface->set_clip_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.pos.x + cur_menu.size.x - 1, cur_menu.pos.y + cur_menu.size.y - 1 );
 }
 
-void menu::framework::end( ) {
+void gui::framework::end( ) {
 	wh->portal2->surface->set_clip_rect( 0, 0, wh->render->get_screen_size( ).x, wh->render->get_screen_size( ).y );
 	wh->portal2->surface->enable_clipping = false;
 }
 
-bool menu::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title ) {
+bool gui::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title ) {
 	bool hover = wh->input->is_cursor_in_area( pos.x, pos.y, pos.x + size.x, pos.y + size.y );
 	bool active = ( hover && wh->input->get_key_press( sdk::mouse_left ) ) || selected == cur_menu.tab_count;
 	if ( active )
@@ -45,7 +45,7 @@ bool menu::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std
 	return active;
 }
 
-bool menu::framework::mod( std::string title, std::string subtitle ) {
+bool gui::framework::mod( std::string title, std::string subtitle ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 220, 100 );
@@ -73,26 +73,7 @@ bool menu::framework::mod( std::string title, std::string subtitle ) {
 	return result;
 }
 
-bool menu::framework::button( sdk::vec2_t size, std::string title ) {
-	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
-
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
-	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
-
-	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? clicking ? colors::white : colors::dark : colors::darker );
-	wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
-
-	const auto text_size = wh->render->get_text_size( fonts::normal, title );
-
-	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + size.y / 2 - text_size.y / 2, fonts::normal, colors::white, true, title );
-
-	if ( hover && wh->input->get_key_press( sdk::mouse_left ) )
-		return true;
-
-	return false;
-}
-
-void menu::framework::modlist( std::vector<std::string> items ) {
+void gui::framework::modlist( std::vector<std::string> items ) {
 	cur_menu.cursor.x = 12;
 
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
@@ -121,4 +102,40 @@ void menu::framework::modlist( std::vector<std::string> items ) {
 
 		cur_pos.y += 68;
 	}
+}
+
+
+bool gui::framework::button( sdk::vec2_t size, std::string label ) {
+	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
+	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? clicking ? colors::white : colors::dark : colors::darker );
+	wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
+
+	const auto text_size = wh->render->get_text_size( fonts::normal, label );
+
+	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + size.y / 2 - text_size.y / 2, fonts::normal, colors::white, true, label );
+
+	cur_menu.cursor.y += size.y + 12;
+
+	if ( hover && wh->input->get_key_press( sdk::mouse_left ) ) return true;
+
+	return false;
+}
+
+void gui::framework::checkbox( bool &val, std::string label ) {
+	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + 20, cur_pos.y + 20 );
+	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, 20, 20, val ? colors::white : colors::dark );
+	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, 14, 14, val ? colors::white : sdk::color_t( 0, 0, 0, 0 ) );
+
+	wh->render->draw_text( cur_pos.x + 24, cur_pos.y - 2, fonts::normal, colors::white, false, label );
+
+	if ( hover && wh->input->get_key_press( sdk::mouse_left ) )
+		val = !val;
 }

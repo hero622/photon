@@ -1,7 +1,7 @@
 #include "hooks.h"
 
 #include "core/huds/huds.h"
-#include "core/menu/menu.h"
+#include "core/menu/gui.h"
 #include "core/mods/mods.h"
 #include "core/wormhole.h"
 #include "wormhole-sdk/portal2.h"
@@ -13,7 +13,6 @@ bool hooks::initialize( ) {
 	hk_virtual( wh->portal2->engine_vgui_internal, paint, offsets::paint );
 	hk_virtual( wh->portal2->surface, lock_cursor, offsets::lock_cursor );
 	hk_virtual( wh->portal2->base_client_dll, in_key_event, offsets::in_key_event );
-	// hk_virtual( wh->portal2->base_client_dll, handle_game_ui_event, offsets::handle_game_ui_event );
 	hk_virtual( wh->portal2->surface, on_screen_size_changed, offsets::on_screen_size_changed );
 
 	hk_cmd( plugin_unload );
@@ -25,7 +24,6 @@ void hooks::uninitialize( ) {
 	unhk_cmd( plugin_unload );
 
 	unhk( on_screen_size_changed );
-	unhk( handle_game_ui_event );
 	unhk( in_key_event );
 	unhk( lock_cursor );
 	unhk( paint );
@@ -71,7 +69,7 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 
 		wh->events->post( &wormhole, "paint" );
 
-		menu::paint( );
+		gui::paint( );
 		huds::paint_ui( );
 	}
 
@@ -81,29 +79,22 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 hk_fn( void, hooks::lock_cursor ) {
 	static void *input_ctx = wh->portal2->engine_client->get_input_context( 0 );
 
-	if ( menu::open ) {
+	if ( gui::open ) {
 		wh->portal2->surface->unlock_cursor( );
 
 		wh->portal2->input_stack_system->set_cursor_visible( input_ctx, true );
 	} else {
-		lock_cursor( ecx );
-
 		wh->portal2->input_stack_system->set_cursor_visible( input_ctx, false );
+
+		lock_cursor( ecx );
 	}
 }
 
 hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding ) {
-	if ( menu::open )
+	if ( gui::open )
 		return 0;
 
 	return in_key_event( ecx, eventcode, keynum, current_binding );
-}
-
-hk_fn( bool, hooks::handle_game_ui_event, const void *event ) {
-	if ( menu::open )
-		return false;
-
-	return handle_game_ui_event( ecx, event );
 }
 
 hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
@@ -112,7 +103,7 @@ hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	wh->events->post( &wormhole, "on_screen_size_changed" );
 
 	// recreate fonts
-	menu::initialize( );
+	gui::initialize( );
 }
 
 hk_cmd_fn( hooks::plugin_unload ) {

@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace menu {
+namespace gui {
 	namespace framework {
 		namespace colors {
 			inline sdk::color_t bg = sdk::color_t( 0, 0, 0, 200 );
@@ -34,7 +34,9 @@ namespace menu {
 		void end( );
 		bool tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title );
 		bool mod( std::string title, std::string subtitle );
-		bool button( sdk::vec2_t size, std::string title );
 		void modlist( std::vector<std::string> items );
+
+		bool button( sdk::vec2_t size, std::string label );
+		void checkbox( bool &val, std::string label );
 	}  // namespace framework
-}  // namespace menu
+}  // namespace gui

@@ -102,7 +102,7 @@
     <ClInclude Include="core\menu\framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\menu\menu.h">
+    <ClInclude Include="core\menu\gui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\render.h">
@@ -121,6 +121,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wormhole-sdk\draw_call.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wormhole-sdk\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,9 +167,6 @@
     <ClCompile Include="core\menu\framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\menu\menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="core\shared\render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -177,6 +177,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wormhole-sdk\draw_call.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\shared\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\menu\gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

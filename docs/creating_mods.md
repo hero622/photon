@@ -16,6 +16,7 @@ An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
       - `huds`: Register your custom huds through this.
       - `render`: Render wrapper around Portal 2's renderer.
       - `input`: Input wrapper around Portal 2's input system.
+      - `menu`: Use this to add controls to the mod's settings menu.
 	- You should expose this pointer globally (most macros assume that it's named `wh`).
 	
 Example of a simple mod:
@@ -28,7 +29,8 @@ public:
 	virtual bool load(wh_api::c_shared *wh);
 	virtual void unload();
 	virtual void on_event(const char *msg);
-	virtual const char *get_name();
+	virtual wh_api::wh_mod_info_t *get_name();
+	virtual void paint_menu();
 };
 
 extern c_wormhole_mod mod;
@@ -62,8 +64,16 @@ void c_wormhole_mod::on_event(const char *msg) {
 	}
 }
 
-const char *c_wormhole_mod::get_name() {
-	return "example-mod";
+wh_api::wh_mod_info_t *c_wormhole_mod::get_name() {
+	wh_api::wh_mod_info_t info;
+	info.name = "example mod";
+	info.version = "0.0.1";
+	return &info;
+}
+
+void c_wormhole_mod::paint_menu() {
+	static bool example_value;
+	wh->menu->checkbox(example_value, "example checkbox");
 }
 ```
 ## Events

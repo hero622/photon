@@ -103,7 +103,7 @@
     <ClInclude Include="core\huds\huds.h" />
     <ClInclude Include="core\interfaces\interfaces.h" />
     <ClInclude Include="core\menu\framework.h" />
-    <ClInclude Include="core\menu\menu.h" />
+    <ClInclude Include="core\menu\gui.h" />
     <ClInclude Include="core\mods\mods.h" />
     <ClInclude Include="core\source-sdk\plugin.h" />
     <ClInclude Include="core\wormhole.h" />
@@ -121,6 +121,7 @@
     <ClInclude Include="wormhole-sdk\interfaces\mem_alloc.h" />
     <ClInclude Include="wormhole-sdk\interfaces\scheme.h" />
     <ClInclude Include="wormhole-sdk\interfaces\surface.h" />
+    <ClInclude Include="wormhole-sdk\menu.h" />
     <ClInclude Include="wormhole-sdk\portal2.h" />
     <ClInclude Include="wormhole-sdk\render.h" />
     <ClInclude Include="wormhole-sdk\source-sdk\color.h" />
@@ -141,12 +142,13 @@
     <ClCompile Include="core\huds\huds.cpp" />
     <ClCompile Include="core\interfaces\interfaces.cpp" />
     <ClCompile Include="core\menu\framework.cpp" />
-    <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\menu\gui.cpp" />
     <ClCompile Include="core\mods\mods.cpp" />
     <ClCompile Include="core\shared\events.cpp" />
     <ClCompile Include="core\shared\hook.cpp" />
     <ClCompile Include="core\shared\hud.cpp" />
     <ClCompile Include="core\shared\input.cpp" />
+    <ClCompile Include="core\shared\menu.cpp" />
     <ClCompile Include="core\shared\render.cpp" />
     <ClCompile Include="core\source-sdk\plugin.cpp" />
     <ClCompile Include="core\wormhole.cpp" />

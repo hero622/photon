@@ -2,7 +2,7 @@
 
 #include "core/hooks/hooks.h"
 #include "core/interfaces/interfaces.h"
-#include "core/menu/menu.h"
+#include "core/menu/gui.h"
 #include "core/mods/mods.h"
 
 #include <cstring>
@@ -22,6 +22,7 @@ c_wormhole::c_wormhole( ) {
 	wh->huds = new c_huds( );
 	wh->render = new c_render( );
 	wh->input = new c_input( );
+	wh->menu = new c_menu( );
 }
 
 bool c_wormhole::load( sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory ) {
@@ -35,7 +36,7 @@ bool c_wormhole::load( sdk::create_interface_fn interface_factory, sdk::create_i
 
 			c_variable::regall( );
 
-			menu::initialize( );
+			gui::initialize( );
 
 			wh->portal2->console->color_msg( { 0, 255, 0, 255 }, "Wormhole loaded.\n" );
 
@@ -69,7 +70,7 @@ void c_wormhole::unload( ) {
 
 	mods::unloadall( );
 
-	menu::uninitialize( );
+	gui::uninitialize( );
 
 	c_variable::unregall( );
 
