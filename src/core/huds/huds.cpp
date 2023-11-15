@@ -73,7 +73,6 @@ void align_hud_element( wh_api::hud_t *hud, wh_api::hud_t *other_hud ) {
 					hud->pos.y = ( other_hud_rect[ j ] - ( hud_rect[ i ] - hud_rect[ 1 ] ) + hud->anchor.y * hud->bounds.y ) / screen_size.y;
 					wh->render->draw_line( 0, other_hud_rect[ j ], screen_size.x, 0, clr );
 				}
-				break;
 			}
 		}
 	}

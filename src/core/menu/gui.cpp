@@ -19,12 +19,6 @@ void gui::uninitialize( ) {
 }
 
 void gui::paint( ) {
-	if ( wh->input->get_key_press( sdk::key_insert ) )
-		open = !open;
-
-	if ( !open )
-		return;
-
 	const auto screen_size = wh->render->get_screen_size( );
 
 	const int tab_height = 50;

@@ -69,8 +69,13 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 
 		wh->events->post( &wormhole, "paint" );
 
-		gui::paint( );
-		huds::paint_ui( );
+		if ( wh->input->get_key_press( sdk::key_insert ) )
+			gui::open = !gui::open;
+
+		if ( gui::open ) {
+			gui::paint( );
+			huds::paint_ui( );
+		}
 	}
 
 	wh->portal2->surface->finish_drawing( );
