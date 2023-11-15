@@ -1,0 +1,72 @@
+#include "mod.h"
+
+#include "hooks/hooks.h"
+#include "huds/hud.h"
+
+c_wormhole_mod mod;
+
+expose_wormhole_mod( c_wormhole_mod, mod );
+
+wh_api::c_shared *wh;
+
+sdk::h_font font;
+
+c_example_hud *ex_hud;
+c_example_thud *ex_thud;
+
+bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
+	::wh = wh;
+
+	if ( example_mod::hooks::initialize( ) ) {
+		c_command::regall( );
+
+		wh->huds->reg( ex_hud = new c_example_hud( ) );
+		wh->huds->reg( ex_thud = new c_example_thud( ) );
+
+		wh->portal2->console->msg( "example mod loaded.\n" );
+
+		// post example event
+		// this will look like: "example mod:load" for other mods
+		wh->events->post( &mod, "load" );
+
+		wh->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
+	}
+
+	return true;
+}
+
+void c_wormhole_mod::unload( ) {
+	wh->huds->unreg( ex_hud );
+	wh->huds->unreg( ex_thud );
+
+	c_command::unregall( );
+
+	example_mod::hooks::uninitialize( );
+
+	wh->portal2->console->msg( "example mod unloaded.\n" );
+}
+
+void c_wormhole_mod::on_event( const char *msg ) {
+	if ( !strcmp( msg, "paint" ) ) {
+		wh->render->draw_text( 2, 2, font, { 255, 255, 255, 255 }, false, "example mod loaded." );
+	}
+	if ( !strcmp( msg, "on_screen_size_changed" ) ) {
+		wh->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
+	}
+}
+
+wh_api::wh_mod_info_t *c_wormhole_mod::get_info( ) {
+	wh_api::wh_mod_info_t info;
+	info.name = "example mod";
+	info.version = "0.0.1";
+	return &info;
+}
+
+void c_wormhole_mod::paint_menu( ) {
+	static bool example_value;
+	wh->menu->checkbox( example_value, "example checkbox" );
+}
+
+create_con_command( example_command, "example command.\n" ) {
+	wh->portal2->console->msg( "hello." );
+}

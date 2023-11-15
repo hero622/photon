@@ -1,6 +1,6 @@
 # Creating mods
 
-An example mod can be found [here](https://github.com/Zyntex1/wh-example-mod).
+An example mod can be found [here](https://github.com/Zyntex1/wormhole/tree/master/example-mod).
 
 ## Setup
 - Download the [Wormhole SDK](https://github.com/Zyntex1/wormhole-sdk).
