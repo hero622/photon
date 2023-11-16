@@ -10,17 +10,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="convars\convars.h" />
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="huds\hud.h" />
     <ClInclude Include="mod.h" />
     <ClInclude Include="portal2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\wormhole-sdk\convar.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\draw_call.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\utils\console.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\utils\memory.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\utils\string.cpp" />
+    <ClCompile Include="convars\convars.cpp" />
     <ClCompile Include="hooks\hooks.cpp" />
     <ClCompile Include="huds\hud.cpp" />
     <ClCompile Include="mod.cpp" />

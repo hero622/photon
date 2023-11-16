@@ -1,5 +1,6 @@
 #include "wormhole.h"
 
+#include "core/convars/convars.h"
 #include "core/hooks/hooks.h"
 #include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
@@ -17,6 +18,7 @@ c_wormhole::c_wormhole( ) {
 	this->plugin = new c_plugin( );
 	wh = new wh_api::c_shared( );
 	wh->portal2 = new c_portal2( );
+	wh->cvars = new c_convar( );
 	wh->hook = new c_hook( );
 	wh->events = new c_events( );
 	wh->huds = new c_huds( );
@@ -32,9 +34,7 @@ bool c_wormhole::load( sdk::create_interface_fn interface_factory, sdk::create_i
 
 	if ( interfaces::initialize( ) ) {
 		if ( hooks::initialize( ) ) {
-			c_command::regall( );
-
-			c_variable::regall( );
+			convars::initialize( );
 
 			gui::initialize( );
 
@@ -72,9 +72,7 @@ void c_wormhole::unload( ) {
 
 	gui::uninitialize( );
 
-	c_variable::unregall( );
-
-	c_command::unregall( );
+	convars::uninitialize( );
 
 	hooks::uninitialize( );
 
@@ -91,11 +89,13 @@ void c_wormhole::unload( ) {
 	utils::console::free( );
 #endif
 
+	delete_ptr( wh->menu );
 	delete_ptr( wh->input );
 	delete_ptr( wh->render );
 	delete_ptr( wh->huds );
 	delete_ptr( wh->events );
 	delete_ptr( wh->hook );
+	delete_ptr( wh->cvars );
 	delete_ptr( wh->portal2 );
 	delete_ptr( wh );
 	delete_ptr( this->plugin );

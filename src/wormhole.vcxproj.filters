@@ -126,15 +126,15 @@
     <ClInclude Include="wormhole-sdk\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\convars\convars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wormhole-sdk\utils\memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wormhole-sdk\utils\string.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wormhole-sdk\convar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wormhole-sdk\utils\console.cpp">
@@ -183,6 +183,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\menu\gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\convars\convars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\shared\convar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

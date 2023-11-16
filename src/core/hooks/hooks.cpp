@@ -45,7 +45,9 @@ hk_fn( void, hooks::frame ) {
 
 	frame( ecx );
 
-	wh->events->post( &wormhole, "post_frame" );
+	// !!! look into why this broke
+	if ( wh )
+		wh->events->post( &wormhole, "post_frame" );
 }
 
 hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {

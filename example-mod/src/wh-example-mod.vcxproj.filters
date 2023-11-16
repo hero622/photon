@@ -18,30 +18,33 @@
     <ClInclude Include="portal2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hooks\hooks.h">
+    <ClInclude Include="mod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="huds\hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mod.h">
+    <ClInclude Include="hooks\hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="convars\convars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hooks\hooks.cpp">
+    <ClCompile Include="mod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="huds\hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mod.cpp">
+    <ClCompile Include="hooks\hooks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\wormhole-sdk\convar.cpp">
+    <ClCompile Include="convars\convars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\wormhole-sdk\utils\string.cpp">
+    <ClCompile Include="..\..\src\wormhole-sdk\draw_call.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\wormhole-sdk\utils\memory.cpp">
@@ -50,7 +53,7 @@
     <ClCompile Include="..\..\src\wormhole-sdk\utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\wormhole-sdk\draw_call.cpp">
+    <ClCompile Include="..\..\src\wormhole-sdk\utils\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

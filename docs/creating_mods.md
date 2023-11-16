@@ -1,3 +1,5 @@
+# THERE IS A CHANCE THIS IS OUTDATED
+
 # Creating mods
 
 An example mod can be found [here](https://github.com/Zyntex1/wormhole/tree/master/example-mod).

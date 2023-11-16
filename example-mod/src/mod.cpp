@@ -1,5 +1,6 @@
 #include "mod.h"
 
+#include "convars/convars.h"
 #include "hooks/hooks.h"
 #include "huds/hud.h"
 
@@ -18,7 +19,7 @@ bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
 	::wh = wh;
 
 	if ( example_mod::hooks::initialize( ) ) {
-		c_command::regall( );
+		convars::initialize( );
 
 		wh->huds->reg( ex_hud = new c_example_hud( ) );
 		wh->huds->reg( ex_thud = new c_example_thud( ) );
@@ -39,7 +40,7 @@ void c_wormhole_mod::unload( ) {
 	wh->huds->unreg( ex_hud );
 	wh->huds->unreg( ex_thud );
 
-	c_command::unregall( );
+	convars::uninitialize( );
 
 	example_mod::hooks::uninitialize( );
 
@@ -65,8 +66,4 @@ wh_api::wh_mod_info_t *c_wormhole_mod::get_info( ) {
 void c_wormhole_mod::paint_menu( ) {
 	static bool example_value;
 	wh->menu->checkbox( example_value, "example checkbox" );
-}
-
-create_con_command( example_command, "example command.\n" ) {
-	wh->portal2->console->msg( "hello." );
 }
