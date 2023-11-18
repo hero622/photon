@@ -64,6 +64,14 @@ wh_api::wh_mod_info_t *c_wormhole_mod::get_info( ) {
 }
 
 void c_wormhole_mod::paint_menu( ) {
-	static bool example_value;
-	wh->menu->checkbox( example_value, "example checkbox" );
+	static bool example_checkbox_val;
+	wh->menu->checkbox( example_checkbox_val, "example checkbox" );
+	static int example_slider_val;
+	wh->menu->slider( example_slider_val, 0, 100, "example slider" );
+	static float example_sliderf_val;
+	wh->menu->sliderf( example_sliderf_val, 0.f, 10.f, "example sliderf" );
+	static int example_combo_val;
+	static bool example_combo_open;
+	const char *items[] = { "value 1", "value 2", "value 3" };
+	wh->menu->combo( example_combo_val, example_combo_open, items, 3, "example combo" );
 }

@@ -2,6 +2,8 @@
 
 #include "core/mods/mods.h"
 
+#include <algorithm>
+
 void gui::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
 	cur_menu = menu_t( );
 
@@ -18,6 +20,34 @@ void gui::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
 }
 
 void gui::framework::end( ) {
+	if ( cur_menu.cur_combo_items.size( ) ) {
+		auto cur_pos = cur_menu.pos + cur_menu.cur_combo_pos;
+
+		const auto size = sdk::vec2_t( 140, 26 );
+
+		for ( const auto &item : cur_menu.cur_combo_items ) {
+			wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, item );
+
+			wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::dark );
+
+			cur_pos.y += 25;
+		}
+
+		// bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+		// bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
+
+		// if ( clicking ) {
+		// }
+
+		// wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
+
+		// cur_pos.y += text_size.y;
+
+		// wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, items[ val ] );
+
+		// cur_menu.cursor.y += size.y + text_size.y + 4;
+	}
+
 	wh->portal2->surface->set_clip_rect( 0, 0, wh->render->get_screen_size( ).x, wh->render->get_screen_size( ).y );
 	wh->portal2->surface->enable_clipping = false;
 }
@@ -128,14 +158,101 @@ bool gui::framework::button( sdk::vec2_t size, std::string label ) {
 void gui::framework::checkbox( bool &val, std::string label ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + 20, cur_pos.y + 20 );
+	const auto size = sdk::vec2_t( 20, 20 );
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
-
-	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, 20, 20, val ? colors::white : colors::dark );
-	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, 14, 14, val ? colors::white : sdk::color_t( 0, 0, 0, 0 ) );
-
-	wh->render->draw_text( cur_pos.x + 24, cur_pos.y - 2, fonts::normal, colors::white, false, label );
 
 	if ( hover && wh->input->get_key_press( sdk::mouse_left ) )
 		val = !val;
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, val ? colors::white : colors::dark );
+	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, size.x - 6, size.y - 6, val ? colors::white : sdk::color_t( 0, 0, 0, 0 ) );
+
+	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, label );
+
+	cur_menu.cursor.y += size.y + 4;
+}
+
+void gui::framework::slider( int &val, int min, int max, std::string label ) {
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+
+	const auto size = sdk::vec2_t( 140, 20 );
+	const auto text_size = wh->render->get_text_size( fonts::normal, label );
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
+
+	float value = ( float ) val / ( max - min );
+
+	if ( clicking ) {
+		value = ( wh->input->get_cursor_position( ).x - ( cur_pos.x + 3 ) ) / ( size.x - 6 );
+		val = value * ( max - min );
+	}
+
+	wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
+
+	cur_pos.y += text_size.y;
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark );
+	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, value * ( size.x - 6 ), size.y - 6, colors::white );
+
+	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, utils::string::ssprintf( "%d", val ) );
+
+	cur_menu.cursor.y += size.y + text_size.y + 4;
+}
+
+void gui::framework::sliderf( float &val, float min, float max, std::string label ) {
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+
+	const auto size = sdk::vec2_t( 140, 20 );
+	const auto text_size = wh->render->get_text_size( fonts::normal, label );
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
+
+	float value = val / ( max - min );
+
+	if ( clicking ) {
+		value = ( wh->input->get_cursor_position( ).x - ( cur_pos.x + 3 ) ) / ( size.x - 6 );
+		val = value * ( max - min );
+	}
+
+	wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
+
+	cur_pos.y += text_size.y;
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark );
+	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, value * ( size.x - 6 ), size.y - 6, colors::white );
+
+	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, utils::string::ssprintf( "%.1f", val ) );
+
+	cur_menu.cursor.y += size.y + text_size.y + 4;
+}
+
+void gui::framework::combo( int &val, bool &open, std::vector<std::string> items, std::string label ) {
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+
+	const auto size = sdk::vec2_t( 140, 26 );
+	const auto text_size = wh->render->get_text_size( fonts::normal, label );
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
+
+	if ( clicking )
+		open = !open;
+
+	if ( open ) {
+		cur_menu.cur_combo_pos = sdk::vec2_t( cur_menu.cursor.x, cur_menu.cursor.y + size.y + text_size.y );
+		cur_menu.cur_combo_items = items;
+	}
+
+	wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
+
+	cur_pos.y += text_size.y;
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark );
+	wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, items[ val ] );
+
+	cur_menu.cursor.y += size.y + text_size.y + 4;
 }

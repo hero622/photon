@@ -27,6 +27,9 @@ namespace gui {
 
 			int tab_count;
 			int mod_count;
+
+			sdk::vec2_t cur_combo_pos;
+			std::vector<std::string> cur_combo_items;
 		};
 		inline menu_t cur_menu;
 
@@ -38,5 +41,8 @@ namespace gui {
 
 		bool button( sdk::vec2_t size, std::string label );
 		void checkbox( bool &val, std::string label );
+		void slider( int &val, int min, int max, std::string label );
+		void sliderf( float &val, float min, float max, std::string label );
+		void combo( int &val, bool &open, std::vector<std::string> items, std::string label );
 	}  // namespace framework
 }  // namespace gui
