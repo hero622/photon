@@ -20,32 +20,37 @@ void gui::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
 }
 
 void gui::framework::end( ) {
-	if ( cur_menu.cur_combo_items.size( ) ) {
-		auto cur_pos = cur_menu.pos + cur_menu.cur_combo_pos;
+	// draw dropdowns
+	{
+		auto cur_pos = cur_menu.pos + cur_dropdown.pos;
 
 		const auto size = sdk::vec2_t( 140, 26 );
 
-		for ( const auto &item : cur_menu.cur_combo_items ) {
-			wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, item );
+		wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, cur_dropdown.items.size( ) * size.y, colors::dark );
+		wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, cur_dropdown.items.size( ) * size.y - 2, colors::bg );
 
-			wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::dark );
+		for ( std::size_t i = 0; i < cur_dropdown.items.size( ); ++i ) {
+			const auto &item = cur_dropdown.items[ i ];
+
+			bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
+			bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
+
+			if ( !cur_dropdown.multiselect ) {
+				if ( clicking ) {
+					cur_dropdown.value = i;
+					cur_dropdown.done = true;
+				}
+
+				wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, hover ? colors::white : colors::dark, false, item );
+			} else {
+				if ( clicking )
+					cur_dropdown.value ^= ( 1 << i );
+
+				wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, cur_dropdown.value & ( 1 << i ) ? colors::white : colors::dark, false, item );
+			}
 
 			cur_pos.y += 25;
 		}
-
-		// bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
-		// bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
-
-		// if ( clicking ) {
-		// }
-
-		// wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
-
-		// cur_pos.y += text_size.y;
-
-		// wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, items[ val ] );
-
-		// cur_menu.cursor.y += size.y + text_size.y + 4;
 	}
 
 	wh->portal2->surface->set_clip_rect( 0, 0, wh->render->get_screen_size( ).x, wh->render->get_screen_size( ).y );
@@ -230,7 +235,7 @@ void gui::framework::sliderf( float &val, float min, float max, std::string labe
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
 
-void gui::framework::combo( int &val, bool &open, std::vector<std::string> items, std::string label ) {
+void gui::framework::combo( std::size_t &val, std::vector<std::string> items, std::string label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 140, 26 );
@@ -239,12 +244,26 @@ void gui::framework::combo( int &val, bool &open, std::vector<std::string> items
 	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
 	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
 
-	if ( clicking )
-		open = !open;
+	bool open = cur_dropdown.id == label;
 
-	if ( open ) {
-		cur_menu.cur_combo_pos = sdk::vec2_t( cur_menu.cursor.x, cur_menu.cursor.y + size.y + text_size.y );
-		cur_menu.cur_combo_items = items;
+	if ( clicking ) {
+		if ( open )
+			cur_dropdown = dropdown_t( );
+		else {
+			cur_dropdown.id = label;
+			cur_dropdown.pos = sdk::vec2_t( cur_menu.cursor.x, cur_menu.cursor.y + size.y + text_size.y );
+			cur_dropdown.items = items;
+			cur_dropdown.value = val;
+			cur_dropdown.multiselect = false;
+		}
+
+		open = !open;
+	}
+
+	if ( cur_dropdown.done ) {
+		val = cur_dropdown.value;
+
+		cur_dropdown = dropdown_t( );
 	}
 
 	wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
@@ -252,7 +271,61 @@ void gui::framework::combo( int &val, bool &open, std::vector<std::string> items
 	cur_pos.y += text_size.y;
 
 	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark );
+
 	wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, items[ val ] );
+
+	cur_menu.cursor.y += size.y + text_size.y + 4;
+}
+
+void gui::framework::multicombo( std::size_t &val, std::vector<std::string> items, std::string label ) {
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+
+	const auto size = sdk::vec2_t( 140, 26 );
+	const auto text_size = wh->render->get_text_size( fonts::normal, label );
+
+	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
+
+	bool open = cur_dropdown.id == label;
+
+	if ( clicking ) {
+		if ( open ) {
+			val = cur_dropdown.value;
+
+			cur_dropdown = dropdown_t( );
+		} else {
+			cur_dropdown.id = label;
+			cur_dropdown.pos = sdk::vec2_t( cur_menu.cursor.x, cur_menu.cursor.y + size.y + text_size.y );
+			cur_dropdown.items = items;
+			cur_dropdown.value = val;
+			cur_dropdown.multiselect = true;
+		}
+
+		open = !open;
+	}
+
+	if ( open )
+		val = cur_dropdown.value;
+
+	wh->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label );
+
+	cur_pos.y += text_size.y;
+
+	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark );
+
+	std::string display_text;
+	bool comma = false;
+	for ( std::size_t i = 0; i < items.size( ); ++i ) {
+		if ( val & ( 1 << i ) ) {
+			display_text += ( comma ? ", " : "" ) + items[ i ];
+
+			comma = true;
+		}
+	}
+
+	wh->portal2->surface->set_clip_rect( cur_pos.x + 8, cur_pos.y, cur_pos.x + size.x - 8, cur_pos.y + size.y );
+	wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, display_text );
+	wh->portal2->surface->set_clip_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.pos.x + cur_menu.size.x - 1, cur_menu.pos.y + cur_menu.size.y - 1 );
 
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }

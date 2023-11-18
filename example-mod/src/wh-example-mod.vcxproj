@@ -29,7 +29,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{fa989732-5d3f-4565-a5b2-abd400bb34f0}</ProjectGuid>
+    <ProjectGuid>{F0AE9834-36DD-4155-A426-A73D7EC8C232}</ProjectGuid>
     <RootNamespace>whexamplemod</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>wh-example-mod</ProjectName>

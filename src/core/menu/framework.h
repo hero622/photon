@@ -25,13 +25,23 @@ namespace gui {
 
 			sdk::vec2_t cursor;
 
-			int tab_count;
-			int mod_count;
-
-			sdk::vec2_t cur_combo_pos;
-			std::vector<std::string> cur_combo_items;
+			std::size_t tab_count;
+			std::size_t mod_count;
 		};
 		inline menu_t cur_menu;
+
+		struct dropdown_t {
+			std::string id;
+
+			sdk::vec2_t pos;
+
+			std::vector<std::string> items;
+			std::size_t value;  // this is a bitmask when the dropdown is a multiselect and just a regular index when it isnt
+
+			bool multiselect;
+			bool done;
+		};
+		inline dropdown_t cur_dropdown;
 
 		void begin( sdk::vec2_t pos, sdk::vec2_t size );
 		void end( );
@@ -43,6 +53,7 @@ namespace gui {
 		void checkbox( bool &val, std::string label );
 		void slider( int &val, int min, int max, std::string label );
 		void sliderf( float &val, float min, float max, std::string label );
-		void combo( int &val, bool &open, std::vector<std::string> items, std::string label );
+		void combo( std::size_t &val, std::vector<std::string> items, std::string label );
+		void multicombo( std::size_t &val, std::vector<std::string> items, std::string label );
 	}  // namespace framework
 }  // namespace gui
