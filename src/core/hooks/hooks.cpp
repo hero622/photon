@@ -45,7 +45,7 @@ hk_fn( void, hooks::frame ) {
 
 	frame( ecx );
 
-	// !!! look into why this broke
+	//	todo: look into why this broke
 	if ( wh )
 		wh->events->post( &wormhole, "post_frame" );
 }
@@ -53,6 +53,7 @@ hk_fn( void, hooks::frame ) {
 hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
 	set_signon_state( ecx, state, count, unk );
 
+	//	this is probably not the best way, i saw SAR do something similar but this needs further thought
 	if ( state == sdk::signonstate_full )
 		wh->events->post( &wormhole, "session_start" );
 	else
@@ -65,7 +66,7 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 	wh->portal2->surface->start_drawing( );
 
 	if ( mode == sdk::paint_uipanels ) {
-		wh->input->poll_input( );  // not sure if this is the best place to call this
+		wh->input->poll_input( );  //	not sure if this is the best place to call this
 
 		huds::paint( );
 
@@ -83,6 +84,7 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 	wh->portal2->surface->finish_drawing( );
 }
 
+// unlock the cursor from the game when menu is open
 hk_fn( void, hooks::lock_cursor ) {
 	static void *input_ctx = wh->portal2->engine_client->get_input_context( 0 );
 
@@ -97,6 +99,7 @@ hk_fn( void, hooks::lock_cursor ) {
 	}
 }
 
+// block input to the game when wormhole's menu is open, currently only works in game, not in the menu
 hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding ) {
 	if ( gui::open )
 		return 0;
@@ -104,15 +107,17 @@ hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const
 	return in_key_event( ecx, eventcode, keynum, current_binding );
 }
 
+// recreate fonts because they get cleared everytime you change screen resolution
 hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	on_screen_size_changed( ecx, old_width, old_height );
 
 	wh->events->post( &wormhole, "on_screen_size_changed" );
 
-	// recreate fonts
+	//	recreate fonts
 	gui::initialize( );
 }
 
+// we need to unhook cengine::frame before the plugin gets unloaded
 hk_cmd_fn( hooks::plugin_unload ) {
 	if ( args.arg_c( ) >= 2 && wormhole.get_plugin( ) && ( !strcmp( args[ 1 ], "wormhole" ) || std::atoi( args[ 1 ] ) == wormhole.plugin->index ) )
 		wormhole.unload( );

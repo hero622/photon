@@ -46,11 +46,11 @@ namespace sdk {
 	};
 
 	struct c_plugin {
-		char name[ 128 ];                   // 0
-		bool disable;                       // 128
-		i_server_plugin_callbacks *plugin;  // 132
-		int plugin_interface_version;       // 136
-		void *plugin_module;                // 140
+		char name[ 128 ];
+		bool disable;
+		i_server_plugin_callbacks *plugin;
+		int plugin_interface_version;
+		void *plugin_module;
 	};
 }  // namespace sdk
 

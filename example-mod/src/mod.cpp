@@ -12,22 +12,18 @@ wh_api::c_shared *wh;
 
 sdk::h_font font;
 
-c_example_hud *ex_hud;
-c_example_thud *ex_thud;
-
 bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
 	::wh = wh;
 
 	if ( example_mod::hooks::initialize( ) ) {
 		convars::initialize( );
 
-		wh->huds->reg( ex_hud = new c_example_hud( ) );
-		wh->huds->reg( ex_thud = new c_example_thud( ) );
+		huds::initialize( );
 
 		wh->portal2->console->msg( "example mod loaded.\n" );
 
-		// post example event
-		// this will look like: "example mod:load" for other mods
+		//	post example event
+		//	this will look like: "example mod:load" for other mods
 		wh->events->post( &mod, "load" );
 
 		wh->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
@@ -37,8 +33,7 @@ bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
 }
 
 void c_wormhole_mod::unload( ) {
-	wh->huds->unreg( ex_hud );
-	wh->huds->unreg( ex_thud );
+	huds::uninitialize( );
 
 	convars::uninitialize( );
 
@@ -80,6 +75,4 @@ void c_wormhole_mod::paint_menu( ) {
 	static std::size_t example_multicombo_val;
 	const char *example_multicombo_items[] = { "value 1", "value 2", "value 3" };
 	wh->menu->multicombo( example_multicombo_val, example_multicombo_items, 3, "example multicombo" );
-
-	wh->portal2->console->msg( "%lu\n", example_multicombo_val );
 }

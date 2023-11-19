@@ -36,7 +36,7 @@ namespace gui {
 			sdk::vec2_t pos;
 
 			std::vector<std::string> items;
-			std::size_t value;  // this is a bitmask when the dropdown is a multiselect and just a regular index when it isnt
+			std::size_t value;  //	this is a bitmask when the dropdown is a multiselect and just a regular index when it isnt
 
 			bool multiselect;
 			bool done;

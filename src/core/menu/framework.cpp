@@ -24,7 +24,7 @@ void gui::framework::end( ) {
 	{
 		auto cur_pos = cur_menu.pos + cur_dropdown.pos;
 
-		const auto size = sdk::vec2_t( 140, 26 );
+		const auto size = sdk::vec2_t( 160, 26 );
 
 		wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, cur_dropdown.items.size( ) * size.y, colors::dark );
 		wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, cur_dropdown.items.size( ) * size.y - 2, colors::bg );
@@ -182,7 +182,7 @@ void gui::framework::checkbox( bool &val, std::string label ) {
 void gui::framework::slider( int &val, int min, int max, std::string label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t( 140, 20 );
+	const auto size = sdk::vec2_t( 160, 18 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
 	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
@@ -202,7 +202,7 @@ void gui::framework::slider( int &val, int min, int max, std::string label ) {
 	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark );
 	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, value * ( size.x - 6 ), size.y - 6, colors::white );
 
-	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, utils::string::ssprintf( "%d", val ) );
+	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 3, fonts::normal, colors::white, false, utils::string::ssprintf( "%d", val ) );
 
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
@@ -210,7 +210,7 @@ void gui::framework::slider( int &val, int min, int max, std::string label ) {
 void gui::framework::sliderf( float &val, float min, float max, std::string label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t( 140, 20 );
+	const auto size = sdk::vec2_t( 160, 18 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
 	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
@@ -230,7 +230,7 @@ void gui::framework::sliderf( float &val, float min, float max, std::string labe
 	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark );
 	wh->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, value * ( size.x - 6 ), size.y - 6, colors::white );
 
-	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, utils::string::ssprintf( "%.1f", val ) );
+	wh->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 3, fonts::normal, colors::white, false, utils::string::ssprintf( "%.1f", val ) );
 
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
@@ -238,7 +238,7 @@ void gui::framework::sliderf( float &val, float min, float max, std::string labe
 void gui::framework::combo( std::size_t &val, std::vector<std::string> items, std::string label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t( 140, 26 );
+	const auto size = sdk::vec2_t( 160, 26 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
 	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
@@ -280,7 +280,7 @@ void gui::framework::combo( std::size_t &val, std::vector<std::string> items, st
 void gui::framework::multicombo( std::size_t &val, std::vector<std::string> items, std::string label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t( 140, 26 );
+	const auto size = sdk::vec2_t( 160, 26 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
 	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
