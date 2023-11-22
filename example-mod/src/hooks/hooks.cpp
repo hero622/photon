@@ -3,7 +3,7 @@
 #include "../portal2.h"
 
 bool example_mod::hooks::initialize( ) {
-	hk_addr( calc_view_model_lag, utils::memory::pattern_scan( module( "client" ), signatures::calc_view_model_lag ) );
+	hk_inline( calc_view_model_lag, utils::memory::pattern_scan( module( "client" ), signatures::calc_view_model_lag ) );
 
 	return true;
 }

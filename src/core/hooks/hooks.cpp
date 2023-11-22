@@ -13,6 +13,7 @@ bool hooks::initialize( ) {
 	hk_virtual( wh->portal2->engine_vgui_internal, paint, offsets::paint );
 	hk_virtual( wh->portal2->surface, lock_cursor, offsets::lock_cursor );
 	hk_virtual( wh->portal2->base_client_dll, in_key_event, offsets::in_key_event );
+	hk_virtual( wh->portal2->vgui_input, update_button_state, offsets::update_button_state );
 	hk_virtual( wh->portal2->surface, on_screen_size_changed, offsets::on_screen_size_changed );
 
 	hk_cmd( plugin_unload );
@@ -45,7 +46,7 @@ hk_fn( void, hooks::frame ) {
 
 	frame( ecx );
 
-	//	todo: look into why this broke
+	// todo: look into why this broke
 	if ( wh )
 		wh->events->post( &wormhole, "post_frame" );
 }
@@ -53,7 +54,7 @@ hk_fn( void, hooks::frame ) {
 hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
 	set_signon_state( ecx, state, count, unk );
 
-	//	this is probably not the best way, i saw SAR do something similar but this needs further thought
+	// this is probably not the best way, i saw SAR do something similar but this needs further thought
 	if ( state == sdk::signonstate_full )
 		wh->events->post( &wormhole, "session_start" );
 	else
@@ -66,7 +67,7 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 	wh->portal2->surface->start_drawing( );
 
 	if ( mode == sdk::paint_uipanels ) {
-		wh->input->poll_input( );  //	not sure if this is the best place to call this
+		wh->input->poll_input( );  // not sure if this is the best place to call this
 
 		huds::paint( );
 
@@ -99,12 +100,26 @@ hk_fn( void, hooks::lock_cursor ) {
 	}
 }
 
-// block input to the game when wormhole's menu is open, currently only works in game, not in the menu
+// block input to the game when wormhole's menu is open, only works in game, not in the menu
 hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding ) {
 	if ( gui::open )
 		return 0;
 
 	return in_key_event( ecx, eventcode, keynum, current_binding );
+}
+
+// block input to the menu, vgui has its own input system for some reason, so we have to hook another function
+hk_fn( void, hooks::update_button_state, const int *event ) {
+	if ( gui::open ) {
+		// so we cant actually just return here because theres other functions calling SetKeyCodeState and SetMouseCodeState
+		// i didnt want to hook those functions so we just reset the struct that those functions update here
+		uint8_t *context_addr = ( uint8_t * ) ecx + offsets::context;  // m_hContext
+		int context = *( int * ) context_addr;
+
+		return utils::memory::call_virtual<void>( offsets::reset_input_context, ecx, context );
+	}
+
+	update_button_state( ecx, event );
 }
 
 // recreate fonts because they get cleared everytime you change screen resolution
@@ -113,7 +128,7 @@ hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 
 	wh->events->post( &wormhole, "on_screen_size_changed" );
 
-	//	recreate fonts
+	// recreate fonts
 	gui::initialize( );
 }
 

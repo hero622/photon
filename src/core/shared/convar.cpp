@@ -6,7 +6,7 @@
 // also doesnt work on linux currently i think
 
 sdk::con_var *c_convar::create_convar( const char *name, const char *default_value, int flags, const char *help_string, bool has_min, float min, bool has_max, float max ) {
-	void *cvar = wh->portal2->mem_alloc->alloc( 0 );  //	honestly i have no clue what size i should pass here but this works
+	void *cvar = wh->portal2->mem_alloc->alloc( 0 );  // honestly i have no clue what size i should pass here but this works
 
 	using ctor_fn_t = sdk::con_var *( __rescall * ) ( void *, const char *, const char *, int, const char *, bool, float, bool, float );
 	const auto ctor_fn = reinterpret_cast<ctor_fn_t>( utils::memory::pattern_scan( modules::tier1, signatures::convar_ctor ) );

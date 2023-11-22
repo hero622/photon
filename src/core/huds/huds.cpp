@@ -60,7 +60,7 @@ void align_hud_element( wh_api::hud_t *hud, wh_api::hud_t *other_hud ) {
 		other_hud_pos.x + other_hud->bounds.x / 2,
 		other_hud_pos.y + other_hud->bounds.y / 2 };
 
-	//	todo: sort everything by the distance and then use the closest one
+	// todo: sort everything by the distance and then use the closest one
 	for ( int i = 0; i < 6; ++i ) {
 		for ( int j = 0; j < 6; ++j ) {
 			if ( i % 2 != j % 2 )
@@ -100,7 +100,7 @@ void huds::paint( ) {
 	}
 
 	for ( const auto &thud : thuds ) {
-		//	todo: some formatting system
+		// todo: some formatting system
 		auto text = std::string( thud->format );
 
 		utils::string::replace( text, "{name}", std::string( thud->get_name( ) ) );
@@ -164,7 +164,7 @@ void huds::paint_ui( ) {
 
 			set_abs_pos( hud, wh->input->get_cursor_position( ) - grab_pos );
 
-			//	dummy hud element for safezone
+			// dummy hud element for safezone
 			auto safezone = wh_api::hud_t( );
 			safezone.pos = wh->render->normalize( huds::safezone );
 			safezone.bounds = screen_size - huds::safezone * 2;
