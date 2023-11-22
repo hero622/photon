@@ -166,8 +166,9 @@ void huds::paint_ui( ) {
 
 			// dummy hud element for safezone
 			auto safezone = wh_api::hud_t( );
-			safezone.pos = wh->render->normalize( huds::safezone );
-			safezone.bounds = screen_size - huds::safezone * 2;
+			const auto safezone_vec = sdk::vec2_t( safezone_x, safezone_y );
+			safezone.pos = wh->render->normalize( safezone_vec );
+			safezone.bounds = screen_size - sdk::vec2_t( safezone_vec ) * 2;
 			align_hud_element( hud, &safezone );
 
 			for ( const auto &other_hud : huds ) {

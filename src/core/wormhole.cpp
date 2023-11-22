@@ -40,6 +40,9 @@ bool c_wormhole::load( sdk::create_interface_fn interface_factory, sdk::create_i
 
 			wh->portal2->console->color_msg( { 0, 255, 0, 255 }, "Wormhole loaded.\n" );
 
+			if ( !mods::loadall( ) )
+				wh->portal2->console->warning( "Failed to load one or more mods.\n" );
+
 			return true;
 		}
 	}

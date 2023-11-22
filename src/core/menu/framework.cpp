@@ -12,6 +12,9 @@ void gui::framework::begin( sdk::vec2_t pos, sdk::vec2_t size ) {
 
 	cur_menu.cursor = sdk::vec2_t( 12, 12 );
 
+	// block input to other controls when a dropdown is open
+	cur_menu.block_input = !cur_dropdown.id.empty( );
+
 	wh->render->draw_outlined_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.size.x, cur_menu.size.y, colors::dark );
 	wh->render->draw_filled_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.size.x - 2, cur_menu.size.y - 2, colors::bg );
 
@@ -27,12 +30,12 @@ void gui::framework::end( ) {
 		const auto size = sdk::vec2_t( 160, 26 );
 
 		wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, cur_dropdown.items.size( ) * size.y, colors::dark );
-		wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, cur_dropdown.items.size( ) * size.y - 2, colors::bg );
+		wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, cur_dropdown.items.size( ) * size.y - 2, colors::black );
 
 		for ( std::size_t i = 0; i < cur_dropdown.items.size( ); ++i ) {
 			const auto &item = cur_dropdown.items[ i ];
 
-			bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
+			bool hover = wh->input->is_cursor_in_area( cur_pos.x + 1, cur_pos.y + 1, cur_pos.x + size.x - 1, cur_pos.y + size.y - 1 );
 			bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
 
 			if ( !cur_dropdown.multiselect ) {
@@ -49,7 +52,7 @@ void gui::framework::end( ) {
 				wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, cur_dropdown.value & ( 1 << i ) ? colors::white : colors::dark, false, item );
 			}
 
-			cur_pos.y += 25;
+			cur_pos.y += 26;
 		}
 	}
 
@@ -80,22 +83,32 @@ bool gui::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std:
 	return active;
 }
 
-bool gui::framework::mod( std::string title, std::string subtitle ) {
+bool gui::framework::mod( mods::mod_info_t *info ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	const auto size = sdk::vec2_t( 220, 100 );
+	const auto size = sdk::vec2_t( 220, 128 );
 
 	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 
 	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::dark : colors::darker );
 	wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
 
-	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 8, fonts::title, colors::white, true, title );
-	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 36, fonts::normal, colors::dark, true, subtitle );
+	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 8, fonts::title, colors::white, true, info->ptr->get_info( )->name );
+	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 36, fonts::normal, colors::dark, true, info->ptr->get_info( )->version );
 
-	cur_menu.cursor += sdk::vec2_t( 8, 68 );
-	bool result = button( sdk::vec2_t( size.x - 16, 26 ), "settings" );
-	cur_menu.cursor -= sdk::vec2_t( 8, 68 );
+	cur_menu.cursor += sdk::vec2_t( 8, 64 );
+
+	bool result = false;
+
+	if ( !info->is_loaded ) {
+		if ( button( sdk::vec2_t( size.x - 16, 26 ), "enable" ) )
+			mods::enable( info );
+	} else {
+		if ( button( sdk::vec2_t( size.x - 16, 26 ), "disable" ) )
+			mods::disable( info );
+
+		result = button( sdk::vec2_t( size.x - 16, 26 ), "settings" );
+	}
 
 	++cur_menu.mod_count;
 
@@ -108,42 +121,11 @@ bool gui::framework::mod( std::string title, std::string subtitle ) {
 	return result;
 }
 
-void gui::framework::modlist( std::vector<std::string> items ) {
-	cur_menu.cursor.x = 12;
-
-	auto cur_pos = cur_menu.pos + cur_menu.cursor;
-
-	const auto size = sdk::vec2_t( cur_menu.size.x - 24, 40 );
-
-	for ( const auto &mod : items ) {
-		bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
-
-		wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::dark : colors::darker );
-		wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
-
-		wh->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::title, colors::white, false, mod );
-
-		cur_menu.cursor.x = cur_menu.size.x - 24 - 80;
-		cur_menu.cursor.y += 8;
-		if ( !mods::mod_list.count( mod ) ) {
-			if ( button( sdk::vec2_t( 80, 24 ), "load" ) )
-				mods::load( mod.c_str( ) );
-		} else {
-			if ( button( sdk::vec2_t( 80, 24 ), "unload" ) )
-				mods::unload( mod.c_str( ) );
-		}
-		cur_menu.cursor.x = 12;
-		cur_menu.cursor.y -= 8;
-
-		cur_pos.y += 68;
-	}
-}
-
 
 bool gui::framework::button( sdk::vec2_t size, std::string label ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
+	bool hover = !cur_menu.block_input && wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
 
 	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? clicking ? colors::white : colors::dark : colors::darker );
@@ -153,7 +135,7 @@ bool gui::framework::button( sdk::vec2_t size, std::string label ) {
 
 	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + size.y / 2 - text_size.y / 2, fonts::normal, colors::white, true, label );
 
-	cur_menu.cursor.y += size.y + 12;
+	cur_menu.cursor.y += size.y + 4;
 
 	if ( hover && wh->input->get_key_press( sdk::mouse_left ) ) return true;
 
@@ -165,7 +147,7 @@ void gui::framework::checkbox( bool &val, std::string label ) {
 
 	const auto size = sdk::vec2_t( 20, 20 );
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
+	bool hover = !cur_menu.block_input && wh->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
 
 	if ( hover && wh->input->get_key_press( sdk::mouse_left ) )
@@ -185,7 +167,7 @@ void gui::framework::slider( int &val, int min, int max, std::string label ) {
 	const auto size = sdk::vec2_t( 160, 18 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool hover = !cur_menu.block_input && wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
 	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
 
 	float value = ( float ) val / ( max - min );
@@ -213,7 +195,7 @@ void gui::framework::sliderf( float &val, float min, float max, std::string labe
 	const auto size = sdk::vec2_t( 160, 18 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool hover = !cur_menu.block_input && wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
 	bool clicking = hover && wh->input->get_key_held( sdk::mouse_left );
 
 	float value = val / ( max - min );
@@ -241,10 +223,10 @@ void gui::framework::combo( std::size_t &val, std::vector<std::string> items, st
 	const auto size = sdk::vec2_t( 160, 26 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
-	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
-
 	bool open = cur_dropdown.id == label;
+
+	bool hover = ( !cur_menu.block_input || open ) && wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
 
 	if ( clicking ) {
 		if ( open )
@@ -283,10 +265,10 @@ void gui::framework::multicombo( std::size_t &val, std::vector<std::string> item
 	const auto size = sdk::vec2_t( 160, 26 );
 	const auto text_size = wh->render->get_text_size( fonts::normal, label );
 
-	bool hover = wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
-	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
-
 	bool open = cur_dropdown.id == label;
+
+	bool hover = ( !cur_menu.block_input || open ) && wh->input->is_cursor_in_area( cur_pos.x + 3, cur_pos.y + text_size.y + 3, cur_pos.x + size.x - 3, cur_pos.y + text_size.y + size.y - 3 );
+	bool clicking = hover && wh->input->get_key_press( sdk::mouse_left );
 
 	if ( clicking ) {
 		if ( open ) {

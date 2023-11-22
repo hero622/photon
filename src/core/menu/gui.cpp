@@ -1,11 +1,9 @@
 #include "gui.h"
 
+#include "core/huds/huds.h"
 #include "core/mods/mods.h"
 #include "framework.h"
 #include "wormhole-sdk/wormhole.h"
-
-#include <filesystem>
-#include <iostream>
 
 bool gui::initialize( ) {
 	wh->render->create_font( framework::fonts::normal, "Segoe UI Light", 22, false, sdk::fontflag_antialias );
@@ -34,12 +32,12 @@ void gui::paint( ) {
 	}
 	if ( framework::tab( tab, sdk::vec2_t( screen_size.x / 2 - 90, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 180, tab_height ), "modules" ) ) {
 		if ( !cur_mod ) {
-			for ( const auto &mod : mods::mod_list ) {
-				if ( framework::mod( mod.second.ptr->get_info( )->name, mod.first ) )
+			for ( auto &mod : mods::mod_list ) {
+				if ( framework::mod( &mod.second ) )
 					cur_mod = mod.second.ptr;
 			}
 		} else {
-			if ( framework::button( sdk::vec2_t( 80, 30 ), "back" ) )
+			if ( framework::button( sdk::vec2_t( 80, 30 ), "< back" ) )
 				cur_mod = nullptr;
 
 			if ( cur_mod )
@@ -47,11 +45,8 @@ void gui::paint( ) {
 		}
 	}
 	if ( framework::tab( tab, sdk::vec2_t( screen_size.x / 2 + 90 + 6, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 130, tab_height ), "settings" ) ) {
-		std::vector<std::string> mods;
-		for ( const auto &entry : std::filesystem::directory_iterator( "wormhole" ) ) {
-			mods.push_back( entry.path( ).stem( ).string( ) );
-		}
-		framework::modlist( mods );
+		framework::slider( huds::safezone_x, 0, 32, "hud safezone x" );
+		framework::slider( huds::safezone_y, 0, 32, "hud safezone y" );
 	}
 
 	framework::end( );

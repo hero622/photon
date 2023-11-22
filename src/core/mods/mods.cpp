@@ -2,6 +2,9 @@
 
 #include "core/wormhole.h"
 
+#include <filesystem>
+#include <iostream>
+
 #ifdef _WIN32
 #	include <windows.h>
 #	include <memoryapi.h>
@@ -28,14 +31,10 @@ bool mods::load( const char *name ) {
 
 			if ( !mod ) return false;
 
-			auto result = mod->load( wh );
-
-			if ( !result )
-				return false;
-
 			mod_info_t info;
 			info.handle = lib;
 			info.ptr = mod;
+			info.is_loaded = false;
 
 			mod_list.insert( std::make_pair( name, info ) );
 
@@ -44,9 +43,9 @@ bool mods::load( const char *name ) {
 	}
 
 #ifdef _WIN32
-	wh->portal2->console->msg( "Failed to load library (%lu).\n", GetLastError( ) );
+	wh->portal2->console->warning( "Failed to load library (%lu).\n", GetLastError( ) );
 #else
-	wh->portal2->console->msg( "Failed to load library (%s).\n", dlerror( ) );
+	wh->portal2->console->warning( "Failed to load library (%s).\n", dlerror( ) );
 #endif
 
 	return false;
@@ -68,10 +67,41 @@ void mods::unload( const char *name ) {
 	mod_list.erase( name );
 }
 
+bool mods::loadall( ) {
+	bool had_fail = false;
+	for ( const auto &entry : std::filesystem::directory_iterator( "wormhole" ) ) {
+		bool result = load( entry.path( ).stem( ).string( ).c_str( ) );
+
+		if ( !result ) {
+			had_fail = true;
+		}
+	}
+
+	return !had_fail;
+}
+
 void mods::unloadall( ) {
 	for ( const auto &mod : mod_list ) {
 		mod.second.ptr->unload( );
 	}
+}
+
+bool mods::enable( mod_info_t *mod ) {
+	bool result = false;
+	if ( !mod->is_loaded ) {
+		result = mod->ptr->load( wh );
+		mod->is_loaded = true;
+	}
+
+	return result;
+}
+
+void mods::disable( mod_info_t *mod ) {
+	if ( !mod->is_loaded )
+		return;
+
+	mod->is_loaded = false;
+	mod->ptr->unload( );
 }
 
 void mods::print( ) {
@@ -89,6 +119,7 @@ void mods::post_event( void *sender, const char *msg ) {
 	}
 
 	for ( const auto &mod : mod_list ) {
-		mod.second.ptr->on_event( msg_s.c_str( ) );
+		if ( mod.second.is_loaded )
+			mod.second.ptr->on_event( msg_s.c_str( ) );
 	}
 }
