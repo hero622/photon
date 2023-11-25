@@ -31,7 +31,7 @@ public:
 	virtual bool load(wh_api::c_shared *wh);
 	virtual void unload();
 	virtual void on_event(const char *msg);
-	virtual wh_api::wh_mod_info_t *get_name();
+	virtual wh_api::wh_mod_info_t get_name();
 	virtual void paint_menu();
 };
 
@@ -70,7 +70,7 @@ wh_api::wh_mod_info_t *c_wormhole_mod::get_name() {
 	wh_api::wh_mod_info_t info;
 	info.name = "example mod";
 	info.version = "0.0.1";
-	return &info;
+	return info;
 }
 
 void c_wormhole_mod::paint_menu() {

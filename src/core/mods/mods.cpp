@@ -120,7 +120,7 @@ void mods::print( ) {
 		const char *status = mod.second.is_loaded ? "enabled" : "disabled";
 		const auto info = mod.second.ptr->get_info( );
 
-		wh->portal2->console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info->name, info->version, status );
+		wh->portal2->console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
 	}
 }
 
@@ -128,7 +128,8 @@ void mods::post_event( void *sender, const char *msg ) {
 	auto msg_s = std::string( msg );
 
 	if ( sender != &wormhole ) {
-		msg_s = std::string( ( ( wh_api::i_wormhole_mod * ) sender )->get_info( )->name ) + std::string( ":" ) + msg_s;
+		const auto mod = reinterpret_cast<wh_api::i_wormhole_mod *>( sender );
+		msg_s = std::string( mod->get_info( ).name ) + std::string( ":" ) + msg_s;
 	}
 
 	for ( const auto &mod : mod_list ) {

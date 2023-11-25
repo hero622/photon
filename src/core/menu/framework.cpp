@@ -93,8 +93,10 @@ bool gui::framework::mod( mods::mod_info_t *info ) {
 	wh->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::dark : colors::darker );
 	wh->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
 
-	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 8, fonts::title, colors::white, true, info->ptr->get_info( )->name );
-	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 36, fonts::normal, colors::dark, true, info->ptr->get_info( )->version );
+	const auto mod_info = info->ptr->get_info( );
+
+	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 8, fonts::title, colors::white, true, mod_info.name );
+	wh->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + 36, fonts::normal, colors::dark, true, mod_info.version );
 
 	cur_menu.cursor += sdk::vec2_t( 8, 64 );
 

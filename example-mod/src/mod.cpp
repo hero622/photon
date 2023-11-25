@@ -51,11 +51,11 @@ void c_wormhole_mod::on_event( const char *msg ) {
 	}
 }
 
-wh_api::wh_mod_info_t *c_wormhole_mod::get_info( ) {
+wh_api::wh_mod_info_t c_wormhole_mod::get_info( ) {
 	wh_api::wh_mod_info_t info;
 	info.name = "example mod";
 	info.version = "0.0.1";
-	return &info;
+	return info;
 }
 
 void c_wormhole_mod::paint_menu( ) {
