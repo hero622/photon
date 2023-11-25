@@ -24,15 +24,15 @@ concmd_cbk( wh_print ) {
 }
 
 bool convars::initialize( ) {
-	wh->cvars->create_concmd( "wh_load", wh_load_cbk, "wh_load <mod name> - load a wormhole mod.\n" );
-	wh->cvars->create_concmd( "wh_unload", wh_unload_cbk, "wh_unload <mod name> - unload a wormhole mod.\n" );
-	wh->cvars->create_concmd( "wh_print", wh_print_cbk, "prints a list of all loaded wormhole mods.\n" );
+	wh->con->create_concmd( "wh_load", wh_load_cbk, "wh_load <mod name> - load a wormhole mod.\n" );
+	wh->con->create_concmd( "wh_unload", wh_unload_cbk, "wh_unload <mod name> - unload a wormhole mod.\n" );
+	wh->con->create_concmd( "wh_print", wh_print_cbk, "prints a list of all loaded wormhole mods.\n" );
 
 	return true;
 }
 
 void convars::uninitialize( ) {
-	wh->cvars->destruct_concmd( "wh_print" );
-	wh->cvars->destruct_concmd( "wh_unload" );
-	wh->cvars->destruct_concmd( "wh_load" );
+	wh->con->destruct_concmd( "wh_print" );
+	wh->con->destruct_concmd( "wh_unload" );
+	wh->con->destruct_concmd( "wh_load" );
 }

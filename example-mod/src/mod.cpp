@@ -24,7 +24,7 @@ bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
 
 		// post example event
 		// this will look like: "example mod:load" for other mods
-		wh->events->post( &mod, "load" );
+		wh->event->post( &mod, "load" );
 
 		wh->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
 	}

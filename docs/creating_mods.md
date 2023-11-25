@@ -11,15 +11,16 @@ An example mod can be found [here](https://github.com/Zyntex1/wormhole/tree/mast
 - Create a global variable for your class.
 - Use the `expose_wormhole_mod` macro, pass your class type and your class global var.
 - Setup callbacks.
-	- A pointer to shared classes gets passed to `load`, these classes are:
-    	- `portal2`: Contains some interfaces of the game like `console` or `engine`.
-    	- `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
-      - `events`: You can post events to other mods through this.
-      - `huds`: Register your custom huds through this.
-      - `render`: Render wrapper around Portal 2's renderer.
-      - `input`: Input wrapper around Portal 2's input system.
-      - `menu`: Use this to add controls to the mod's settings menu.
-	- You should expose this pointer globally (most macros assume that it's named `wh`).
+- A pointer to shared classes gets passed to `load`, these classes are:
+  - `portal2`: Contains some game interfaces of the game like `console` or `engine`.
+  - `con`: Create ConVars and ConCommands.
+  - `hook`: This is **Wormhole**'s hooking class, but you actually won't use this a lot, because hooking is done mostly using macros.
+  - `event`: Post events to other mods through this.
+  - `hud`: Register your custom huds through this.
+  - `render`: Render wrapper around Portal 2's renderer.
+  - `input`: Input wrapper around Portal 2's input system.
+  - `menu`: Use this to add controls to the mod's settings menu.
+- You should expose this pointer globally (most macros assume that it's named `wh`).
 	
 Example of a simple mod:
 ```cpp
@@ -106,7 +107,7 @@ void c_wormhole_mod::on_event(const char *msg) {
 ### Posting events
 ```cpp
 // other mods will receive this as `example-mod:example-event`
-wh->events->post("example-event");
+wh->event->post("example-event");
 ```
 
 ## Interfaces

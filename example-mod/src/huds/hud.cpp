@@ -6,15 +6,15 @@ c_example_hud *ex_hud;
 c_example_thud *ex_thud;
 
 bool huds::initialize( ) {
-	wh->huds->reg( ex_hud = new c_example_hud( ) );
-	wh->huds->reg( ex_thud = new c_example_thud( ) );
+	wh->hud->reg( ex_hud = new c_example_hud( ) );
+	wh->hud->reg( ex_thud = new c_example_thud( ) );
 
 	return true;
 }
 
 void huds::uninitialize( ) {
-	wh->huds->unreg( ex_hud );
-	wh->huds->unreg( ex_thud );
+	wh->hud->unreg( ex_hud );
+	wh->hud->unreg( ex_thud );
 }
 
 

@@ -18,10 +18,10 @@ c_wormhole::c_wormhole( ) {
 	this->plugin = new c_plugin( );
 	wh = new wh_api::c_shared( );
 	wh->portal2 = new c_portal2( );
-	wh->cvars = new c_convar( );
+	wh->con = new c_con( );
 	wh->hook = new c_hook( );
-	wh->events = new c_events( );
-	wh->huds = new c_huds( );
+	wh->event = new c_event( );
+	wh->hud = new c_hud( );
 	wh->render = new c_render( );
 	wh->input = new c_input( );
 	wh->menu = new c_menu( );
@@ -95,10 +95,10 @@ void c_wormhole::unload( ) {
 	delete_ptr( wh->menu );
 	delete_ptr( wh->input );
 	delete_ptr( wh->render );
-	delete_ptr( wh->huds );
-	delete_ptr( wh->events );
+	delete_ptr( wh->hud );
+	delete_ptr( wh->event );
 	delete_ptr( wh->hook );
-	delete_ptr( wh->cvars );
+	delete_ptr( wh->con );
 	delete_ptr( wh->portal2 );
 	delete_ptr( wh );
 	delete_ptr( this->plugin );

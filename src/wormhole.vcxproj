@@ -108,8 +108,9 @@
     <ClInclude Include="core\mods\mods.h" />
     <ClInclude Include="core\source-sdk\plugin.h" />
     <ClInclude Include="core\wormhole.h" />
-    <ClInclude Include="wormhole-sdk\convar.h" />
+    <ClInclude Include="wormhole-sdk\ccon.h" />
     <ClInclude Include="wormhole-sdk\draw_call.h" />
+    <ClInclude Include="wormhole-sdk\event.h" />
     <ClInclude Include="wormhole-sdk\events.h" />
     <ClInclude Include="wormhole-sdk\hook.h" />
     <ClInclude Include="wormhole-sdk\hud.h" />
@@ -145,8 +146,8 @@
     <ClCompile Include="core\menu\framework.cpp" />
     <ClCompile Include="core\menu\gui.cpp" />
     <ClCompile Include="core\mods\mods.cpp" />
-    <ClCompile Include="core\shared\convar.cpp" />
-    <ClCompile Include="core\shared\events.cpp" />
+    <ClCompile Include="core\shared\ccon.cpp" />
+    <ClCompile Include="core\shared\event.cpp" />
     <ClCompile Include="core\shared\hook.cpp" />
     <ClCompile Include="core\shared\hud.cpp" />
     <ClCompile Include="core\shared\input.cpp" />

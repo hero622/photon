@@ -54,9 +54,6 @@
     <ClInclude Include="wormhole-sdk\wormhole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\convar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="wormhole-sdk\hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -126,6 +123,12 @@
     <ClInclude Include="core\convars\convars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wormhole-sdk\ccon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wormhole-sdk\event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wormhole-sdk\utils\memory.cpp">
@@ -144,9 +147,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\mods\mods.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\shared\events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\shared\hook.cpp">
@@ -185,7 +185,10 @@
     <ClCompile Include="core\convars\convars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\shared\convar.cpp">
+    <ClCompile Include="core\shared\ccon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\shared\event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

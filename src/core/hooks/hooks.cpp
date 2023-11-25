@@ -34,21 +34,21 @@ void hooks::uninitialize( ) {
 }
 
 hk_fn( void, hooks::game_frame, bool simulating ) {
-	wh->events->post( &wormhole, "pre_tick" );
+	wh->event->post( &wormhole, "pre_tick" );
 
 	game_frame( ecx, simulating );
 
-	wh->events->post( &wormhole, "post_tick" );
+	wh->event->post( &wormhole, "post_tick" );
 }
 
 hk_fn( void, hooks::frame ) {
-	wh->events->post( &wormhole, "pre_frame" );
+	wh->event->post( &wormhole, "pre_frame" );
 
 	frame( ecx );
 
 	// todo: look into why this broke
 	if ( wh )
-		wh->events->post( &wormhole, "post_frame" );
+		wh->event->post( &wormhole, "post_frame" );
 }
 
 hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
@@ -56,9 +56,9 @@ hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
 
 	// this is probably not the best way, i saw SAR do something similar but this needs further thought
 	if ( state == sdk::signonstate_full )
-		wh->events->post( &wormhole, "session_start" );
+		wh->event->post( &wormhole, "session_start" );
 	else
-		wh->events->post( &wormhole, "session_end" );
+		wh->event->post( &wormhole, "session_end" );
 }
 
 hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
@@ -71,7 +71,7 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 
 		huds::paint( );
 
-		wh->events->post( &wormhole, "paint" );
+		wh->event->post( &wormhole, "paint" );
 
 		if ( wh->input->get_key_press( sdk::key_insert ) )
 			gui::open = !gui::open;
@@ -126,7 +126,7 @@ hk_fn( void, hooks::update_button_state, const int *event ) {
 hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	on_screen_size_changed( ecx, old_width, old_height );
 
-	wh->events->post( &wormhole, "on_screen_size_changed" );
+	wh->event->post( &wormhole, "on_screen_size_changed" );
 
 	// recreate fonts
 	gui::initialize( );
