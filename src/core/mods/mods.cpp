@@ -89,7 +89,7 @@ void mods::unloadall( ) {
 #ifdef _WIN32
 		FreeLibrary( ( HMODULE ) mod.second.handle );
 #else
-		dlclose( mod.handle );
+		dlclose( mod.second.handle );
 #endif
 	}
 
