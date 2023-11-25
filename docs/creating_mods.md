@@ -128,18 +128,18 @@ Use the `__rescall` macro to automatically resolve `__thiscall` or `__cdecl` for
 ## Memory
 ### Calling virtual functions
 ```cpp
-// utils::memory::call_virtual<return_type>(offset, ptr_to_object, args...);
-utils::memory::call_virtual<void>(offsets::client_cmd, ptr, cmd_string);
+// utils::memory::call_virtual<offset, return_type>(ptr_to_object, args...);
+utils::memory::call_virtual<7, void>(ptr, cmd_string);
 ```
 
 ### Reading addresses of virtual functions
 ```cpp
-auto client_cmd_addr = utils::memory::get_virtual(ptr, offsets::client_cmd);
+auto client_cmd_addr = utils::memory::get_virtual<7>(ptr);
 ```
 
 ### Reading functions at addresses
 ```cpp
-auto client_cmd_addr = utils::memory::get_virtual(this->ptr, offsets::client_cmd);
+auto client_cmd_addr = utils::memory::get_virtual<7>(this->ptr);
 
 using get_client_state_fn = void *(*)();
 auto get_client_state = utils::memory::read<get_client_state_fn>(client_cmd_addr + offsets::get_client_state);
@@ -194,27 +194,7 @@ hk_virtual(wh->portal2->server_game_dll, game_frame, offsets::game_frame);
 
 ### Hooking functions by address
 ```cpp
-hk_addr(game_frame, 0xdeadbeef);
-```
-
-## Console commands
-### Creating commands
-```cpp
-create_con_command(example_command, "prints hello to the console.\n") {
-	wh->portal2->console->msg("hello.");
-}
-
-// in your mod load function
-c_command::regall();
-```
-
-### Creating convars
-```cpp
-// c_variable(convar_name, default_value_as_string, min_value, max_value, help_string)
-c_variable example_convar("example_convar", "0", 0, 1, "this is an example convar.\n");
-
-// in your mod load function
-c_variable::regall();
+hk_inline(game_frame, 0xdeadbeef);
 ```
 
 ## TBD

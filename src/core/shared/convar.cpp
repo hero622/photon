@@ -2,41 +2,47 @@
 
 #include "wormhole-sdk/wormhole.h"
 
-// this whole thing is still a bit scuffed, and i do not understand everything 100%, needs some work
-// also doesnt work on linux currently i think
+sdk::con_var *c_convar::create_convar( const char *name, const char *default_value, int flags, const char *help_string, bool has_min, float min, bool has_max, float max, sdk::fn_change_callback_t cbk ) {
+	auto cvar = reinterpret_cast<sdk::con_var *>( wh->portal2->mem_alloc->alloc( sizeof( sdk::con_var ) ) );
+	memset( cvar, 0, sizeof( sdk::con_var ) );
 
-sdk::con_var *c_convar::create_convar( const char *name, const char *default_value, int flags, const char *help_string, bool has_min, float min, bool has_max, float max ) {
-	void *cvar = wh->portal2->mem_alloc->alloc( 0 );  // honestly i have no clue what size i should pass here but this works
+	static const auto ctor_addr = utils::memory::pattern_scan( os( "vstdlib.dll", "libvstdlib.so" ), os( "55 8B EC F3 0F 10 45 ? 8B 55 14", "55 89 E5 56 0F B6 45 24" ) );
 
-	using ctor_fn_t = sdk::con_var *( __rescall * ) ( void *, const char *, const char *, int, const char *, bool, float, bool, float );
-	const auto ctor_fn = reinterpret_cast<ctor_fn_t>( utils::memory::pattern_scan( modules::tier1, signatures::convar_ctor ) );
-	const auto ptr = ctor_fn( cvar, name, default_value, flags, help_string, has_min, min, has_max, max );
+	cvar->vtable = *( void ** ) ( ctor_addr + os( 0x34, 0x31 ) );
+	cvar->vtable_convar = *( void ** ) ( ctor_addr + os( 0x3b, 0x38 ) );
 
-	convars.insert( std::make_pair( name, ptr ) );
+	using create_fn_t = void( __rescall * )( void *, const char *, const char *, int, const char *, bool, float, bool, float, sdk::fn_change_callback_t );
+	const auto create_fn = utils::memory::read<create_fn_t>( ctor_addr + os( 0x6c, 0x7b ) );
+	create_fn( cvar, name, default_value, flags, help_string, has_min, min, has_max, max, cbk );
 
-	return ptr;
+	convars.insert( std::make_pair( name, cvar ) );
+
+	return cvar;
 }
 void c_convar::destruct_convar( const char *name ) {
 	if ( !convars.count( name ) )
 		return;
 
-	const auto cvar = convars[ name ];
+	const auto &cvar = convars[ name ];
 
-#ifdef _WIN32
-	const auto dtor_fn = reinterpret_cast<void *( __rescall * ) ( void *, char )>( utils::memory::pattern_scan( modules::tier1, signatures::convar_dtor ) );
-	dtor_fn( cvar, 0 );
-#else
-	const auto dtor_fn = reinterpret_cast<void *( __rescall * ) ( void * )>( utils::memory::pattern_scan( modules::tier1, signatures::convar_dtor ) );
-	dtor_fn( cvar );
-#endif
+	// call dtors here using virtual fns instead of signatures, couldnt figure it out yet
 
 	convars.erase( name );
 }
 
 sdk::con_command *c_convar::create_concmd( const char *name, sdk::fn_command_callback_t cbk, const char *help_string, int flags ) {
-	auto concmd = new sdk::con_command( name, cbk, help_string, flags );
+	auto concmd = reinterpret_cast<sdk::con_command *>( wh->portal2->mem_alloc->alloc( sizeof( sdk::con_command ) ) );
+	memset( concmd, 0, sizeof( sdk::con_command ) );
 
-	*( void ** ) concmd = *( void ** ) wh->portal2->cvar->find_command_base( "listdemo" );
+	concmd->vtable = wh->portal2->cvar->find_command_base( "listdemo" )->vtable;
+	concmd->name = name;
+	concmd->fn_command_callback = cbk;
+	concmd->help_string = help_string;
+	concmd->flags = flags;
+	concmd->fn_completion_callback = 0;
+	concmd->has_completion_callback = false;
+	concmd->using_new_command_callback = true;
+	concmd->using_command_callback_interface = false;
 
 	wh->portal2->cvar->register_con_command( concmd );
 
@@ -52,7 +58,7 @@ void c_convar::destruct_concmd( const char *name ) {
 
 	wh->portal2->cvar->unregister_con_command( concmd );
 
-	delete_ptr( concmd );
+	wh->portal2->mem_alloc->free( concmd );
 
 	concmds.erase( name );
 }

@@ -14,7 +14,6 @@
     <ClInclude Include="hooks\hooks.h" />
     <ClInclude Include="huds\hud.h" />
     <ClInclude Include="mod.h" />
-    <ClInclude Include="portal2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\wormhole-sdk\draw_call.cpp" />

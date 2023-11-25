@@ -72,9 +72,6 @@
     <ClInclude Include="core\interfaces\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\portal2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="wormhole-sdk\utils\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>

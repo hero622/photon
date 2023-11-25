@@ -54,9 +54,10 @@ bool mods::load( const char *name ) {
 void mods::unload( const char *name ) {
 	if ( !mod_list.count( name ) ) return;
 
-	auto mod = mod_list[ name ];
+	auto &mod = mod_list[ name ];
 
-	mod.ptr->unload( );
+	if ( mod.is_loaded )
+		mod.ptr->unload( );
 
 #ifdef _WIN32
 	FreeLibrary( ( HMODULE ) mod.handle );
@@ -82,8 +83,17 @@ bool mods::loadall( ) {
 
 void mods::unloadall( ) {
 	for ( const auto &mod : mod_list ) {
-		mod.second.ptr->unload( );
+		if ( mod.second.is_loaded )
+			mod.second.ptr->unload( );
+
+#ifdef _WIN32
+		FreeLibrary( ( HMODULE ) mod.second.handle );
+#else
+		dlclose( mod.handle );
+#endif
 	}
+
+	mod_list.clear( );
 }
 
 bool mods::enable( mod_info_t *mod ) {
@@ -107,7 +117,10 @@ void mods::disable( mod_info_t *mod ) {
 void mods::print( ) {
 	wh->portal2->console->msg( "Loaded wormhole mods (%d):\n", mod_list.size( ) );
 	for ( const auto &mod : mod_list ) {
-		wh->portal2->console->msg( "%s\n", mod.first.c_str( ) );
+		const char *status = mod.second.is_loaded ? "enabled" : "disabled";
+		const auto info = mod.second.ptr->get_info( );
+
+		wh->portal2->console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info->name, info->version, status );
 	}
 }
 

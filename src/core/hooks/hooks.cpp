@@ -4,17 +4,16 @@
 #include "core/menu/gui.h"
 #include "core/mods/mods.h"
 #include "core/wormhole.h"
-#include "wormhole-sdk/portal2.h"
 
 bool hooks::initialize( ) {
-	hk_virtual( wh->portal2->server_game_dll, game_frame, offsets::game_frame );
-	hk_virtual( wh->portal2->engine, frame, offsets::frame );
-	hk_virtual( wh->portal2->client_state, set_signon_state, offsets::set_signon_state );
-	hk_virtual( wh->portal2->engine_vgui_internal, paint, offsets::paint );
-	hk_virtual( wh->portal2->surface, lock_cursor, offsets::lock_cursor );
-	hk_virtual( wh->portal2->base_client_dll, in_key_event, offsets::in_key_event );
-	hk_virtual( wh->portal2->vgui_input, update_button_state, offsets::update_button_state );
-	hk_virtual( wh->portal2->surface, on_screen_size_changed, offsets::on_screen_size_changed );
+	hk_virtual( wh->portal2->server_game_dll, game_frame, 4 );
+	hk_virtual( wh->portal2->engine, frame, os( 5, 6 ) );
+	hk_virtual( wh->portal2->client_state, set_signon_state, os( 15, 36 ) );
+	hk_virtual( wh->portal2->engine_vgui_internal, paint, os( 14, 15 ) );
+	hk_virtual( wh->portal2->surface, lock_cursor, 65 );
+	hk_virtual( wh->portal2->base_client_dll, in_key_event, 20 );
+	hk_virtual( wh->portal2->vgui_input, update_button_state, 87 );
+	hk_virtual( wh->portal2->surface, on_screen_size_changed, 114 );
 
 	hk_cmd( plugin_unload );
 
@@ -25,6 +24,7 @@ void hooks::uninitialize( ) {
 	unhk_cmd( plugin_unload );
 
 	unhk( on_screen_size_changed );
+	unhk( update_button_state );
 	unhk( in_key_event );
 	unhk( lock_cursor );
 	unhk( paint );
@@ -113,10 +113,10 @@ hk_fn( void, hooks::update_button_state, const int *event ) {
 	if ( gui::open ) {
 		// so we cant actually just return here because theres other functions calling SetKeyCodeState and SetMouseCodeState
 		// i didnt want to hook those functions so we just reset the struct that those functions update here
-		uint8_t *context_addr = ( uint8_t * ) ecx + offsets::context;  // m_hContext
+		uint8_t *context_addr = ( uint8_t * ) ecx + 0xce8;  // m_hContext
 		int context = *( int * ) context_addr;
 
-		return utils::memory::call_virtual<void>( offsets::reset_input_context, ecx, context );
+		return utils::memory::call_virtual<88, void>( ecx, context );  // ResetInputContext
 	}
 
 	update_button_state( ecx, event );

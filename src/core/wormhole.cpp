@@ -51,12 +51,12 @@ bool c_wormhole::load( sdk::create_interface_fn interface_factory, sdk::create_i
 }
 
 bool c_wormhole::get_plugin( ) {
-	auto server_plugin_helpers = reinterpret_cast<uintptr_t>( wh->portal2->server_plugin_helpers );
+	auto server_plugin_helpers = reinterpret_cast<uint8_t *>( wh->portal2->server_plugin_helpers );
 	auto size = *reinterpret_cast<int *>( server_plugin_helpers + c_server_plugin_size );
 	if ( size > 0 ) {
-		auto plugins = *reinterpret_cast<uintptr_t *>( server_plugin_helpers + c_server_plugin_plugins );
+		auto plugins = *reinterpret_cast<uint8_t **>( server_plugin_helpers + c_server_plugin_plugins );
 		for ( auto i = 0; i < size; ++i ) {
-			auto ptr = *reinterpret_cast<sdk::c_plugin **>( plugins + sizeof( uintptr_t ) * i );
+			auto ptr = *reinterpret_cast<sdk::c_plugin **>( plugins + sizeof( uint8_t * ) * i );
 			if ( !std::strcmp( ptr->name, wormhole_plugin_sig ) ) {
 				this->plugin->ptr = ptr;
 				this->plugin->index = i;
