@@ -25,9 +25,19 @@ void c_con::destruct_convar( const char *name ) {
 	if ( !convars.count( name ) )
 		return;
 
-	const auto &cvar = convars[ name ];
+	auto cvar = convars[ name ];
 
-	// call dtors here using virtual fns instead of signatures, couldnt figure it out yet
+	wh->portal2->cvar->unregister_con_command( cvar );
+
+	// call dtors
+#ifdef _WIN32
+	utils::memory::call_virtual<0, void>( cvar, 0 );
+#else
+	utils::memory::call_virtual<0, void>( cvar );
+#endif
+
+	// not sure if we even need to call this here but it doesnt hurt
+	wh->portal2->mem_alloc->free( cvar );
 
 	convars.erase( name );
 }
