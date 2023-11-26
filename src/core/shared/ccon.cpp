@@ -36,9 +36,6 @@ void c_con::destruct_convar( const char *name ) {
 	utils::memory::call_virtual<0, void>( cvar );
 #endif
 
-	// not sure if we even need to call this here but it doesnt hurt
-	wh->portal2->mem_alloc->free( cvar );
-
 	convars.erase( name );
 }
 
