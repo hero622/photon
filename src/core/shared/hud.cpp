@@ -3,6 +3,7 @@
 #include "core/huds/huds.h"
 #include "wormhole-sdk/wormhole.h"
 
+#include <cmath>
 #include <cstddef>
 
 void c_hud::reg( wh_api::i_hud *hud ) {
