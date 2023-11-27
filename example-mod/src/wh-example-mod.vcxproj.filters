@@ -41,9 +41,6 @@
     <ClCompile Include="convars\convars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\wormhole-sdk\draw_call.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\wormhole-sdk\utils\memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

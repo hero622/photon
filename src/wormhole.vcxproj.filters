@@ -114,9 +114,6 @@
     <ClInclude Include="wormhole-sdk\interfaces\scheme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\draw_call.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="wormhole-sdk\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -171,9 +168,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\huds\huds.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wormhole-sdk\draw_call.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\shared\menu.cpp">

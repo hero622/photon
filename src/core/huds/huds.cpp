@@ -82,21 +82,6 @@ void align_hud_element( wh_api::hud_t *hud, wh_api::hud_t *other_hud ) {
 void huds::paint( ) {
 	for ( const auto &hud : huds ) {
 		hud->paint( );
-
-		for ( const auto &draw_call : hud->draw_calls ) {
-			hud->bounds.x = std::fmax( hud->bounds.x, draw_call->x + draw_call->w );
-			hud->bounds.y = std::fmax( hud->bounds.y, draw_call->y + draw_call->h );
-		}
-		for ( const auto &draw_call : hud->draw_calls ) {
-			const auto pos = get_abs_pos( hud );
-
-			draw_call->x += pos.x;
-			draw_call->y += pos.y;
-
-			draw_call->call( );
-		}
-
-		hud->draw_calls.clear( );
 	}
 
 	for ( const auto &thud : thuds ) {
@@ -108,11 +93,11 @@ void huds::paint( ) {
 
 		const auto font = wh->render->get_font( thud->font );
 
-		thud->bounds = wh->render->get_text_size( font, text );
+		thud->bounds = wh->render->get_text_size( font, text.c_str( ) );
 
 		const auto pos = get_abs_pos( thud );
 
-		wh->render->draw_text( pos.x, pos.y, font, { 255, 255, 255, 255 }, false, text );
+		wh->render->draw_text( pos.x, pos.y, font, { 255, 255, 255, 255 }, false, text.c_str( ) );
 	}
 }
 

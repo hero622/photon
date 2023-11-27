@@ -16,7 +16,6 @@
     <ClInclude Include="mod.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\wormhole-sdk\draw_call.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\utils\console.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\utils\memory.cpp" />
     <ClCompile Include="..\..\src\wormhole-sdk\utils\string.cpp" />

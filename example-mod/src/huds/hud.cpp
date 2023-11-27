@@ -19,10 +19,14 @@ void huds::uninitialize( ) {
 
 
 void c_example_hud::paint( ) {
-	draw_filled_rect( 0, 0, 20, 20, sdk::color_t( 255, 0, 0, 255 ) );
-	draw_filled_rect( 20, 20, 20, 20, sdk::color_t( 0, 255, 0, 255 ) );
-	draw_filled_rect( 40, 40, 20, 20, sdk::color_t( 0, 0, 255, 255 ) );
-	draw_filled_rect( 0, 60, 80, 20, sdk::color_t( 255, 255, 255, 255 ) );
+	wh->hud->draw_begin( this );
+
+	wh->hud->draw_filled_rect( 0, 0, 20, 20, sdk::color_t( 255, 0, 0, 255 ) );
+	wh->hud->draw_filled_rect( 20, 20, 20, 20, sdk::color_t( 0, 255, 0, 255 ) );
+	wh->hud->draw_filled_rect( 40, 40, 20, 20, sdk::color_t( 0, 0, 255, 255 ) );
+	wh->hud->draw_filled_rect( 0, 60, 80, 20, sdk::color_t( 255, 255, 255, 255 ) );
+
+	wh->hud->draw_end( );
 }
 const char *c_example_hud::get_name( ) {
 	return "example hud";

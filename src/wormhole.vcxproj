@@ -109,7 +109,6 @@
     <ClInclude Include="core\source-sdk\plugin.h" />
     <ClInclude Include="core\wormhole.h" />
     <ClInclude Include="wormhole-sdk\ccon.h" />
-    <ClInclude Include="wormhole-sdk\draw_call.h" />
     <ClInclude Include="wormhole-sdk\event.h" />
     <ClInclude Include="wormhole-sdk\events.h" />
     <ClInclude Include="wormhole-sdk\hook.h" />
@@ -155,7 +154,6 @@
     <ClCompile Include="core\shared\render.cpp" />
     <ClCompile Include="core\source-sdk\plugin.cpp" />
     <ClCompile Include="core\wormhole.cpp" />
-    <ClCompile Include="wormhole-sdk\draw_call.cpp" />
     <ClCompile Include="wormhole-sdk\utils\console.cpp" />
     <ClCompile Include="wormhole-sdk\utils\memory.cpp" />
     <ClCompile Include="wormhole-sdk\utils\string.cpp" />
