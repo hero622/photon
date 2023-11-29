@@ -22,6 +22,7 @@ bool interfaces::initialize( ) {
 	wh->portal2->client_state = utils::memory::read<void *( * ) ( )>( utils::memory::get_virtual<7>( wh->portal2->engine_client ) + os( 0x4, 0x9 ) )( );
 	wh->portal2->mem_alloc = *utils::memory::get_sym_addr<i_mem_alloc **>( utils::memory::get_module_handle( os( "tier0.dll", "libtier0.so" ) ), "g_pMemAlloc" );
 	wh->portal2->scheme = wh->portal2->scheme_manager->get_i_scheme( 1 );
+	wh->portal2->font_manager = utils::memory::read<c_font_manager *( * ) ( )>( utils::memory::get_virtual<132>( wh->portal2->surface ) + os( 0x8, 0x9 ) )( );
 
 	return true;
 }

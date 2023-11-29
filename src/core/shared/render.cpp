@@ -20,6 +20,17 @@ bool c_render::create_font( sdk::h_font &font, const char *font_name, int size, 
 	return wh->portal2->surface->set_font_glyph_set( font, font_name, size, bold ? 800 : 0, 0, 0, flags );
 }
 
+void c_render::destruct_font( sdk::h_font font ) {
+	for ( const auto &font_range : wh->portal2->font_manager->font_amalgams[ font ].fonts ) {
+		const int idx = wh->portal2->font_manager->win32_fonts.find( font_range.win32_font );
+
+		wh->portal2->mem_alloc->free( wh->portal2->font_manager->win32_fonts[ idx ] );
+		wh->portal2->font_manager->win32_fonts.remove( idx );
+	}
+
+	wh->portal2->font_manager->font_amalgams.remove( font );
+}
+
 void c_render::draw_text( int x, int y, sdk::h_font font, sdk::color_t color, bool center, const char *text ) {
 	int text_x = x;
 	int text_y = y;

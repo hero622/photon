@@ -33,6 +33,8 @@ bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
 }
 
 void c_wormhole_mod::unload( ) {
+	wh->render->destruct_font( font );
+
 	huds::uninitialize( );
 
 	convars::uninitialize( );

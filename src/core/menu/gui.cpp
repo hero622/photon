@@ -13,7 +13,8 @@ bool gui::initialize( ) {
 }
 
 void gui::uninitialize( ) {
-	// delete fonts here
+	wh->render->destruct_font( framework::fonts::title );
+	wh->render->destruct_font( framework::fonts::normal );
 }
 
 void gui::paint( ) {

@@ -126,6 +126,9 @@
     <ClInclude Include="wormhole-sdk\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wormhole-sdk\interfaces\font_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wormhole-sdk\utils\memory.cpp">
