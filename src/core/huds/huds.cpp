@@ -81,23 +81,25 @@ void align_hud_element( wh_api::hud_t *hud, wh_api::hud_t *other_hud ) {
 
 void huds::paint( ) {
 	for ( const auto &hud : huds ) {
-		hud->paint( );
-	}
+		if ( hud->type == wh_api::hudtype_hud ) {
+			( ( wh_api::i_hud * ) hud )->paint( );
+		} else {
+			const auto thud = ( wh_api::i_thud * ) hud;
 
-	for ( const auto &thud : thuds ) {
-		// todo: some formatting system
-		auto text = std::string( thud->format );
+			// todo: some formatting system
+			auto text = std::string( thud->format );
 
-		utils::string::replace( text, "{name}", std::string( thud->get_name( ) ) );
-		utils::string::replace( text, "{value}", std::string( thud->get_text( ) ) );
+			utils::string::replace( text, "{name}", std::string( thud->get_name( ) ) );
+			utils::string::replace( text, "{value}", std::string( thud->get_text( ) ) );
 
-		const auto font = wh->render->get_font( thud->font );
+			const auto font = wh->render->get_font( thud->font );
 
-		thud->bounds = wh->render->get_text_size( font, text.c_str( ) );
+			thud->bounds = wh->render->get_text_size( font, text.c_str( ) );
 
-		const auto pos = get_abs_pos( thud );
+			const auto pos = get_abs_pos( thud );
 
-		wh->render->draw_text( pos.x, pos.y, font, { 255, 255, 255, 255 }, false, text.c_str( ) );
+			wh->render->draw_text( pos.x, pos.y, font, { 255, 255, 255, 255 }, false, text.c_str( ) );
+		}
 	}
 }
 
@@ -125,22 +127,6 @@ void huds::paint_ui( ) {
 		}
 	}
 
-	for ( const auto &thud : thuds ) {
-		sdk::vec2_t orig_cur_pos;
-
-		const auto pos = get_abs_pos( thud );
-
-		if ( wh->input->is_cursor_in_area( pos.x, pos.y, pos.x + thud->bounds.x, pos.y + thud->bounds.y ) ) {
-			wh->render->draw_outlined_rect( pos.x - 1, pos.y - 1, thud->bounds.x + 2, thud->bounds.y + 2, clr );
-			wh->render->draw_filled_rect( pos.x + thud->anchor.x * thud->bounds.x - 3, pos.y + thud->anchor.y * thud->bounds.y - 3, 6, 6, clr );
-
-			if ( wh->input->get_key_press( sdk::mouse_left ) ) {
-				cur_hud = thud;
-				grab_pos = wh->input->get_cursor_position( ) - pos;
-			}
-		}
-	}
-
 	if ( cur_hud ) {
 		if ( wh->input->get_key_held( sdk::mouse_left ) ) {
 			const auto hud = cur_hud;
@@ -157,12 +143,6 @@ void huds::paint_ui( ) {
 			align_hud_element( hud, &safezone );
 
 			for ( const auto &other_hud : huds ) {
-				if ( hud == other_hud )
-					continue;
-
-				align_hud_element( hud, other_hud );
-			}
-			for ( const auto &other_hud : thuds ) {
 				if ( hud == other_hud )
 					continue;
 

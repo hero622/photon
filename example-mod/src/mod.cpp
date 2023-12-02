@@ -72,9 +72,9 @@ void c_wormhole_mod::paint_menu( ) {
 
 	static std::size_t example_combo_val;
 	const char *example_combo_items[] = { "value 1", "value 2", "value 3" };
-	wh->menu->combo( example_combo_val, example_combo_items, 3, "example combo" );
+	wh->menu->combo( example_combo_val, example_combo_items, array_len( example_combo_items ), "example combo" );
 
 	static std::size_t example_multicombo_val;
 	const char *example_multicombo_items[] = { "value 1", "value 2", "value 3" };
-	wh->menu->multicombo( example_multicombo_val, example_multicombo_items, 3, "example multicombo" );
+	wh->menu->multicombo( example_multicombo_val, example_multicombo_items, array_len( example_multicombo_items ), "example multicombo" );
 }

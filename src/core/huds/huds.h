@@ -5,8 +5,7 @@
 #include <vector>
 
 namespace huds {
-	inline std::vector<wh_api::i_hud *> huds;
-	inline std::vector<wh_api::i_thud *> thuds;
+	inline std::vector<wh_api::hud_t *> huds;
 
 	inline int safezone_x = 8;
 	inline int safezone_y = 8;

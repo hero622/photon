@@ -7,10 +7,12 @@
 #include <cstddef>
 
 void c_hud::reg( wh_api::i_hud *hud ) {
+	hud->type = wh_api::hudtype_hud;
 	huds::huds.push_back( hud );
 }
 void c_hud::reg( wh_api::i_thud *thud ) {
-	huds::thuds.push_back( thud );
+	thud->type = wh_api::hudtype_thud;
+	huds::huds.push_back( thud );
 }
 void c_hud::unreg( wh_api::i_hud *hud ) {
 	for ( std::size_t i = 0; i < huds::huds.size( ); ++i ) {
@@ -19,9 +21,9 @@ void c_hud::unreg( wh_api::i_hud *hud ) {
 	}
 }
 void c_hud::unreg( wh_api::i_thud *thud ) {
-	for ( std::size_t i = 0; i < huds::thuds.size( ); ++i ) {
-		if ( huds::thuds[ i ] == thud )
-			huds::thuds.erase( huds::thuds.begin( ) + i );
+	for ( std::size_t i = 0; i < huds::huds.size( ); ++i ) {
+		if ( huds::huds[ i ] == thud )
+			huds::huds.erase( huds::huds.begin( ) + i );
 	}
 }
 
