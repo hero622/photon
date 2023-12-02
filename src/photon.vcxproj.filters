@@ -15,70 +15,70 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="wormhole-sdk\utils\memory.h">
+    <ClInclude Include="photon-sdk\utils\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\source-sdk\color.h">
+    <ClInclude Include="photon-sdk\source-sdk\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\utils\platform.h">
+    <ClInclude Include="photon-sdk\utils\platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\source-sdk\convar.h">
+    <ClInclude Include="photon-sdk\source-sdk\convar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\console.h">
+    <ClInclude Include="photon-sdk\interfaces\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\cvar.h">
+    <ClInclude Include="photon-sdk\interfaces\cvar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\engine_client.h">
+    <ClInclude Include="photon-sdk\interfaces\engine_client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\source-sdk\misc.h">
+    <ClInclude Include="photon-sdk\source-sdk\misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\source-sdk\vector.h">
+    <ClInclude Include="photon-sdk\source-sdk\vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\surface.h">
+    <ClInclude Include="photon-sdk\interfaces\surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\source-sdk\utlvector.h">
+    <ClInclude Include="photon-sdk\source-sdk\utlvector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\utils\string.h">
+    <ClInclude Include="photon-sdk\utils\string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\wormhole.h">
+    <ClInclude Include="photon-sdk\photon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\hook.h">
+    <ClInclude Include="photon-sdk\hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces.h">
+    <ClInclude Include="photon-sdk\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\source_sdk.h">
+    <ClInclude Include="photon-sdk\source_sdk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\utils.h">
+    <ClInclude Include="photon-sdk\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\interfaces\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\utils\console.h">
+    <ClInclude Include="photon-sdk\utils\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\events.h">
+    <ClInclude Include="photon-sdk\events.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\mem_alloc.h">
+    <ClInclude Include="photon-sdk\interfaces\mem_alloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\hud.h">
+    <ClInclude Include="photon-sdk\hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\hooks\hooks.h">
@@ -90,7 +90,7 @@
     <ClInclude Include="core\source-sdk\plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\wormhole.h">
+    <ClInclude Include="core\photon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\menu\framework.h">
@@ -99,45 +99,45 @@
     <ClInclude Include="core\menu\gui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\render.h">
+    <ClInclude Include="photon-sdk\render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\input.h">
+    <ClInclude Include="photon-sdk\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\huds\huds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\input_system.h">
+    <ClInclude Include="photon-sdk\interfaces\input_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\scheme.h">
+    <ClInclude Include="photon-sdk\interfaces\scheme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\menu.h">
+    <ClInclude Include="photon-sdk\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\convars\convars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\ccon.h">
+    <ClInclude Include="photon-sdk\ccon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\event.h">
+    <ClInclude Include="photon-sdk\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wormhole-sdk\interfaces\font_manager.h">
+    <ClInclude Include="photon-sdk\interfaces\font_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="wormhole-sdk\utils\memory.cpp">
+    <ClCompile Include="photon-sdk\utils\memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wormhole-sdk\utils\string.cpp">
+    <ClCompile Include="photon-sdk\utils\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wormhole-sdk\utils\console.cpp">
+    <ClCompile Include="photon-sdk\utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\hooks\hooks.cpp">
@@ -158,7 +158,7 @@
     <ClCompile Include="core\source-sdk\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\wormhole.cpp">
+    <ClCompile Include="core\photon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\menu\framework.cpp">

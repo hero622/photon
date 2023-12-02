@@ -1,11 +1,11 @@
 // i wanted to call this "con" but windows wasnt letting me >:(
 
-#include "wormhole-sdk/ccon.h"
+#include "photon-sdk/ccon.h"
 
-#include "wormhole-sdk/wormhole.h"
+#include "photon-sdk/photon.h"
 
 sdk::con_var *c_con::create_convar( const char *name, const char *default_value, int flags, const char *help_string, bool has_min, float min, bool has_max, float max, sdk::fn_change_callback_t cbk ) {
-	auto cvar = reinterpret_cast<sdk::con_var *>( wh->portal2->mem_alloc->alloc( sizeof( sdk::con_var ) ) );
+	auto cvar = reinterpret_cast<sdk::con_var *>( photon->portal2->mem_alloc->alloc( sizeof( sdk::con_var ) ) );
 	memset( cvar, 0, sizeof( sdk::con_var ) );
 
 	static const auto ctor_addr = utils::memory::pattern_scan( os( "vstdlib.dll", "libvstdlib.so" ), os( "55 8B EC F3 0F 10 45 ? 8B 55 14", "55 89 E5 56 0F B6 45 24" ) );
@@ -27,7 +27,7 @@ void c_con::destruct_convar( const char *name ) {
 
 	auto cvar = convars[ name ];
 
-	wh->portal2->cvar->unregister_con_command( cvar );
+	photon->portal2->cvar->unregister_con_command( cvar );
 
 	// call dtors
 #ifdef _WIN32
@@ -40,10 +40,10 @@ void c_con::destruct_convar( const char *name ) {
 }
 
 sdk::con_command *c_con::create_concmd( const char *name, sdk::fn_command_callback_t cbk, const char *help_string, int flags ) {
-	auto concmd = reinterpret_cast<sdk::con_command *>( wh->portal2->mem_alloc->alloc( sizeof( sdk::con_command ) ) );
+	auto concmd = reinterpret_cast<sdk::con_command *>( photon->portal2->mem_alloc->alloc( sizeof( sdk::con_command ) ) );
 	memset( concmd, 0, sizeof( sdk::con_command ) );
 
-	concmd->vtable = wh->portal2->cvar->find_command_base( "listdemo" )->vtable;
+	concmd->vtable = photon->portal2->cvar->find_command_base( "listdemo" )->vtable;
 	concmd->name = name;
 	concmd->fn_command_callback = cbk;
 	concmd->help_string = help_string;
@@ -53,7 +53,7 @@ sdk::con_command *c_con::create_concmd( const char *name, sdk::fn_command_callba
 	concmd->using_new_command_callback = true;
 	concmd->using_command_callback_interface = false;
 
-	wh->portal2->cvar->register_con_command( concmd );
+	photon->portal2->cvar->register_con_command( concmd );
 
 	concmds.insert( std::make_pair( name, concmd ) );
 
@@ -65,15 +65,15 @@ void c_con::destruct_concmd( const char *name ) {
 
 	auto concmd = concmds[ name ];
 
-	wh->portal2->cvar->unregister_con_command( concmd );
+	photon->portal2->cvar->unregister_con_command( concmd );
 
-	wh->portal2->mem_alloc->free( concmd );
+	photon->portal2->mem_alloc->free( concmd );
 
 	concmds.erase( name );
 }
 
 void c_con::hook_cmd( const char *name, sdk::fn_command_callback_t detour, sdk::fn_command_callback_t &original ) {
-	auto concmd = reinterpret_cast<sdk::con_command *>( wh->portal2->cvar->find_command_base( name ) );
+	auto concmd = reinterpret_cast<sdk::con_command *>( photon->portal2->cvar->find_command_base( name ) );
 
 	if ( !concmd )
 		return;
@@ -82,7 +82,7 @@ void c_con::hook_cmd( const char *name, sdk::fn_command_callback_t detour, sdk::
 	concmd->fn_command_callback = detour;
 }
 void c_con::unhook_cmd( const char *name, sdk::fn_command_callback_t original ) {
-	auto concmd = reinterpret_cast<sdk::con_command *>( wh->portal2->cvar->find_command_base( name ) );
+	auto concmd = reinterpret_cast<sdk::con_command *>( photon->portal2->cvar->find_command_base( name ) );
 
 	if ( !concmd || !original )
 		return;

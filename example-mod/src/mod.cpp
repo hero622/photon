@@ -4,36 +4,36 @@
 #include "hooks/hooks.h"
 #include "huds/hud.h"
 
-c_wormhole_mod mod;
+c_photon_mod mod;
 
-expose_wormhole_mod( c_wormhole_mod, mod );
+expose_photon_mod( c_photon_mod, mod );
 
-wh_api::c_shared *wh;
+photon_api::c_shared *photon;
 
 sdk::h_font font;
 
-bool c_wormhole_mod::load( wh_api::c_shared *wh ) {
-	::wh = wh;
+bool c_photon_mod::load( photon_api::c_shared *photon ) {
+	::photon = photon;
 
 	if ( example_mod::hooks::initialize( ) ) {
 		convars::initialize( );
 
 		huds::initialize( );
 
-		wh->portal2->console->msg( "example mod loaded.\n" );
+		photon->portal2->console->msg( "example mod loaded.\n" );
 
 		// post example event
 		// this will look like: "example mod:load" for other mods
-		wh->event->post( &mod, "load" );
+		photon->event->post( &mod, "load" );
 
-		wh->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
+		photon->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
 	}
 
 	return true;
 }
 
-void c_wormhole_mod::unload( ) {
-	wh->render->destruct_font( font );
+void c_photon_mod::unload( ) {
+	photon->render->destruct_font( font );
 
 	huds::uninitialize( );
 
@@ -41,40 +41,40 @@ void c_wormhole_mod::unload( ) {
 
 	example_mod::hooks::uninitialize( );
 
-	wh->portal2->console->msg( "example mod unloaded.\n" );
+	photon->portal2->console->msg( "example mod unloaded.\n" );
 }
 
-void c_wormhole_mod::on_event( const char *msg ) {
+void c_photon_mod::on_event( const char *msg ) {
 	if ( !strcmp( msg, "paint" ) ) {
-		wh->render->draw_text( 2, 2, font, { 255, 255, 255, 255 }, false, "example mod loaded." );
+		photon->render->draw_text( 2, 2, font, { 255, 255, 255, 255 }, false, "example mod loaded." );
 	}
 	if ( !strcmp( msg, "on_screen_size_changed" ) ) {
-		wh->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
+		photon->render->create_font( font, "Tahoma", 12, false, sdk::fontflag_dropshadow );
 	}
 }
 
-wh_api::wh_mod_info_t c_wormhole_mod::get_info( ) {
-	wh_api::wh_mod_info_t info;
+photon_api::mod_info_t c_photon_mod::get_info( ) {
+	photon_api::mod_info_t info;
 	info.name = "example mod";
 	info.version = "0.0.1";
 	return info;
 }
 
-void c_wormhole_mod::paint_menu( ) {
+void c_photon_mod::paint_menu( ) {
 	static bool example_checkbox_val;
-	wh->menu->checkbox( example_checkbox_val, "example checkbox" );
+	photon->menu->checkbox( example_checkbox_val, "example checkbox" );
 
 	static int example_slider_val;
-	wh->menu->slider( example_slider_val, 0, 100, "example slider" );
+	photon->menu->slider( example_slider_val, 0, 100, "example slider" );
 
 	static float example_sliderf_val;
-	wh->menu->sliderf( example_sliderf_val, 0.f, 10.f, "example sliderf" );
+	photon->menu->sliderf( example_sliderf_val, 0.f, 10.f, "example sliderf" );
 
 	static std::size_t example_combo_val;
 	const char *example_combo_items[] = { "value 1", "value 2", "value 3" };
-	wh->menu->combo( example_combo_val, example_combo_items, array_len( example_combo_items ), "example combo" );
+	photon->menu->combo( example_combo_val, example_combo_items, array_len( example_combo_items ), "example combo" );
 
 	static std::size_t example_multicombo_val;
 	const char *example_multicombo_items[] = { "value 1", "value 2", "value 3" };
-	wh->menu->multicombo( example_multicombo_val, example_multicombo_items, array_len( example_multicombo_items ), "example multicombo" );
+	photon->menu->multicombo( example_multicombo_val, example_multicombo_items, array_len( example_multicombo_items ), "example multicombo" );
 }

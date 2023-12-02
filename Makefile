@@ -5,7 +5,7 @@ CXX=g++-10
 SDIR=src
 ODIR=obj
 
-SRCS=$(wildcard $(SDIR)/wormhole-sdk/utils/*.cpp)
+SRCS=$(wildcard $(SDIR)/photon-sdk/utils/*.cpp)
 SRCS+=$(wildcard $(SDIR)/core/*.cpp)
 SRCS+=$(wildcard $(SDIR)/core/convars/*.cpp)
 SRCS+=$(wildcard $(SDIR)/core/hooks/*.cpp)
@@ -28,11 +28,11 @@ LDFLAGS=-m32 -shared -lstdc++fs -L$(SDIR)/deps/subhook -lsubhook
 # Import config.mk, which can be used for optional config
 -include config.mk
 
-all: wormhole.so
+all: photon.so
 
 -include $(DEPS)
 
-wormhole.so: $(OBJS)
+photon.so: $(OBJS)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 $(ODIR)/%.o: $(SDIR)/%.cpp

@@ -1,32 +1,31 @@
 #pragma once
 
 #include "core/source-sdk/plugin.h"
-#include "wormhole-sdk/wormhole.h"
+#include "photon-sdk/photon.h"
 
 #include <thread>
 
-#define wormhole_plugin_sig "wormhole"
+#define photon_plugin_sig "photon"
 
 #define c_server_plugin_size 16
 #define c_server_plugin_plugins 4
 
 #define safe_unload_delay 33
 
-class c_plugin {
-public:
+struct plugin_info_t {
 	sdk::c_plugin *ptr;
 	int index;
 };
 
-class c_wormhole : public sdk::i_server_plugin_callbacks {
+class c_photon : public sdk::i_server_plugin_callbacks {
 public:
-	c_plugin *plugin;
+	plugin_info_t *info;
 
 private:
 	bool unloading;
 
 public:
-	c_wormhole( );
+	c_photon( );
 
 	virtual bool load( sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory );
 	virtual void unload( );
@@ -50,7 +49,7 @@ public:
 	virtual void on_edict_allocated( void *edict );
 	virtual void on_edict_freed( const void *edict );
 
-	bool get_plugin( );
+	bool get_info( );
 };
 
-extern c_wormhole wormhole;
+extern c_photon plugin;

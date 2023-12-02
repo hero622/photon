@@ -1,6 +1,6 @@
 #include "plugin.h"
 
-#include "wormhole-sdk/utils.h"
+#include "photon-sdk/utils.h"
 
 #include <cstring>
 #include <iostream>

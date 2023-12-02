@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/mods/mods.h"
-#include "wormhole-sdk/wormhole.h"
+#include "photon-sdk/photon.h"
 
 #include <string>
 

@@ -1,6 +1,6 @@
 #include "mods.h"
 
-#include "core/wormhole.h"
+#include "core/photon.h"
 
 #include <filesystem>
 #include <iostream>
@@ -17,13 +17,13 @@ bool mods::load( const char *name ) {
 	if ( mod_list.count( name ) ) return false;
 
 #ifdef _WIN32
-	void *lib = LoadLibraryA( utils::string::ssprintf( "wormhole/%s.dll", name ).c_str( ) );
+	void *lib = LoadLibraryA( utils::string::ssprintf( "photon/%s.dll", name ).c_str( ) );
 #else
-	void *lib = dlopen( utils::string::ssprintf( "wormhole/%s.so", name ).c_str( ), RTLD_NOW );
+	void *lib = dlopen( utils::string::ssprintf( "photon/%s.so", name ).c_str( ), RTLD_NOW );
 #endif
 
 	if ( lib ) {
-		using create_mod_fn = wh_api::i_wormhole_mod *( * ) ( );
+		using create_mod_fn = photon_api::i_photon_mod *( * ) ( );
 		const auto fn = utils::memory::get_sym_addr<create_mod_fn>( lib, "create_mod" );
 
 		if ( fn ) {
@@ -43,9 +43,9 @@ bool mods::load( const char *name ) {
 	}
 
 #ifdef _WIN32
-	wh->portal2->console->warning( "Failed to load library (%lu).\n", GetLastError( ) );
+	photon->portal2->console->warning( "Failed to load library (%lu).\n", GetLastError( ) );
 #else
-	wh->portal2->console->warning( "Failed to load library (%s).\n", dlerror( ) );
+	photon->portal2->console->warning( "Failed to load library (%s).\n", dlerror( ) );
 #endif
 
 	return false;
@@ -70,7 +70,7 @@ void mods::unload( const char *name ) {
 
 bool mods::loadall( ) {
 	bool had_fail = false;
-	for ( const auto &entry : std::filesystem::directory_iterator( "wormhole" ) ) {
+	for ( const auto &entry : std::filesystem::directory_iterator( "photon" ) ) {
 		bool result = load( entry.path( ).stem( ).string( ).c_str( ) );
 
 		if ( !result ) {
@@ -99,7 +99,7 @@ void mods::unloadall( ) {
 bool mods::enable( mod_info_t *mod ) {
 	bool result = false;
 	if ( !mod->is_loaded ) {
-		result = mod->ptr->load( wh );
+		result = mod->ptr->load( photon );
 		mod->is_loaded = true;
 	}
 
@@ -115,20 +115,20 @@ void mods::disable( mod_info_t *mod ) {
 }
 
 void mods::print( ) {
-	wh->portal2->console->msg( "Loaded wormhole mods (%d):\n", mod_list.size( ) );
+	photon->portal2->console->msg( "Loaded photon mods (%d):\n", mod_list.size( ) );
 	for ( const auto &mod : mod_list ) {
 		const char *status = mod.second.is_loaded ? "enabled" : "disabled";
 		const auto info = mod.second.ptr->get_info( );
 
-		wh->portal2->console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
+		photon->portal2->console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
 	}
 }
 
 void mods::post_event( void *sender, const char *msg ) {
 	auto msg_s = std::string( msg );
 
-	if ( sender != &wormhole ) {
-		const auto mod = reinterpret_cast<wh_api::i_wormhole_mod *>( sender );
+	if ( sender != &photon ) {
+		const auto mod = reinterpret_cast<photon_api::i_photon_mod *>( sender );
 		msg_s = std::string( mod->get_info( ).name ) + std::string( ":" ) + msg_s;
 	}
 

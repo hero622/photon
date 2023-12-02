@@ -34,8 +34,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: wormhole-linux
-          path: wormhole.so
+          name: photon-linux
+          path: photon.so
           if-no-files-found: error
   build-win:
     name: Windows Build
@@ -51,12 +51,12 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
       - name: Build
-        run: msbuild -m -t:wormhole -p:"Configuration=Release;Platform=x86" wormhole.sln
+        run: msbuild -m -t:photon -p:"Configuration=Release;Platform=x86" photon.sln
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: wormhole-windows
+          name: photon-windows
           path: |
-            bin\wormhole.dll
-            bin\wormhole.pdb
+            bin\photon.dll
+            bin\photon.pdb
           if-no-files-found: error

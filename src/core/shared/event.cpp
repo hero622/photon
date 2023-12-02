@@ -1,4 +1,4 @@
-#include "wormhole-sdk/event.h"
+#include "photon-sdk/event.h"
 
 #include "core/mods/mods.h"
 

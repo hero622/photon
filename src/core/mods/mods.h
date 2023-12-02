@@ -1,13 +1,13 @@
 #pragma once
 
-#include "wormhole-sdk/wormhole.h"
+#include "photon-sdk/photon.h"
 
 #include <unordered_map>
 
 namespace mods {
 	struct mod_info_t {
 		void *handle;
-		wh_api::i_wormhole_mod *ptr;
+		photon_api::i_photon_mod *ptr;
 		bool is_loaded;  // this is kinda confusing, because the module is loaded at all times, but it shouldnt really do anything until the fn "load" is called, maybe should rename this to is_enabled?
 	};
 

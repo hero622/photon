@@ -1,7 +1,7 @@
-#include "wormhole-sdk/hook.h"
+#include "photon-sdk/hook.h"
 
 #include "deps/subhook/subhook.h"
-#include "wormhole-sdk/utils.h"
+#include "photon-sdk/utils.h"
 
 int c_hook::create_hook( void *src, void *dst, void *&hook, void **orig ) {
 	hook = subhook_new( src, dst, SUBHOOK_TRAMPOLINE );

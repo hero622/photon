@@ -1,6 +1,6 @@
 #pragma once
 
-#include <wormhole.h>
+#include <photon.h>
 
 namespace example_mod {
 	namespace hooks {

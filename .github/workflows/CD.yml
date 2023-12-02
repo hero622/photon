@@ -25,8 +25,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: wormhole-linux
-          path: wormhole.so
+          name: photon-linux
+          path: photon.so
           if-no-files-found: error
   build-win:
     name: Windows Build
@@ -44,54 +44,54 @@ jobs:
       - name: Build
         env:
           RELEASE_BUILD: 1
-        run: msbuild -m -t:wormhole -p:"Configuration=Release;Platform=x86" wormhole.sln
+        run: msbuild -m -t:photon -p:"Configuration=Release;Platform=x86" photon.sln
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: wormhole-windows
-          path: bin\wormhole.dll
+          name: photon-windows
+          path: bin\photon.dll
           if-no-files-found: error
       - name: Upload PDB Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: wormhole-windows-pdb
-          path: bin\wormhole.pdb
+          name: photon-windows-pdb
+          path: bin\photon.pdb
           if-no-files-found: error
   release:
     name: Release
-    if: github.repository == 'Zyntex1/wormhole'
+    if: github.repository == 'Zyntex1/photon'
     needs: [build-lin, build-win]
     runs-on: ubuntu-latest
     steps:
       - name: Download Linux Build
         uses: actions/download-artifact@v3
         with:
-          name: wormhole-linux
+          name: photon-linux
       - name: Download Windows Build
         uses: actions/download-artifact@v3
         with:
-          name: wormhole-windows
+          name: photon-windows
       - name: Download Windows PDB
         uses: actions/download-artifact@v3
         with:
-          name: wormhole-windows-pdb
+          name: photon-windows-pdb
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            ![CD](https://github.com/Zyntex1/wormhole/workflows/CD/badge.svg)
+            ![CD](https://github.com/Zyntex1/photon/workflows/CD/badge.svg)
 
             **Installation**
             - Place the binary into the game folder e.g. `Portal 2`
-            - Open developer console and enter `plugin_load wormhole`
+            - Open developer console and enter `plugin_load photon`
 
             ---
 
             **Changelog**
             TODO
           files: |
-            wormhole.so
-            wormhole.dll
-            wormhole.pdb
+            photon.so
+            photon.dll
+            photon.pdb
           prerelease: ${{ contains(github.ref, '-pre') }}
           fail_on_unmatched_files: true

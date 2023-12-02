@@ -5,7 +5,7 @@
 ### Windows
 - Visual Studio 2019
 - MSVC Toolset v142
-- Configure SDK version in `src/wormhole.vcxproj`
+- Configure SDK version in `src/photon.vcxproj`
 - Configure paths in `copy.bat`
 
 ### Linux
@@ -18,12 +18,7 @@
 - Follow the coding style
 - Do not stage files that you had to configure
 
-## Coding style
-Basic coding style:
-- `snake_case` for everything
-- `_t` for type aliases
+## Code style
+Use the included `.clang-format` file
 
-`.clang-format` is included, use an extension
-
-## Coding
-Read [Creating mods](creating_mods.md) for basics.
+TODO: code style guide

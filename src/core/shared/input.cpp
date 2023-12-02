@@ -1,4 +1,4 @@
-#include "wormhole-sdk/wormhole.h"
+#include "photon-sdk/photon.h"
 
 #include <array>
 
@@ -9,10 +9,10 @@ void c_input::poll_input( ) {
 	std::copy( g_cur_keys.begin( ), g_cur_keys.end( ), g_old_keys.begin( ) );
 
 	for ( std::size_t i = 0; i < 256; ++i ) {
-		g_cur_keys[ i ] = wh->portal2->input_system->is_button_down( ( sdk::button_code_t ) i );
+		g_cur_keys[ i ] = photon->portal2->input_system->is_button_down( ( sdk::button_code_t ) i );
 	}
 
-	wh->portal2->input_system->get_cursor_position( &g_cursor_x, &g_cursor_y );
+	photon->portal2->input_system->get_cursor_position( &g_cursor_x, &g_cursor_y );
 }
 
 bool c_input::get_key_held( unsigned int code ) {

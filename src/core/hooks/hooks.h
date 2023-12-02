@@ -1,6 +1,6 @@
 #pragma once
 
-#include "wormhole-sdk/hook.h"
+#include "photon-sdk/hook.h"
 
 namespace hooks {
 	decl_hk( void, game_frame, bool simulating );

@@ -3,17 +3,17 @@
 #include "core/huds/huds.h"
 #include "core/menu/gui.h"
 #include "core/mods/mods.h"
-#include "core/wormhole.h"
+#include "core/photon.h"
 
 bool hooks::initialize( ) {
-	hk_virtual( wh->portal2->server_game_dll, game_frame, 4 );
-	hk_virtual( wh->portal2->engine, frame, os( 5, 6 ) );
-	hk_virtual( wh->portal2->client_state, set_signon_state, os( 15, 36 ) );
-	hk_virtual( wh->portal2->engine_vgui_internal, paint, os( 14, 15 ) );
-	hk_virtual( wh->portal2->surface, lock_cursor, 65 );
-	hk_virtual( wh->portal2->base_client_dll, in_key_event, 20 );
-	hk_virtual( wh->portal2->vgui_input, update_button_state, 87 );
-	hk_virtual( wh->portal2->surface, on_screen_size_changed, 114 );
+	hk_virtual( photon->portal2->server_game_dll, game_frame, 4 );
+	hk_virtual( photon->portal2->engine, frame, os( 5, 6 ) );
+	hk_virtual( photon->portal2->client_state, set_signon_state, os( 15, 36 ) );
+	hk_virtual( photon->portal2->engine_vgui_internal, paint, os( 14, 15 ) );
+	hk_virtual( photon->portal2->surface, lock_cursor, 65 );
+	hk_virtual( photon->portal2->base_client_dll, in_key_event, 20 );
+	hk_virtual( photon->portal2->vgui_input, update_button_state, 87 );
+	hk_virtual( photon->portal2->surface, on_screen_size_changed, 114 );
 
 	hk_cmd( plugin_unload );
 
@@ -34,21 +34,21 @@ void hooks::uninitialize( ) {
 }
 
 hk_fn( void, hooks::game_frame, bool simulating ) {
-	wh->event->post( &wormhole, "pre_tick" );
+	photon->event->post( &photon, "pre_tick" );
 
 	game_frame( ecx, simulating );
 
-	wh->event->post( &wormhole, "post_tick" );
+	photon->event->post( &photon, "post_tick" );
 }
 
 hk_fn( void, hooks::frame ) {
-	wh->event->post( &wormhole, "pre_frame" );
+	photon->event->post( &photon, "pre_frame" );
 
 	frame( ecx );
 
 	// todo: look into why this broke
-	if ( wh )
-		wh->event->post( &wormhole, "post_frame" );
+	if ( photon )
+		photon->event->post( &photon, "post_frame" );
 }
 
 hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
@@ -56,24 +56,24 @@ hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
 
 	// this is probably not the best way, i saw SAR do something similar but this needs further thought
 	if ( state == sdk::signonstate_full )
-		wh->event->post( &wormhole, "session_start" );
+		photon->event->post( &photon, "session_start" );
 	else
-		wh->event->post( &wormhole, "session_end" );
+		photon->event->post( &photon, "session_end" );
 }
 
 hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 	paint( ecx, mode );
 
-	wh->portal2->surface->start_drawing( );
+	photon->portal2->surface->start_drawing( );
 
 	if ( mode == sdk::paint_uipanels ) {
-		wh->input->poll_input( );  // not sure if this is the best place to call this
+		photon->input->poll_input( );  // not sure if this is the best place to call this
 
 		huds::paint( );
 
-		wh->event->post( &wormhole, "paint" );
+		photon->event->post( &photon, "paint" );
 
-		if ( wh->input->get_key_press( sdk::key_insert ) )
+		if ( photon->input->get_key_press( sdk::key_insert ) )
 			gui::open = !gui::open;
 
 		if ( gui::open ) {
@@ -82,25 +82,25 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 		}
 	}
 
-	wh->portal2->surface->finish_drawing( );
+	photon->portal2->surface->finish_drawing( );
 }
 
 // unlock the cursor from the game when menu is open
 hk_fn( void, hooks::lock_cursor ) {
-	static void *input_ctx = wh->portal2->engine_client->get_input_context( 0 );
+	static void *input_ctx = photon->portal2->engine_client->get_input_context( 0 );
 
 	if ( gui::open ) {
-		wh->portal2->surface->unlock_cursor( );
+		photon->portal2->surface->unlock_cursor( );
 
-		wh->portal2->input_stack_system->set_cursor_visible( input_ctx, true );
+		photon->portal2->input_stack_system->set_cursor_visible( input_ctx, true );
 	} else {
-		wh->portal2->input_stack_system->set_cursor_visible( input_ctx, false );
+		photon->portal2->input_stack_system->set_cursor_visible( input_ctx, false );
 
 		lock_cursor( ecx );
 	}
 }
 
-// block input to the game when wormhole's menu is open, only works in game, not in the menu
+// block input to the game when photon's menu is open, only works in game, not in the menu
 hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding ) {
 	if ( gui::open )
 		return 0;
@@ -126,7 +126,7 @@ hk_fn( void, hooks::update_button_state, const int *event ) {
 hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	on_screen_size_changed( ecx, old_width, old_height );
 
-	wh->event->post( &wormhole, "on_screen_size_changed" );
+	photon->event->post( &photon, "on_screen_size_changed" );
 
 	// recreate fonts
 	gui::initialize( );
@@ -134,8 +134,8 @@ hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 
 // we need to unhook cengine::frame before the plugin gets unloaded
 hk_cmd_fn( hooks::plugin_unload ) {
-	if ( args.arg_c( ) >= 2 && wormhole.get_plugin( ) && ( !strcmp( args[ 1 ], "wormhole" ) || std::atoi( args[ 1 ] ) == wormhole.plugin->index ) )
-		wormhole.unload( );
+	if ( args.arg_c( ) >= 2 && plugin.get_info( ) && ( !strcmp( args[ 1 ], "photon" ) || std::atoi( args[ 1 ] ) == plugin.info->index ) )
+		plugin.unload( );
 	else
 		plugin_unload( args );
 }

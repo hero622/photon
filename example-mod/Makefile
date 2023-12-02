@@ -5,7 +5,7 @@ CXX=g++-10
 SDIR=src
 ODIR=obj
 
-SRCS=$(wildcard ../$(SDIR)/wormhole-sdk/utils/*.cpp)
+SRCS=$(wildcard ../$(SDIR)/photon-sdk/utils/*.cpp)
 SRCS+=$(wildcard $(SDIR)/*.cpp)
 SRCS+=$(wildcard $(SDIR)/convars/*.cpp)
 SRCS+=$(wildcard $(SDIR)/hooks/*.cpp)
@@ -17,17 +17,17 @@ OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 DEPS=$(OBJS:%.o=%.d)
 
 WARNINGS=-Wall -Wno-parentheses -Wno-unknown-pragmas -Wno-delete-non-virtual-dtor
-CXXFLAGS=-std=c++17 -m32 $(WARNINGS) -I$(SDIR) -fPIC -D_GNU_SOURCE -I$(SDIR)/deps/wormhole-sdk
+CXXFLAGS=-std=c++17 -m32 $(WARNINGS) -I$(SDIR) -fPIC -D_GNU_SOURCE -I$(SDIR)/deps/photon-sdk
 LDFLAGS=-m32 -shared -lstdc++fs
 
 # Import config.mk, which can be used for optional config
 -include config.mk
 
-all: wh-example-mod.so
+all: photon-example-mod.so
 
 -include $(DEPS)
 
-wh-example-mod.so: $(OBJS)
+photon-example-mod.so: $(OBJS)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 $(ODIR)/%.o: $(SDIR)/%.cpp

@@ -13,7 +13,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{fa989732-5d3f-4565-a5b2-abd400bb34f0}</ProjectGuid>
-    <RootNamespace>wormhole</RootNamespace>
+    <RootNamespace>photon</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -107,36 +107,36 @@
     <ClInclude Include="core\menu\gui.h" />
     <ClInclude Include="core\mods\mods.h" />
     <ClInclude Include="core\source-sdk\plugin.h" />
-    <ClInclude Include="core\wormhole.h" />
-    <ClInclude Include="wormhole-sdk\ccon.h" />
-    <ClInclude Include="wormhole-sdk\event.h" />
-    <ClInclude Include="wormhole-sdk\events.h" />
-    <ClInclude Include="wormhole-sdk\hook.h" />
-    <ClInclude Include="wormhole-sdk\hud.h" />
-    <ClInclude Include="wormhole-sdk\input.h" />
-    <ClInclude Include="wormhole-sdk\interfaces.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\console.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\cvar.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\engine_client.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\font_manager.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\input_system.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\mem_alloc.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\scheme.h" />
-    <ClInclude Include="wormhole-sdk\interfaces\surface.h" />
-    <ClInclude Include="wormhole-sdk\menu.h" />
-    <ClInclude Include="wormhole-sdk\render.h" />
-    <ClInclude Include="wormhole-sdk\source-sdk\color.h" />
-    <ClInclude Include="wormhole-sdk\source-sdk\convar.h" />
-    <ClInclude Include="wormhole-sdk\source-sdk\misc.h" />
-    <ClInclude Include="wormhole-sdk\source-sdk\utlvector.h" />
-    <ClInclude Include="wormhole-sdk\source-sdk\vector.h" />
-    <ClInclude Include="wormhole-sdk\source_sdk.h" />
-    <ClInclude Include="wormhole-sdk\utils.h" />
-    <ClInclude Include="wormhole-sdk\utils\console.h" />
-    <ClInclude Include="wormhole-sdk\utils\memory.h" />
-    <ClInclude Include="wormhole-sdk\utils\platform.h" />
-    <ClInclude Include="wormhole-sdk\utils\string.h" />
-    <ClInclude Include="wormhole-sdk\wormhole.h" />
+    <ClInclude Include="core\photon.h" />
+    <ClInclude Include="photon-sdk\ccon.h" />
+    <ClInclude Include="photon-sdk\event.h" />
+    <ClInclude Include="photon-sdk\events.h" />
+    <ClInclude Include="photon-sdk\hook.h" />
+    <ClInclude Include="photon-sdk\hud.h" />
+    <ClInclude Include="photon-sdk\input.h" />
+    <ClInclude Include="photon-sdk\interfaces.h" />
+    <ClInclude Include="photon-sdk\interfaces\console.h" />
+    <ClInclude Include="photon-sdk\interfaces\cvar.h" />
+    <ClInclude Include="photon-sdk\interfaces\engine_client.h" />
+    <ClInclude Include="photon-sdk\interfaces\font_manager.h" />
+    <ClInclude Include="photon-sdk\interfaces\input_system.h" />
+    <ClInclude Include="photon-sdk\interfaces\mem_alloc.h" />
+    <ClInclude Include="photon-sdk\interfaces\scheme.h" />
+    <ClInclude Include="photon-sdk\interfaces\surface.h" />
+    <ClInclude Include="photon-sdk\menu.h" />
+    <ClInclude Include="photon-sdk\render.h" />
+    <ClInclude Include="photon-sdk\source-sdk\color.h" />
+    <ClInclude Include="photon-sdk\source-sdk\convar.h" />
+    <ClInclude Include="photon-sdk\source-sdk\misc.h" />
+    <ClInclude Include="photon-sdk\source-sdk\utlvector.h" />
+    <ClInclude Include="photon-sdk\source-sdk\vector.h" />
+    <ClInclude Include="photon-sdk\source_sdk.h" />
+    <ClInclude Include="photon-sdk\utils.h" />
+    <ClInclude Include="photon-sdk\utils\console.h" />
+    <ClInclude Include="photon-sdk\utils\memory.h" />
+    <ClInclude Include="photon-sdk\utils\platform.h" />
+    <ClInclude Include="photon-sdk\utils\string.h" />
+    <ClInclude Include="photon-sdk\photon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\convars\convars.cpp" />
@@ -154,10 +154,10 @@
     <ClCompile Include="core\shared\menu.cpp" />
     <ClCompile Include="core\shared\render.cpp" />
     <ClCompile Include="core\source-sdk\plugin.cpp" />
-    <ClCompile Include="core\wormhole.cpp" />
-    <ClCompile Include="wormhole-sdk\utils\console.cpp" />
-    <ClCompile Include="wormhole-sdk\utils\memory.cpp" />
-    <ClCompile Include="wormhole-sdk\utils\string.cpp" />
+    <ClCompile Include="core\photon.cpp" />
+    <ClCompile Include="photon-sdk\utils\console.cpp" />
+    <ClCompile Include="photon-sdk\utils\memory.cpp" />
+    <ClCompile Include="photon-sdk\utils\string.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
