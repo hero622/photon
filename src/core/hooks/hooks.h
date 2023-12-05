@@ -12,6 +12,7 @@ namespace hooks {
 	decl_hk( void, update_button_state, const int *event );
 	decl_hk( void, on_screen_size_changed, int old_width, int old_height );
 
+	decl_hk_cmd( plugin_load );
 	decl_hk_cmd( plugin_unload );
 
 	bool initialize( );

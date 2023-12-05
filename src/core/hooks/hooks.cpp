@@ -15,6 +15,7 @@ bool hooks::initialize( ) {
 	hk_virtual( photon->portal2->vgui_input, update_button_state, 87 );
 	hk_virtual( photon->portal2->surface, on_screen_size_changed, 114 );
 
+	hk_cmd( plugin_load );
 	hk_cmd( plugin_unload );
 
 	return true;
@@ -22,6 +23,7 @@ bool hooks::initialize( ) {
 
 void hooks::uninitialize( ) {
 	unhk_cmd( plugin_unload );
+	unhk_cmd( plugin_load );
 
 	unhk( on_screen_size_changed );
 	unhk( update_button_state );
@@ -46,7 +48,9 @@ hk_fn( void, hooks::frame ) {
 
 	frame( ecx );
 
-	// todo: look into why this broke
+	// XXX: im not sure why we need this condition here, it used to be fine
+	// possibly i changed something about unloading and this doesnt get unhooked early enough?
+	// if there is more stuff being done here later, this might break, this should be looked into !!!
 	if ( photon )
 		photon->event->post( &photon, "post_frame" );
 }
@@ -130,6 +134,14 @@ hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 
 	// recreate fonts
 	gui::initialize( );
+}
+
+// prevent from loading the plugin twice (why doesnt source do this ???)
+hk_cmd_fn( hooks::plugin_load ) {
+	if ( args.arg_c( ) >= 2 && strstr( args[ 1 ], "photon" ) )
+		photon->portal2->console->warning( "Photon is already loaded.\n" );
+	else
+		plugin_load( args );
 }
 
 // we need to unhook cengine::frame before the plugin gets unloaded

@@ -1,5 +1,6 @@
 #include "gui.h"
 
+#include "core/convars/convars.h"
 #include "core/huds/huds.h"
 #include "core/mods/mods.h"
 #include "framework.h"
@@ -46,6 +47,10 @@ void gui::paint( ) {
 		}
 	}
 	if ( framework::tab( tab, sdk::vec2_t( screen_size.x / 2 + 90 + 6, screen_size.y / 2 - tab_height / 2 ), sdk::vec2_t( 130, tab_height ), "settings" ) ) {
+		static bool fast_loads;
+		framework::checkbox( fast_loads, "fast loads" );
+		convars::set_fast_loads( fast_loads );
+
 		framework::slider( huds::safezone_x, 0, 32, "hud safezone x" );
 		framework::slider( huds::safezone_y, 0, 32, "hud safezone y" );
 	}

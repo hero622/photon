@@ -29,7 +29,7 @@ void c_hud::unreg( photon_api::i_thud *thud ) {
 
 static photon_api::i_hud *cur_hud;
 
-static void setup_draw( int &x, int &y, int w, int h ) {
+static inline void setup_draw( int &x, int &y, int w, int h ) {
 	cur_hud->bounds.x = std::fmax( cur_hud->bounds.x, x + w );
 	cur_hud->bounds.y = std::fmax( cur_hud->bounds.y, y + h );
 

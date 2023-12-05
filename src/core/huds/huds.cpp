@@ -4,20 +4,20 @@
 
 #include <cmath>
 
-sdk::vec2_t get_abs_pos( photon_api::hud_t *hud ) {
+static sdk::vec2_t get_abs_pos( photon_api::hud_t *hud ) {
 	const auto pos = photon->render->to_screen( hud->pos );
 	const auto anchor = hud->anchor * hud->bounds;
 
 	return pos - anchor;
 }
 
-void set_abs_pos( photon_api::hud_t *hud, sdk::vec2_t pos ) {
+static void set_abs_pos( photon_api::hud_t *hud, sdk::vec2_t pos ) {
 	const auto anchor = hud->anchor * hud->bounds;
 
 	hud->pos = photon->render->normalize( pos + anchor );
 }
 
-void set_hud_anchor( photon_api::hud_t *hud ) {
+static void set_hud_anchor( photon_api::hud_t *hud ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
 	const auto center = get_abs_pos( hud ) + sdk::vec2_t( hud->bounds.x / 2, hud->bounds.y / 2 );
@@ -37,7 +37,7 @@ void set_hud_anchor( photon_api::hud_t *hud ) {
 		hud->anchor.y = 0.5f;
 }
 
-void align_hud_element( photon_api::hud_t *hud, photon_api::hud_t *other_hud ) {
+static void align_hud_element( photon_api::hud_t *hud, photon_api::hud_t *other_hud ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
 	const auto clr = sdk::color_t( 255, 0, 255, 255 );
@@ -60,7 +60,7 @@ void align_hud_element( photon_api::hud_t *hud, photon_api::hud_t *other_hud ) {
 		other_hud_pos.x + other_hud->bounds.x / 2,
 		other_hud_pos.y + other_hud->bounds.y / 2 };
 
-	// todo: sort everything by the distance and then use the closest one
+	// TODO: sort everything by the distance and then use the closest one
 	for ( int i = 0; i < 6; ++i ) {
 		for ( int j = 0; j < 6; ++j ) {
 			if ( i % 2 != j % 2 )
@@ -86,7 +86,7 @@ void huds::paint( ) {
 		} else {
 			const auto thud = ( photon_api::i_thud * ) hud;
 
-			// todo: some formatting system
+			// TODO: improve on this system or maybe even rework the thud system completely
 			auto text = std::string( thud->format );
 
 			utils::string::replace( text, "{name}", std::string( thud->get_name( ) ) );

@@ -4,6 +4,15 @@
 
 #include "photon-sdk/photon.h"
 
+static std::unordered_map<const char *, sdk::con_var *> convars;
+static std::unordered_map<const char *, sdk::con_command *> concmds;
+
+sdk::con_var *c_con::create_convar( const char *name, const char *default_value, int flags ) {
+	return create_convar( name, default_value, flags, 0, 0 );
+}
+sdk::con_var *c_con::create_convar( const char *name, const char *default_value, int flags, const char *help_string, sdk::fn_change_callback_t cbk ) {
+	return create_convar( name, default_value, flags, help_string, 0, 0, 0, 0, cbk );
+}
 sdk::con_var *c_con::create_convar( const char *name, const char *default_value, int flags, const char *help_string, bool has_min, float min, bool has_max, float max, sdk::fn_change_callback_t cbk ) {
 	auto cvar = reinterpret_cast<sdk::con_var *>( photon->portal2->mem_alloc->alloc( sizeof( sdk::con_var ) ) );
 	memset( cvar, 0, sizeof( sdk::con_var ) );

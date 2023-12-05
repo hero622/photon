@@ -6,7 +6,7 @@
 int c_hook::create_hook( void *src, void *dst, void *&hook, void **orig ) {
 	hook = subhook_new( src, dst, SUBHOOK_TRAMPOLINE );
 	*orig = subhook_get_trampoline( ( subhook_t ) hook );
-	utils::console::log( "redirected %p to %p, trampoline set at %p.\n", src, dst, orig );
+	utils::console::log( "[ photon ] redirected %p to %p, trampoline set at %p.\n", src, dst, *orig );
 	return subhook_install( ( subhook_t ) hook );
 }
 
