@@ -109,25 +109,25 @@ void c_photon::un_pause( ) {}
 const char *c_photon::get_plugin_description( ) {
 	return photon_plugin_sig;
 }
-void c_photon::level_init( char const *p_map_name ) {}
-void c_photon::server_activate( void *p_edict_list, int edict_count, int client_max ) {}
+void c_photon::level_init( char const *map_name ) {}
+void c_photon::server_activate( void *edict_list, int edict_count, int client_max ) {}
 void c_photon::game_frame( bool simulating ) {}
 void c_photon::level_shutdown( ) {}
-void c_photon::client_fully_connect( void *p_edict ) {}
-void c_photon::client_active( void *p_entity ) {}
-void c_photon::client_disconnect( void *p_entity ) {}
-void c_photon::client_put_in_server( void *p_entity, char const *playername ) {}
+void c_photon::client_fully_connect( void *edict ) {}
+void c_photon::client_active( void *entity ) {}
+void c_photon::client_disconnect( void *entity ) {}
+void c_photon::client_put_in_server( void *entity, char const *playername ) {}
 void c_photon::set_command_client( int index ) {}
-void c_photon::client_settings_changed( void *p_edict ) {}
-int c_photon::client_connect( bool *b_allow_connect, void *p_entity, const char *psz_name, const char *psz_address, char *reject, int maxrejectlen ) {
+void c_photon::client_settings_changed( void *edict ) {}
+int c_photon::client_connect( bool *allow_connect, void *entity, const char *name, const char *address, char *reject, int maxrejectlen ) {
 	return 0;
 }
-int c_photon::client_command( void *p_entity, const void *&args ) {
+int c_photon::client_command( void *entity, const void *&args ) {
 	return 0;
 }
-int c_photon::network_id_validated( const char *psz_user_name, const char *psz_network_id ) {
+int c_photon::network_id_validated( const char *user_name, const char *network_id ) {
 	return 0;
 }
-void c_photon::on_query_cvar_value_finished( int i_cookie, void *p_player_entity, int e_status, const char *p_cvar_name, const char *p_cvar_value ) {}
+void c_photon::on_query_cvar_value_finished( int cookie, void *player_entity, int status, const char *cvar_name, const char *cvar_value ) {}
 void c_photon::on_edict_allocated( void *edict ) {}
 void c_photon::on_edict_freed( const void *edict ) {}

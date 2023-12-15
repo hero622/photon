@@ -69,7 +69,7 @@ bool gui::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std:
 	photon->portal2->surface->set_clip_rect( 0, 0, photon->render->get_screen_size( ).x, photon->render->get_screen_size( ).y );
 
 	photon->render->draw_outlined_rect( pos.x, pos.y, size.x, size.y, active ? colors::white : hover ? colors::dark
-	                                                                                             : colors::darker );
+	                                                                                                 : colors::darker );
 	photon->render->draw_filled_rect( pos.x + 1, pos.y + 1, size.x - 2, size.y - 2, colors::bg );
 
 	const auto text_size = photon->render->get_text_size( fonts::title, title.c_str( ) );
