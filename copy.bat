@@ -1,4 +1,4 @@
-SET "binary=wormhole.dll"
+SET "binary=photon.dll"
 SET "src=..\bin\%binary%"
 SET "dest=D:\SteamLibrary\SteamApps\common"
 
