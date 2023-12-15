@@ -14,14 +14,18 @@ sdk::con_var *c_con::create_convar( const char *name, const char *default_value,
 	return create_convar( name, default_value, flags, help_string, 0, 0, 0, 0, cbk );
 }
 sdk::con_var *c_con::create_convar( const char *name, const char *default_value, int flags, const char *help_string, bool has_min, float min, bool has_max, float max, sdk::fn_change_callback_t cbk ) {
+	// use the game's memory allocator
 	auto cvar = reinterpret_cast<sdk::con_var *>( photon->portal2->mem_alloc->alloc( sizeof( sdk::con_var ) ) );
 	memset( cvar, 0, sizeof( sdk::con_var ) );
 
+	// convar ctor
 	static const auto ctor_addr = utils::memory::pattern_scan( os( "vstdlib.dll", "libvstdlib.so" ), os( "55 8B EC F3 0F 10 45 ? 8B 55 14", "55 89 E5 56 0F B6 45 24" ) );
 
+	// steal vtables from the game
 	cvar->vtable = *( void ** ) ( ctor_addr + os( 0x34, 0x31 ) );
 	cvar->vtable_convar = *( void ** ) ( ctor_addr + os( 0x3b, 0x38 ) );
 
+	// read ConVar::Create from the ctor
 	using create_fn_t = void( __rescall * )( void *, const char *, const char *, int, const char *, bool, float, bool, float, sdk::fn_change_callback_t );
 	const auto create_fn = utils::memory::read<create_fn_t>( ctor_addr + os( 0x6c, 0x7b ) );
 	create_fn( cvar, name, default_value, flags, help_string, has_min, min, has_max, max, cbk );
@@ -36,6 +40,7 @@ void c_con::destruct_convar( const char *name ) {
 
 	auto cvar = convars[ name ];
 
+	// if we dont call this the game crashes !!
 	photon->portal2->cvar->unregister_con_command( cvar );
 
 	// call dtors
@@ -49,14 +54,19 @@ void c_con::destruct_convar( const char *name ) {
 }
 
 sdk::con_command *c_con::create_concmd( const char *name, sdk::fn_command_callback_t cbk, const char *help_string, int flags ) {
+	// use the game's memory allocator
 	auto concmd = reinterpret_cast<sdk::con_command *>( photon->portal2->mem_alloc->alloc( sizeof( sdk::con_command ) ) );
 	memset( concmd, 0, sizeof( sdk::con_command ) );
 
+	// steal vtable from the game
 	concmd->vtable = photon->portal2->cvar->find_command_base( "listdemo" )->vtable;
+
 	concmd->name = name;
 	concmd->fn_command_callback = cbk;
 	concmd->help_string = help_string;
 	concmd->flags = flags;
+
+	// TODO: implement command completion
 	concmd->fn_completion_callback = 0;
 	concmd->has_completion_callback = false;
 	concmd->using_new_command_callback = true;

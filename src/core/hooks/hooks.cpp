@@ -115,8 +115,12 @@ hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const
 // block input to the menu, vgui has its own input system for some reason, so we have to hook another function
 hk_fn( void, hooks::update_button_state, const int *event ) {
 	if ( gui::open ) {
-		// so we cant actually just return here because theres other functions calling SetKeyCodeState and SetMouseCodeState
-		// i didnt want to hook those functions so we just reset the struct that those functions update here
+		/*
+		 * so we cant actually just return here because theres other
+		 * functions calling SetKeyCodeState and SetMouseCodeState,
+		 * i didnt want to hook those functions so we just reset
+		 * the struct that those functions update here
+		 */
 		uint8_t *context_addr = ( uint8_t * ) ecx + 0xce8;  // m_hContext
 		int context = *( int * ) context_addr;
 

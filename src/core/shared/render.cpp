@@ -21,6 +21,11 @@ bool c_render::create_font( sdk::h_font &font, const char *font_name, int size, 
 }
 
 void c_render::destruct_font( sdk::h_font font ) {
+	/*
+	 * seems like the game doesnt have a way of destructing a specific font,
+	 * so we have to do it ourselves
+	 */
+
 	for ( const auto &font_range : photon->portal2->font_manager->font_amalgams[ font ].fonts ) {
 		const int idx = photon->portal2->font_manager->win32_fonts.find( font_range.win32_font );
 
@@ -53,11 +58,13 @@ sdk::vec2_t c_render::get_text_size( sdk::h_font font, const char *text ) {
 }
 
 void c_render::draw_texture( int x, int y, int w, int h, const char *texture, sdk::color_t color ) {
+	// check if texture already exists
 	int id = photon->portal2->surface->draw_get_texture_id( texture );
 	if ( !id ) {
 		id = photon->portal2->surface->create_new_texture_id( true );
 		photon->portal2->surface->draw_set_texture_file( id, texture, false, true );
 	}
+
 	photon->portal2->surface->draw_set_texture( id );
 	photon->portal2->surface->draw_set_color( color.r, color.g, color.b, color.a );
 	photon->portal2->surface->draw_textured_rect( x, y, x + w, y + h );
