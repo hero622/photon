@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.33927.289
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "photon", "src\photon.vcxproj", "{FA989732-5D3F-4565-A5B2-ABD400BB34F0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "photon.tests", "tests\photon.tests.vcxproj", "{BBF254DC-F075-4BF0-9863-66FD5B8A034C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,10 @@ Global
 		{FA989732-5D3F-4565-A5B2-ABD400BB34F0}.Debug|x86.Build.0 = Debug|Win32
 		{FA989732-5D3F-4565-A5B2-ABD400BB34F0}.Release|x86.ActiveCfg = Release|Win32
 		{FA989732-5D3F-4565-A5B2-ABD400BB34F0}.Release|x86.Build.0 = Release|Win32
+		{BBF254DC-F075-4BF0-9863-66FD5B8A034C}.Debug|x86.ActiveCfg = Debug|Win32
+		{BBF254DC-F075-4BF0-9863-66FD5B8A034C}.Debug|x86.Build.0 = Debug|Win32
+		{BBF254DC-F075-4BF0-9863-66FD5B8A034C}.Release|x86.ActiveCfg = Release|Win32
+		{BBF254DC-F075-4BF0-9863-66FD5B8A034C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
