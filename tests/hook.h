@@ -14,15 +14,19 @@ namespace dummy {
 	};
 }  // namespace dummy
 
+/*
+ * inspired by SST lol
+ */
+
 inline void *add_hk;
 inline int ( *add )( int a, int b );
 int add_hk_fn( int a, int b ) {
-	return a + b + 5;
+	return add( a, b ) + 5;
 }
 
 decl_hk( int, subtract, int a, int b );
 hk_fn( int, subtract, int a, int b ) {
-	return a - b + 5;
+	return subtract( ecx, a, b ) + 5;
 }
 
 dummy::math *math;
@@ -39,9 +43,8 @@ UTEST( hook, inline_hook ) {
 }
 
 /*
- * this is kinda unnecesarry since its technically
- * still an inline hook but that might change
- * in the future so might aswell have it here
+ * NOTE: this is kinda unnecesarry since its technically still an inline hook
+ * but that might change in the future so might aswell have it here
  */
 UTEST( hook, virtual_hook ) {
 	// instantiate dummy class

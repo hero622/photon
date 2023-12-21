@@ -2,7 +2,7 @@
 #include "utest.h"
 
 /*
- * linux asm is written using intel syntax, use compiler flag "-masm=intel"
+ * NOTE: linux asm is written using intel syntax, use compiler flag "-masm=intel"
  */
 
 namespace dummy {

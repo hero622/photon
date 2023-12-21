@@ -5,6 +5,18 @@
 #include <algorithm>
 #include <cmath>
 
+struct hud_bounds_t {
+	sdk::vec2_t mins;    // top left corner
+	sdk::vec2_t maxs;    // bottom right corner
+	sdk::vec2_t center;  // center
+};
+
+struct point_distance_t {
+	sdk::vec2_t pt1;  // one of the current hud's points
+	sdk::vec2_t pt2;  // one of the other hud's points
+	float dist;       // squared distance
+};
+
 static sdk::vec2_t get_abs_pos( photon_api::hud_t *hud ) {
 	const auto pos = photon->render->to_screen( hud->pos );
 	const auto anchor = hud->anchor * hud->bounds;
@@ -45,12 +57,6 @@ static void set_hud_anchor( photon_api::hud_t *hud ) {
 		hud->anchor.y = 0.5f;
 }
 
-struct hud_bounds_t {
-	sdk::vec2_t mins;
-	sdk::vec2_t maxs;
-	sdk::vec2_t center;
-};
-
 static hud_bounds_t get_hud_bounds( photon_api::hud_t *hud ) {
 	const auto hud_pos = get_abs_pos( hud );
 
@@ -63,6 +69,40 @@ static hud_bounds_t get_hud_bounds( photon_api::hud_t *hud ) {
 };
 
 /*
+ * calculate distances between all edges of two huds
+ * pass in a vector to add the distances to
+ */
+static void calculate_distances( std::vector<point_distance_t> &distances, const hud_bounds_t &hud1, const hud_bounds_t &hud2 ) {
+	// loop over all edges
+	for ( int i = 0; i < 3; ++i ) {
+		for ( int j = 0; j < 3; ++j ) {
+			for ( int axis = 0; axis < 2; ++axis ) {
+				/*
+				 * NOTE: this whole section is using pointer indexing to access struct members
+				 */
+
+				auto pt1 = ( ( sdk::vec2_t * ) &hud1 )[ i ];
+				auto pt2 = ( ( sdk::vec2_t * ) &hud2 )[ j ];
+
+				// since we align huds on axis, not actually by points, set -1 on the axis we dont use
+				( ( float * ) &pt1 )[ 1 - axis /* other axis */ ] = -1;
+				( ( float * ) &pt2 )[ 1 - axis /* other axis */ ] = -1;
+
+				// delta pos, again only on one axis
+				float delta_pos = ( ( float * ) &pt1 )[ axis ] - ( ( float * ) &pt2 )[ axis ];
+
+				point_distance_t dist;
+				dist.pt1 = pt1;
+				dist.pt2 = pt2;
+				dist.dist = delta_pos * delta_pos;  // squared distance
+
+				distances.push_back( dist );
+			}
+		}
+	}
+}
+
+/*
  * get all distances to all hud element's edges, sort them, align to closest
  * this whole thing might be overcomplicated, but this was my best idea
  */
@@ -70,48 +110,29 @@ static void align_hud_element( photon_api::hud_t *hud ) {
 	const auto clr = sdk::color_t( 255, 0, 255, 255 );
 
 	const auto screen_size = photon->render->get_screen_size( );
-	const auto hud_rect = get_hud_bounds( hud );
+	const auto hud_bounds = get_hud_bounds( hud );
 
-	struct point_distance_t {
-		sdk::vec2_t pt1;  // one of the current hud's points
-		sdk::vec2_t pt2;  // one of the other hud's points
-		float dist;       // squared distance
-	};
 	std::vector<point_distance_t> distances;
 
+	/*
+	 * alignment with screen anchors
+	 */
+	hud_bounds_t b;
+	b.mins = sdk::vec2_t( huds::safezone_x, huds::safezone_y );
+	b.maxs = sdk::vec2_t( screen_size.x - huds::safezone_x, screen_size.y - huds::safezone_y );
+	b.center = sdk::vec2_t( screen_size.x / 2, screen_size.y / 2 );
+	calculate_distances( distances, hud_bounds, b );
+
+	/*
+	 * alignment with other hud elements
+	 */
 	for ( const auto &other_hud : huds::huds ) {
 		if ( hud == other_hud )
 			continue;
 
-		const auto other_hud_rect = get_hud_bounds( other_hud );
+		const auto other_hud_bounds = get_hud_bounds( other_hud );
 
-		// loop over all edges
-		for ( int i = 0; i < 3; ++i ) {
-			for ( int j = 0; j < 3; ++j ) {
-				for ( int axis = 0; axis < 2; ++axis ) {
-					/*
-					 * NOTE: this whole section is using pointer indexing to access struct members
-					 */
-
-					auto pt1 = ( ( sdk::vec2_t * ) &hud_rect )[ i ];
-					auto pt2 = ( ( sdk::vec2_t * ) &other_hud_rect )[ j ];
-
-					// since we align huds on axis, not actually by points, set -1 on the axis we dont use
-					( ( float * ) &pt1 )[ 1 - axis /* other axis */ ] = -1;
-					( ( float * ) &pt2 )[ 1 - axis /* other axis */ ] = -1;
-
-					// delta pos, again only on one axis
-					float delta_pos = ( ( float * ) &pt1 )[ axis ] - ( ( float * ) &pt2 )[ axis ];
-
-					point_distance_t dist;
-					dist.pt1 = pt1;
-					dist.pt2 = pt2;
-					dist.dist = delta_pos * delta_pos;  // squared distance
-
-					distances.push_back( dist );
-				}
-			}
-		}
+		calculate_distances( distances, hud_bounds, other_hud_bounds );
 	}
 
 	// sort points by distance
@@ -133,13 +154,19 @@ static void align_hud_element( photon_api::hud_t *hud ) {
 		was_vertical = vertical;
 
 		if ( pt_dist.dist < 100 ) {
+			auto pos = photon->render->to_screen( hud->pos );
+
 			if ( !vertical ) {
-				hud->pos.x = ( pt_dist.pt2.x - ( pt_dist.pt1.x - hud_pos.x ) ) / screen_size.x;
+				pos.x = ( pt_dist.pt2.x - ( pt_dist.pt1.x - hud_pos.x ) );
+				pos.x += hud->anchor.x * hud->bounds.x;
 				photon->render->draw_line( pt_dist.pt2.x, 0, 0, screen_size.y, clr );
 			} else {
-				hud->pos.y = ( pt_dist.pt2.y - ( pt_dist.pt1.y - hud_pos.y ) ) / screen_size.y;
+				pos.y = ( pt_dist.pt2.y - ( pt_dist.pt1.y - hud_pos.y ) );
+				pos.y += hud->anchor.y * hud->bounds.y;
 				photon->render->draw_line( 0, pt_dist.pt2.y, screen_size.x, 0, clr );
 			}
+
+			hud->pos = photon->render->normalize( pos );
 		}
 	}
 }
