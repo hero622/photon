@@ -44,8 +44,10 @@ bool c_photon::load( sdk::create_interface_fn interface_factory, sdk::create_int
 				photon->portal2->console->warning( "Failed to load one or more mods.\n" );
 
 			return true;
-		}
-	}
+		} else
+			photon->portal2->console->warning( "Failed to initialize one or more hooks.\n" );
+	} else
+		photon->portal2->console->warning( "Failed to initialize one or more interfaces.\n" );
 
 	return false;
 }

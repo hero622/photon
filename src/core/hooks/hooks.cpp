@@ -6,19 +6,21 @@
 #include "core/photon.h"
 
 bool hooks::initialize( ) {
-	hk_virtual( photon->portal2->server_game_dll, game_frame, 4 );
-	hk_virtual( photon->portal2->engine, frame, os( 5, 6 ) );
-	hk_virtual( photon->portal2->client_state, set_signon_state, os( 15, 36 ) );
-	hk_virtual( photon->portal2->engine_vgui_internal, paint, os( 14, 15 ) );
-	hk_virtual( photon->portal2->surface, lock_cursor, 65 );
-	hk_virtual( photon->portal2->base_client_dll, in_key_event, 20 );
-	hk_virtual( photon->portal2->vgui_input, update_button_state, 87 );
-	hk_virtual( photon->portal2->surface, on_screen_size_changed, 114 );
+	bool result = true;
+
+	if ( !hk_virtual( photon->portal2->server_game_dll, game_frame, 4 ) ) result = false;
+	if ( !hk_virtual( photon->portal2->engine, frame, os( 5, 6 ) ) ) result = false;
+	if ( !hk_virtual( photon->portal2->client_state, set_signon_state, os( 15, 36 ) ) ) result = false;
+	if ( !hk_virtual( photon->portal2->engine_vgui_internal, paint, os( 14, 15 ) ) ) result = false;
+	if ( !hk_virtual( photon->portal2->surface, lock_cursor, 65 ) ) result = false;
+	if ( !hk_virtual( photon->portal2->base_client_dll, in_key_event, 20 ) ) result = false;
+	if ( !hk_virtual( photon->portal2->vgui_input, update_button_state, 87 ) ) result = false;
+	if ( !hk_virtual( photon->portal2->surface, on_screen_size_changed, 114 ) ) result = false;
 
 	hk_cmd( plugin_load );
 	hk_cmd( plugin_unload );
 
-	return true;
+	return result;
 }
 
 void hooks::uninitialize( ) {

@@ -9,7 +9,7 @@
 bool c_menu::button( sdk::vec2_t size, const char *label ) {
 	return gui::framework::button( size, label );
 }
-void c_menu::checkbox( bool &val, const char *label ) {
+bool c_menu::checkbox( bool &val, const char *label ) {
 	return gui::framework::checkbox( val, label );
 }
 void c_menu::slider( int &val, int min, int max, const char *label ) {

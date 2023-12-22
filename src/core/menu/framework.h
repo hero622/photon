@@ -53,7 +53,7 @@ namespace gui {
 		bool mod( mods::mod_info_t *info );
 
 		bool button( sdk::vec2_t size, std::string label );
-		void checkbox( bool &val, std::string label );
+		bool checkbox( bool &val, std::string label );
 		void slider( int &val, int min, int max, std::string label );
 		void sliderf( float &val, float min, float max, std::string label );
 		void combo( std::size_t &val, std::vector<std::string> items, std::string label );

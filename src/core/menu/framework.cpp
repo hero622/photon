@@ -80,6 +80,10 @@ bool gui::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std:
 
 	++cur_menu.tab_count;
 
+	// fix the weird positioning for 1 frame
+	if ( active )
+		cur_menu.cursor = sdk::vec2_t( 12, 12 );
+
 	return active;
 }
 
@@ -144,16 +148,18 @@ bool gui::framework::button( sdk::vec2_t size, std::string label ) {
 	return false;
 }
 
-void gui::framework::checkbox( bool &val, std::string label ) {
+bool gui::framework::checkbox( bool &val, std::string label ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 20, 20 );
 
 	bool hover = !cur_menu.block_input && photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
-	bool clicking = hover && photon->input->get_key_held( sdk::mouse_left );
+	bool result = false;
 
-	if ( hover && photon->input->get_key_press( sdk::mouse_left ) )
+	if ( hover && photon->input->get_key_press( sdk::mouse_left ) ) {
 		val = !val;
+		result = true;
+	}
 
 	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, val ? colors::white : colors::dark );
 	photon->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, size.x - 6, size.y - 6, val ? colors::white : sdk::color_t( 0, 0, 0, 0 ) );
@@ -161,6 +167,8 @@ void gui::framework::checkbox( bool &val, std::string label ) {
 	photon->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, label.c_str( ) );
 
 	cur_menu.cursor.y += size.y + 4;
+
+	return result;
 }
 
 void gui::framework::slider( int &val, int min, int max, std::string label ) {
