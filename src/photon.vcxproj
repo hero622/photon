@@ -151,6 +151,7 @@
     <ClCompile Include="core\shared\hook.cpp" />
     <ClCompile Include="core\shared\hud.cpp" />
     <ClCompile Include="core\shared\input.cpp" />
+    <ClCompile Include="core\shared\interface.cpp" />
     <ClCompile Include="core\shared\menu.cpp" />
     <ClCompile Include="core\shared\render.cpp" />
     <ClCompile Include="core\source-sdk\plugin.cpp" />

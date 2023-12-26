@@ -6,7 +6,14 @@
 bool c_hook::create_hook( void *src, void *dst, void *&hook, void **orig ) {
 	hook = subhook_new( src, dst, SUBHOOK_TRAMPOLINE );
 	*orig = subhook_get_trampoline( ( subhook_t ) hook );
-	utils::console::log( "[ photon ] redirected %p to %p, trampoline set at %p.\n", src, dst, *orig );
+	utils::console::log( "[+] hook: %p -> %p, trampoline: %p.\n", src, dst, *orig );
+	return subhook_install( ( subhook_t ) hook ) == 0;
+}
+
+bool c_hook::create_hook( void *src, void *dst, void *&hook, void **orig, const char *name ) {
+	hook = subhook_new( src, dst, SUBHOOK_TRAMPOLINE );
+	*orig = subhook_get_trampoline( ( subhook_t ) hook );
+	utils::console::log( "[+] hook %s: %p -> %p, trampoline: %p.\n", name, src, dst, *orig );
 	return subhook_install( ( subhook_t ) hook ) == 0;
 }
 

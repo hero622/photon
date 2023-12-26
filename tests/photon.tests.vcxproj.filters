@@ -75,12 +75,18 @@
     <ClCompile Include="..\src\photon-sdk\utils\string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\core\shared\interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

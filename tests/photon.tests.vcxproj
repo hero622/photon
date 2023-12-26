@@ -112,6 +112,7 @@
     <ClCompile Include="..\src\core\shared\hook.cpp" />
     <ClCompile Include="..\src\core\shared\hud.cpp" />
     <ClCompile Include="..\src\core\shared\input.cpp" />
+    <ClCompile Include="..\src\core\shared\interface.cpp" />
     <ClCompile Include="..\src\core\shared\menu.cpp" />
     <ClCompile Include="..\src\core\shared\render.cpp" />
     <ClCompile Include="..\src\core\source-sdk\plugin.cpp" />
@@ -122,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hook.h" />
+    <ClInclude Include="memory.h" />
     <ClInclude Include="utest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -49,14 +49,14 @@ namespace gui {
 
 		void begin( sdk::vec2_t pos, sdk::vec2_t size );
 		void end( );
-		bool tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title );
+		bool tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, const std::string &title );
 		bool mod( mods::mod_info_t *info );
 
-		bool button( sdk::vec2_t size, std::string label );
-		bool checkbox( bool &val, std::string label );
-		void slider( int &val, int min, int max, std::string label );
-		void sliderf( float &val, float min, float max, std::string label );
-		void combo( std::size_t &val, std::vector<std::string> items, std::string label );
-		void multicombo( std::size_t &val, std::vector<std::string> items, std::string label );
+		bool button( sdk::vec2_t size, const std::string &label );
+		bool checkbox( bool &val, const std::string &label );
+		void slider( int &val, int min, int max, const std::string &label );
+		void sliderf( float &val, float min, float max, const std::string &label );
+		void combo( std::size_t &val, std::vector<std::string> items, const std::string &label );
+		void multicombo( std::size_t &val, std::vector<std::string> items, const std::string &label );
 	}  // namespace framework
 }  // namespace gui

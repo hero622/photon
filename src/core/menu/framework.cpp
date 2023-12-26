@@ -60,7 +60,7 @@ void gui::framework::end( ) {
 	photon->portal2->surface->enable_clipping = false;
 }
 
-bool gui::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, std::string title ) {
+bool gui::framework::tab( int &selected, sdk::vec2_t pos, sdk::vec2_t size, const std::string &title ) {
 	bool hover = photon->input->is_cursor_in_area( pos.x, pos.y, pos.x + size.x, pos.y + size.y );
 	bool active = ( hover && photon->input->get_key_press( sdk::mouse_left ) ) || selected == cur_menu.tab_count;
 	if ( active )
@@ -128,7 +128,7 @@ bool gui::framework::mod( mods::mod_info_t *info ) {
 }
 
 
-bool gui::framework::button( sdk::vec2_t size, std::string label ) {
+bool gui::framework::button( sdk::vec2_t size, const std::string &label ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	bool hover = !cur_menu.block_input && photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
@@ -148,7 +148,7 @@ bool gui::framework::button( sdk::vec2_t size, std::string label ) {
 	return false;
 }
 
-bool gui::framework::checkbox( bool &val, std::string label ) {
+bool gui::framework::checkbox( bool &val, const std::string &label ) {
 	const auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 20, 20 );
@@ -171,7 +171,7 @@ bool gui::framework::checkbox( bool &val, std::string label ) {
 	return result;
 }
 
-void gui::framework::slider( int &val, int min, int max, std::string label ) {
+void gui::framework::slider( int &val, int min, int max, const std::string &label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 160, 18 );
@@ -199,7 +199,7 @@ void gui::framework::slider( int &val, int min, int max, std::string label ) {
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
 
-void gui::framework::sliderf( float &val, float min, float max, std::string label ) {
+void gui::framework::sliderf( float &val, float min, float max, const std::string &label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 160, 18 );
@@ -227,7 +227,7 @@ void gui::framework::sliderf( float &val, float min, float max, std::string labe
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
 
-void gui::framework::combo( std::size_t &val, std::vector<std::string> items, std::string label ) {
+void gui::framework::combo( std::size_t &val, std::vector<std::string> items, const std::string &label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 160, 26 );
@@ -269,7 +269,7 @@ void gui::framework::combo( std::size_t &val, std::vector<std::string> items, st
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
 
-void gui::framework::multicombo( std::size_t &val, std::vector<std::string> items, std::string label ) {
+void gui::framework::multicombo( std::size_t &val, std::vector<std::string> items, const std::string &label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size = sdk::vec2_t( 160, 26 );
