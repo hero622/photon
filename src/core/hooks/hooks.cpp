@@ -38,15 +38,15 @@ void hooks::uninitialize( ) {
 }
 
 hk_fn( void, hooks::game_frame, bool simulating ) {
-	photon->event->post( &photon, "pre_tick" );
+	photon->event->post( &plugin, "pre_tick" );
 
 	game_frame( ecx, simulating );
 
-	photon->event->post( &photon, "post_tick" );
+	photon->event->post( &plugin, "post_tick" );
 }
 
 hk_fn( void, hooks::frame ) {
-	photon->event->post( &photon, "pre_frame" );
+	photon->event->post( &plugin, "pre_frame" );
 
 	frame( ecx );
 
@@ -54,7 +54,7 @@ hk_fn( void, hooks::frame ) {
 	// possibly i changed something about unloading and this doesnt get unhooked early enough?
 	// if there is more stuff being done here later, this might break, this should be looked into !!!
 	if ( photon )
-		photon->event->post( &photon, "post_frame" );
+		photon->event->post( &plugin, "post_frame" );
 }
 
 hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
@@ -62,9 +62,9 @@ hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
 
 	// this is probably not the best way, i saw SAR do something similar but this needs further thought
 	if ( state == sdk::signonstate_full )
-		photon->event->post( &photon, "session_start" );
+		photon->event->post( &plugin, "session_start" );
 	else
-		photon->event->post( &photon, "session_end" );
+		photon->event->post( &plugin, "session_end" );
 }
 
 hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
@@ -77,7 +77,7 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 
 		huds::paint( );
 
-		photon->event->post( &photon, "paint" );
+		photon->event->post( &plugin, "paint" );
 
 		if ( photon->input->get_key_press( sdk::key_insert ) )
 			gui::open = !gui::open;
@@ -136,7 +136,7 @@ hk_fn( void, hooks::update_button_state, const int *event ) {
 hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	on_screen_size_changed( ecx, old_width, old_height );
 
-	photon->event->post( &photon, "on_screen_size_changed" );
+	photon->event->post( &plugin, "on_screen_size_changed" );
 
 	// recreate fonts
 	gui::initialize( );

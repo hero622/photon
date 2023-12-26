@@ -127,7 +127,7 @@ void mods::print( ) {
 void mods::post_event( void *sender, const char *msg ) {
 	auto msg_s = std::string( msg );
 
-	if ( sender != &photon ) {
+	if ( sender != &plugin ) {
 		const auto mod = reinterpret_cast<photon_api::i_photon_mod *>( sender );
 		msg_s = std::string( mod->get_info( ).name ) + std::string( ":" ) + msg_s;
 	}
