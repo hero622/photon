@@ -115,6 +115,7 @@
     <ClInclude Include="photon-sdk\hud.h" />
     <ClInclude Include="photon-sdk\input.h" />
     <ClInclude Include="photon-sdk\interfaces.h" />
+    <ClInclude Include="photon-sdk\interfaces\command_line.h" />
     <ClInclude Include="photon-sdk\interfaces\console.h" />
     <ClInclude Include="photon-sdk\interfaces\cvar.h" />
     <ClInclude Include="photon-sdk\interfaces\engine_client.h" />

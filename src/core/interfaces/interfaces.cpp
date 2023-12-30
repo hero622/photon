@@ -2,6 +2,12 @@
 
 #include "photon-sdk/photon.h"
 
+#define log_ptr( ptr )                               \
+	if ( ptr )                                          \
+		utils::console::log( "[+] %s: %p.\n", #ptr, ptr ); \
+	else                                                \
+		utils::console::log( "[!] %s is nullptr.\n", #ptr );
+
 bool interfaces::initialize( ) {
 	photon->portal2->console = new c_console( utils::memory::get_module_handle( os( "tier0.dll", "libtier0.so" ) ) );
 
@@ -18,11 +24,21 @@ bool interfaces::initialize( ) {
 	photon->portal2->input_stack_system = ( i_input_stack_system * ) photon->portal2->get_interface( module( "inputsystem" ), "InputStackSystemVersion001" );
 	photon->portal2->vgui_input = photon->portal2->get_interface( module( "vgui2" ), "VGUI_Input005" );
 
+	const auto tier0 = utils::memory::get_module_handle( os( "tier0.dll", "libtier0.so" ) );
+	photon->portal2->mem_alloc = *utils::memory::get_sym_addr<i_mem_alloc **>( tier0, "g_pMemAlloc" );
+	photon->portal2->command_line = utils::memory::get_sym_addr<i_command_line *( * ) ( )>( tier0, "CommandLine" )( );
+
 	photon->portal2->engine = **reinterpret_cast<void ***>( utils::memory::get_virtual<12>( photon->portal2->engine_api ) + os( 0x2, 0x4 ) );
 	photon->portal2->client_state = utils::memory::read<void *( * ) ( )>( utils::memory::get_virtual<7>( photon->portal2->engine_client ) + os( 0x4, 0x9 ) )( );
-	photon->portal2->mem_alloc = *utils::memory::get_sym_addr<i_mem_alloc **>( utils::memory::get_module_handle( os( "tier0.dll", "libtier0.so" ) ), "g_pMemAlloc" );
-	photon->portal2->scheme = photon->portal2->scheme_manager->get_i_scheme( 1 );
 	photon->portal2->font_manager = utils::memory::read<c_font_manager *( * ) ( )>( utils::memory::get_virtual<132>( photon->portal2->surface ) + os( 0x8, 0x9 ) )( );
+	photon->portal2->scheme = photon->portal2->scheme_manager->get_i_scheme( 1 );
+
+	log_ptr( photon->portal2->mem_alloc );
+	log_ptr( photon->portal2->command_line );
+	log_ptr( photon->portal2->engine );
+	log_ptr( photon->portal2->client_state );
+	log_ptr( photon->portal2->font_manager );
+	log_ptr( photon->portal2->scheme );
 
 	return true;
 }

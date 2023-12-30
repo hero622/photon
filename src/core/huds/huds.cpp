@@ -77,19 +77,15 @@ static void calculate_distances( std::vector<point_distance_t> &distances, const
 	for ( int i = 0; i < 3; ++i ) {
 		for ( int j = 0; j < 3; ++j ) {
 			for ( int axis = 0; axis < 2; ++axis ) {
-				/*
-				 * NOTE: this whole section is using pointer indexing to access struct members
-				 */
-
 				auto pt1 = ( ( sdk::vec2_t * ) &hud1 )[ i ];
 				auto pt2 = ( ( sdk::vec2_t * ) &hud2 )[ j ];
 
 				// since we align huds on axis, not actually by points, set -1 on the axis we dont use
-				( ( float * ) &pt1 )[ 1 - axis /* other axis */ ] = -1;
-				( ( float * ) &pt2 )[ 1 - axis /* other axis */ ] = -1;
+				pt1[ !axis ] = -1;
+				pt2[ !axis ] = -1;
 
 				// delta pos, again only on one axis
-				float delta_pos = ( ( float * ) &pt1 )[ axis ] - ( ( float * ) &pt2 )[ axis ];
+				float delta_pos = pt1[ axis ] - pt2[ axis ];
 
 				point_distance_t dist;
 				dist.pt1 = pt1;

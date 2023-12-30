@@ -38,6 +38,9 @@ bool c_photon::load( sdk::create_interface_fn interface_factory, sdk::create_int
 
 			gui::initialize( );
 
+			// only works when done early enough
+			photon->portal2->command_line->append_parm( "-background", "5" );
+
 			photon->portal2->console->color_msg( { 0, 255, 0, 255 }, "Photon loaded.\n" );
 
 			if ( !mods::loadall( ) )
@@ -74,6 +77,9 @@ void c_photon::unload( ) {
 	unloading = true;
 
 	mods::unloadall( );
+
+	// this doesnt really do anything lol
+	photon->portal2->command_line->remove_parm( "-background" );
 
 	gui::uninitialize( );
 

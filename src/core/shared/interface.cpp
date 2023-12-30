@@ -17,5 +17,7 @@ void *c_portal2::get_interface( const char *module_name, const char *interface_n
 		return result;
 	}
 
+	utils::console::log( "[!] couldn't find interface %s in %s.\n", interface_name, module_name );
+
 	return nullptr;
 }

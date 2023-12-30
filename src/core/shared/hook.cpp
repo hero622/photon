@@ -6,15 +6,23 @@
 bool c_hook::create_hook( void *src, void *dst, void *&hook, void **orig ) {
 	hook = subhook_new( src, dst, SUBHOOK_TRAMPOLINE );
 	*orig = subhook_get_trampoline( ( subhook_t ) hook );
-	utils::console::log( "[+] hook: %p -> %p, trampoline: %p.\n", src, dst, *orig );
-	return subhook_install( ( subhook_t ) hook ) == 0;
+	bool result = subhook_install( ( subhook_t ) hook ) == 0;
+	if ( result )
+		utils::console::log( "[+] hook: %p -> %p, trampoline: %p.\n", src, dst, *orig );
+	else
+		utils::console::log( "[!] couldn't hook function at %p.\n", src );
+	return result;
 }
 
 bool c_hook::create_hook( void *src, void *dst, void *&hook, void **orig, const char *name ) {
 	hook = subhook_new( src, dst, SUBHOOK_TRAMPOLINE );
 	*orig = subhook_get_trampoline( ( subhook_t ) hook );
-	utils::console::log( "[+] hook %s: %p -> %p, trampoline: %p.\n", name, src, dst, *orig );
-	return subhook_install( ( subhook_t ) hook ) == 0;
+	bool result = subhook_install( ( subhook_t ) hook ) == 0;
+	if ( result )
+		utils::console::log( "[+] hook %s: %p -> %p, trampoline: %p.\n", name, src, dst, *orig );
+	else
+		utils::console::log( "[!] couldn't hook %s at %p.\n", name, src );
+	return result;
 }
 
 bool c_hook::remove_hook( void *hook ) {
