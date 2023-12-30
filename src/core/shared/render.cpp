@@ -87,11 +87,11 @@ sdk::h_font c_render::get_font( unsigned long id ) {
 sdk::vec2_t c_render::normalize( sdk::vec2_t vec ) {
 	const auto screen_size = get_screen_size( );
 
-	return sdk::vec2_t( vec.x / screen_size.x, vec.y / screen_size.y );
+	return vec / screen_size;
 }
 
 sdk::vec2_t c_render::to_screen( sdk::vec2_t vec ) {
 	const auto screen_size = get_screen_size( );
 
-	return sdk::vec2_t( vec.x * screen_size.x, vec.y * screen_size.y );
+	return vec * screen_size;
 }

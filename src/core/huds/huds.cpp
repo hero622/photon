@@ -40,7 +40,7 @@ static void set_abs_pos( photon_api::hud_t *hud, sdk::vec2_t pos ) {
 static void set_hud_anchor( photon_api::hud_t *hud ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
-	const auto center = get_abs_pos( hud ) + sdk::vec2_t( hud->bounds.x / 2, hud->bounds.y / 2 );
+	const auto center = get_abs_pos( hud ) + hud->bounds / 2;
 
 	if ( ( int ) center.x < screen_size.x / 2 )
 		hud->anchor.x = 0.0f;
@@ -61,9 +61,9 @@ static hud_bounds_t get_hud_bounds( photon_api::hud_t *hud ) {
 	const auto hud_pos = get_abs_pos( hud );
 
 	hud_bounds_t bounds;
-	bounds.mins = sdk::vec2_t( hud_pos.x, hud_pos.y );
-	bounds.maxs = sdk::vec2_t( hud_pos.x + hud->bounds.x, hud_pos.y + hud->bounds.y );
-	bounds.center = sdk::vec2_t( hud_pos.x + hud->bounds.x / 2, hud_pos.y + hud->bounds.y / 2 );
+	bounds.mins = hud_pos;
+	bounds.maxs = hud_pos + hud->bounds;
+	bounds.center = hud_pos + hud->bounds / 2;
 
 	return bounds;
 };
@@ -116,7 +116,7 @@ static void align_hud_element( photon_api::hud_t *hud ) {
 	hud_bounds_t b;
 	b.mins = sdk::vec2_t( huds::safezone_x, huds::safezone_y );
 	b.maxs = sdk::vec2_t( screen_size.x - huds::safezone_x, screen_size.y - huds::safezone_y );
-	b.center = sdk::vec2_t( screen_size.x / 2, screen_size.y / 2 );
+	b.center = screen_size / 2;
 	calculate_distances( distances, hud_bounds, b );
 
 	/*
