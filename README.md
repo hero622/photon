@@ -1,9 +1,9 @@
-# Photon [![CI](https://github.com/Zyntex1/photon/actions/workflows/CI.yml/badge.svg)](https://github.com/Zyntex1/photon/actions/workflows/CI.yml) [![C++](https://img.shields.io/badge/language-C%2B%2B-f34b7d)](https://en.wikipedia.org/wiki/C%2B%2B) [![Portal 2](https://img.shields.io/badge/game-Portal%202-blue)](https://store.steampowered.com/app/620/Portal_2/) [![Platform](https://img.shields.io/badge/platform-Windows%20%26%20Linux-green)](https://en.wikipedia.org/wiki/Cross-platform_software)
+# Photon [![CI](https://github.com/hero622/photon/actions/workflows/CI.yml/badge.svg)](https://github.com/hero622/photon/actions/workflows/CI.yml) [![C++](https://img.shields.io/badge/language-C%2B%2B-f34b7d)](https://en.wikipedia.org/wiki/C%2B%2B) [![Portal 2](https://img.shields.io/badge/game-Portal%202-blue)](https://store.steampowered.com/app/620/Portal_2/) [![Platform](https://img.shields.io/badge/platform-Windows%20%26%20Linux-green)](https://en.wikipedia.org/wiki/Cross-platform_software)
 
 **Photon** is a mod loader for Portal 2.
 
 ## Installation
-- Download the newest release from [here](https://github.com/Zyntex1/photon/releases).
+- Download the newest release from [here](https://github.com/hero622/photon/releases).
 - Place it next to Portal 2's executable (typically in `SteamLibrary/steamapps/common/Portal 2`).
 - Open the game and type `plugin_load photon` in the console.
 
@@ -13,5 +13,5 @@
 - Enable mods by typing `photon_enable <mod name>` in the console.
 
 ## Development
-- [SDK](https://github.com/Zyntex1/photon-sdk)
+- [SDK](https://github.com/hero622/photon-sdk)
 - [Contributing](docs/contributing.md)

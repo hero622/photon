@@ -59,7 +59,7 @@ jobs:
           if-no-files-found: error
   release:
     name: Release
-    if: github.repository == 'Zyntex1/photon'
+    if: github.repository == 'hero622/photon'
     needs: [build-lin, build-win]
     runs-on: ubuntu-latest
     steps:
@@ -79,7 +79,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            ![CD](https://github.com/Zyntex1/photon/workflows/CD/badge.svg)
+            ![CD](https://github.com/hero622/photon/workflows/CD/badge.svg)
 
             **Installation**
             - Place the binary into the game folder e.g. `Portal 2`
