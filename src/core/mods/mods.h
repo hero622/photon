@@ -1,28 +1,28 @@
 #pragma once
 
-#include "photon-sdk/photon.h"
+#include "sdk/photon.h"
 
 #include <unordered_map>
 
 namespace mods {
 	struct mod_info_t {
-		void *handle;
-		photon_api::i_photon_mod *ptr;
-		bool is_loaded;  // this is kinda confusing, because the module is loaded at all times, but it shouldnt really do anything until the fn "load" is called, maybe should rename this to is_enabled?
+		void*                     handle;
+		photon_api::i_photon_mod* ptr;
+		bool                      is_loaded;  // this is kinda confusing, because the module is loaded at all times, but it shouldnt really do anything until the fn "load" is called, maybe should rename this to is_enabled?
 	};
 
-	inline std::unordered_map<std::string, mod_info_t> mod_list;
+	inline std::unordered_map< std::string, mod_info_t > mod_list;
 
-	bool load( const char *name );
-	void unload( const char *name );
+	bool load( const char* name );
+	void unload( const char* name );
 
 	bool loadall( );
 	void unloadall( );
 
-	bool enable( mod_info_t *mod );
-	void disable( mod_info_t *mod );
+	bool enable( mod_info_t* mod );
+	void disable( mod_info_t* mod );
 
 	void print( );
 
-	void post_event( void *sender, const char *msg );
+	void post_event( void* sender, const char* msg );
 }  // namespace mods

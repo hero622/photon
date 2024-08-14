@@ -4,7 +4,7 @@
 
 namespace example_mod {
 	namespace hooks {
-		decl_hk( void, calc_view_model_lag, sdk::vec3_t &origin, sdk::vec3_t &angles, sdk::vec3_t &original_angles );
+		DECL_HK( void, calc_view_model_lag, vec3_t& origin, vec3_t& angles, vec3_t& original_angles );
 
 		bool initialize( );
 		void uninitialize( );

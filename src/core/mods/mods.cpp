@@ -1,39 +1,35 @@
 #include "mods.h"
 
+#include "core/interfaces/interfaces.h"
 #include "core/photon.h"
+#include "util/util.h"
 
 #include <filesystem>
 #include <iostream>
 
-#ifdef _WIN32
-#	include <windows.h>
-#	include <memoryapi.h>
-#else
-#	include <dlfcn.h>
-#	include <sys/mman.h>
-#endif
-
-bool mods::load( const char *name ) {
-	if ( mod_list.count( name ) ) return false;
+bool mods::load( const char* name ) {
+	if ( mod_list.count( name ) )
+		return false;
 
 #ifdef _WIN32
-	void *lib = LoadLibraryA( utils::string::ssprintf( "photon/%s.dll", name ).c_str( ) );
+	void* lib = LoadLibraryA( util::ssprintf( "photon/%s.dll", name ).c_str( ) );
 #else
-	void *lib = dlopen( utils::string::ssprintf( "photon/%s.so", name ).c_str( ), RTLD_NOW );
+	void* lib = dlopen( util::ssprintf( "photon/%s.so", name ).c_str( ), RTLD_NOW );
 #endif
 
 	if ( lib ) {
-		using create_mod_fn = photon_api::i_photon_mod *( * ) ( );
-		const auto fn = utils::memory::get_sym_addr<create_mod_fn>( lib, "create_mod" );
+		using create_mod_fn = photon_api::i_photon_mod* ( * ) ( );
+		const auto fn       = util::get_sym_addr< create_mod_fn >( lib, "create_mod" );
 
 		if ( fn ) {
 			auto mod = fn( );
 
-			if ( !mod ) return false;
+			if ( !mod )
+				return false;
 
 			mod_info_t info;
-			info.handle = lib;
-			info.ptr = mod;
+			info.handle    = lib;
+			info.ptr       = mod;
 			info.is_loaded = false;
 
 			mod_list.insert( std::make_pair( name, info ) );
@@ -43,18 +39,19 @@ bool mods::load( const char *name ) {
 	}
 
 #ifdef _WIN32
-	photon->portal2->console->warning( "Failed to load library (%lu).\n", GetLastError( ) );
+	interfaces::console->warning( "Failed to load library (%lu).\n", GetLastError( ) );
 #else
-	photon->portal2->console->warning( "Failed to load library (%s).\n", dlerror( ) );
+	interfaces::console->warning( "Failed to load library (%s).\n", dlerror( ) );
 #endif
 
 	return false;
 }
 
-void mods::unload( const char *name ) {
-	if ( !mod_list.count( name ) ) return;
+void mods::unload( const char* name ) {
+	if ( !mod_list.count( name ) )
+		return;
 
-	auto &mod = mod_list[ name ];
+	auto& mod = mod_list[ name ];
 
 	if ( mod.is_loaded )
 		mod.ptr->unload( );
@@ -70,7 +67,7 @@ void mods::unload( const char *name ) {
 
 bool mods::loadall( ) {
 	bool had_fail = false;
-	for ( const auto &entry : std::filesystem::directory_iterator( "photon" ) ) {
+	for ( const auto& entry : std::filesystem::directory_iterator( "photon" ) ) {
 		bool result = load( entry.path( ).stem( ).string( ).c_str( ) );
 
 		if ( !result ) {
@@ -82,7 +79,7 @@ bool mods::loadall( ) {
 }
 
 void mods::unloadall( ) {
-	for ( const auto &mod : mod_list ) {
+	for ( const auto& mod : mod_list ) {
 		if ( mod.second.is_loaded )
 			mod.second.ptr->unload( );
 
@@ -96,17 +93,17 @@ void mods::unloadall( ) {
 	mod_list.clear( );
 }
 
-bool mods::enable( mod_info_t *mod ) {
+bool mods::enable( mod_info_t* mod ) {
 	bool result = false;
 	if ( !mod->is_loaded ) {
-		result = mod->ptr->load( photon );
+		result         = mod->ptr->load( photon );
 		mod->is_loaded = true;
 	}
 
 	return result;
 }
 
-void mods::disable( mod_info_t *mod ) {
+void mods::disable( mod_info_t* mod ) {
 	if ( !mod->is_loaded )
 		return;
 
@@ -115,24 +112,24 @@ void mods::disable( mod_info_t *mod ) {
 }
 
 void mods::print( ) {
-	photon->portal2->console->msg( "Loaded photon mods (%d):\n", mod_list.size( ) );
-	for ( const auto &mod : mod_list ) {
-		const char *status = mod.second.is_loaded ? "enabled" : "disabled";
-		const auto info = mod.second.ptr->get_info( );
+	interfaces::console->msg( "Loaded photon mods (%d):\n", mod_list.size( ) );
+	for ( const auto& mod : mod_list ) {
+		const char* status = mod.second.is_loaded ? "enabled" : "disabled";
+		const auto  info   = mod.second.ptr->get_info( );
 
-		photon->portal2->console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
+		interfaces::console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
 	}
 }
 
-void mods::post_event( void *sender, const char *msg ) {
+void mods::post_event( void* sender, const char* msg ) {
 	auto msg_s = std::string( msg );
 
 	if ( sender != &plugin ) {
-		const auto mod = reinterpret_cast<photon_api::i_photon_mod *>( sender );
-		msg_s = std::string( mod->get_info( ).name ) + std::string( ":" ) + msg_s;
+		const auto mod = reinterpret_cast< photon_api::i_photon_mod* >( sender );
+		msg_s          = std::string( mod->get_info( ).name ) + std::string( ":" ) + msg_s;
 	}
 
-	for ( const auto &mod : mod_list ) {
+	for ( const auto& mod : mod_list ) {
 		if ( mod.second.is_loaded )
 			mod.second.ptr->on_event( msg_s.c_str( ) );
 	}

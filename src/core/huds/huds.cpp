@@ -1,30 +1,31 @@
 #include "huds.h"
 
-#include "photon-sdk/photon.h"
+#include "sdk/photon.h"
+#include "util/util.h"
 
 #include <algorithm>
 #include <cmath>
 
 struct hud_bounds_t {
-	sdk::vec2_t mins;    // top left corner
-	sdk::vec2_t maxs;    // bottom right corner
-	sdk::vec2_t center;  // center
+	vec2_t mins;    // top left corner
+	vec2_t maxs;    // bottom right corner
+	vec2_t center;  // center
 };
 
 struct point_distance_t {
-	sdk::vec2_t pt1;  // one of the current hud's points
-	sdk::vec2_t pt2;  // one of the other hud's points
-	float dist;       // squared distance
+	vec2_t pt1;   // one of the current hud's points
+	vec2_t pt2;   // one of the other hud's points
+	float  dist;  // squared distance
 };
 
-static sdk::vec2_t get_abs_pos( photon_api::hud_t *hud ) {
-	const auto pos = photon->render->to_screen( hud->pos );
+static vec2_t get_abs_pos( photon_api::hud_t* hud ) {
+	const auto pos    = photon->render->to_screen( hud->pos );
 	const auto anchor = hud->anchor * hud->bounds;
 
 	return pos - anchor;
 }
 
-static void set_abs_pos( photon_api::hud_t *hud, sdk::vec2_t pos ) {
+static void set_abs_pos( photon_api::hud_t* hud, vec2_t pos ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
 	const auto anchor = hud->anchor * hud->bounds;
@@ -37,7 +38,7 @@ static void set_abs_pos( photon_api::hud_t *hud, sdk::vec2_t pos ) {
 	hud->pos = photon->render->normalize( new_pos );
 }
 
-static void set_hud_anchor( photon_api::hud_t *hud ) {
+static void set_hud_anchor( photon_api::hud_t* hud ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
 	const auto center = get_abs_pos( hud ) + hud->bounds / 2;
@@ -57,12 +58,12 @@ static void set_hud_anchor( photon_api::hud_t *hud ) {
 		hud->anchor.y = 0.5f;
 }
 
-static hud_bounds_t get_hud_bounds( photon_api::hud_t *hud ) {
+static hud_bounds_t get_hud_bounds( photon_api::hud_t* hud ) {
 	const auto hud_pos = get_abs_pos( hud );
 
 	hud_bounds_t bounds;
-	bounds.mins = hud_pos;
-	bounds.maxs = hud_pos + hud->bounds;
+	bounds.mins   = hud_pos;
+	bounds.maxs   = hud_pos + hud->bounds;
 	bounds.center = hud_pos + hud->bounds / 2;
 
 	return bounds;
@@ -72,13 +73,13 @@ static hud_bounds_t get_hud_bounds( photon_api::hud_t *hud ) {
  * calculate distances between all edges of two huds
  * pass in a vector to add the distances to
  */
-static void calculate_distances( std::vector<point_distance_t> &distances, const hud_bounds_t &hud1, const hud_bounds_t &hud2 ) {
+static void calculate_distances( std::vector< point_distance_t >& distances, const hud_bounds_t& hud1, const hud_bounds_t& hud2 ) {
 	// loop over all edges
 	for ( int i = 0; i < 3; ++i ) {
 		for ( int j = 0; j < 3; ++j ) {
 			for ( int axis = 0; axis < 2; ++axis ) {
-				auto pt1 = ( ( sdk::vec2_t * ) &hud1 )[ i ];
-				auto pt2 = ( ( sdk::vec2_t * ) &hud2 )[ j ];
+				auto pt1 = ( ( vec2_t* ) &hud1 )[ i ];
+				auto pt2 = ( ( vec2_t* ) &hud2 )[ j ];
 
 				// since we align huds on axis, not actually by points, set -1 on the axis we dont use
 				pt1[ !axis ] = -1;
@@ -88,8 +89,8 @@ static void calculate_distances( std::vector<point_distance_t> &distances, const
 				float delta_pos = pt1[ axis ] - pt2[ axis ];
 
 				point_distance_t dist;
-				dist.pt1 = pt1;
-				dist.pt2 = pt2;
+				dist.pt1  = pt1;
+				dist.pt2  = pt2;
 				dist.dist = delta_pos * delta_pos;  // squared distance
 
 				distances.push_back( dist );
@@ -102,27 +103,27 @@ static void calculate_distances( std::vector<point_distance_t> &distances, const
  * get all distances to all hud element's edges, sort them, align to closest
  * this whole thing might be overcomplicated, but this was my best idea
  */
-static void align_hud_element( photon_api::hud_t *hud ) {
-	const auto clr = sdk::color_t( 255, 0, 255, 255 );
+static void align_hud_element( photon_api::hud_t* hud ) {
+	const auto clr = color_t( 255, 0, 255, 255 );
 
 	const auto screen_size = photon->render->get_screen_size( );
-	const auto hud_bounds = get_hud_bounds( hud );
+	const auto hud_bounds  = get_hud_bounds( hud );
 
-	std::vector<point_distance_t> distances;
+	std::vector< point_distance_t > distances;
 
 	/*
 	 * alignment with screen anchors
 	 */
 	hud_bounds_t b;
-	b.mins = sdk::vec2_t( huds::safezone_x, huds::safezone_y );
-	b.maxs = sdk::vec2_t( screen_size.x - huds::safezone_x, screen_size.y - huds::safezone_y );
+	b.mins   = vec2_t( huds::safezone_x, huds::safezone_y );
+	b.maxs   = vec2_t( screen_size.x - huds::safezone_x, screen_size.y - huds::safezone_y );
 	b.center = screen_size / 2;
 	calculate_distances( distances, hud_bounds, b );
 
 	/*
 	 * alignment with other hud elements
 	 */
-	for ( const auto &other_hud : huds::huds ) {
+	for ( const auto& other_hud : huds::huds ) {
 		if ( hud == other_hud )
 			continue;
 
@@ -132,16 +133,16 @@ static void align_hud_element( photon_api::hud_t *hud ) {
 	}
 
 	// sort points by distance
-	std::sort( distances.begin( ), distances.end( ), []( const point_distance_t &lhs, const point_distance_t &rhs ) {
+	std::sort( distances.begin( ), distances.end( ), []( const point_distance_t& lhs, const point_distance_t& rhs ) {
 		return lhs.dist < rhs.dist;
 	} );
 
 	// align hud element x, y but only once per axis
 	bool was_vertical = false;
 	for ( int i = 0; i < 2; ++i ) {
-		const auto &pt_dist = distances[ i ];
-		const auto vertical = pt_dist.pt2.x == -1;  // axis check
-		const auto hud_pos = get_abs_pos( hud );
+		const auto& pt_dist  = distances[ i ];
+		const auto  vertical = pt_dist.pt2.x == -1;  // axis check
+		const auto  hud_pos  = get_abs_pos( hud );
 
 		// only align once per axis
 		if ( i == 1 && vertical == was_vertical )
@@ -168,17 +169,17 @@ static void align_hud_element( photon_api::hud_t *hud ) {
 }
 
 void huds::paint( ) {
-	for ( const auto &hud : huds ) {
+	for ( const auto& hud : huds ) {
 		if ( hud->type == photon_api::hudtype_hud ) {
-			( ( photon_api::i_hud * ) hud )->paint( );
+			( ( photon_api::i_hud* ) hud )->paint( );
 		} else {
-			const auto thud = ( photon_api::i_thud * ) hud;
+			const auto thud = ( photon_api::i_thud* ) hud;
 
 			// TODO: improve on this system or maybe even rework the thud system completely
 			auto text = std::string( thud->format );
 
-			utils::string::replace( text, "{name}", std::string( thud->get_name( ) ) );
-			utils::string::replace( text, "{value}", std::string( thud->get_text( ) ) );
+			util::replace( text, "{name}", std::string( thud->get_name( ) ) );
+			util::replace( text, "{value}", std::string( thud->get_text( ) ) );
 
 			const auto font = photon->render->get_font( thud->font );
 
@@ -192,15 +193,15 @@ void huds::paint( ) {
 }
 
 void huds::paint_ui( ) {
-	const auto clr = sdk::color_t( 0, 255, 255, 255 );
+	const auto clr = color_t( 0, 255, 255, 255 );
 
 	const auto screen_size = photon->render->get_screen_size( );
 
-	static photon_api::hud_t *cur_hud;
-	static sdk::vec2_t grab_pos;
+	static photon_api::hud_t* cur_hud;
+	static vec2_t             grab_pos;
 
-	for ( const auto &hud : huds ) {
-		sdk::vec2_t orig_cur_pos;
+	for ( const auto& hud : huds ) {
+		vec2_t orig_cur_pos;
 
 		const auto pos = get_abs_pos( hud );
 
@@ -208,15 +209,15 @@ void huds::paint_ui( ) {
 			photon->render->draw_outlined_rect( pos.x - 1, pos.y - 1, hud->bounds.x + 2, hud->bounds.y + 2, clr );
 			photon->render->draw_filled_rect( pos.x + hud->anchor.x * hud->bounds.x - 3, pos.y + hud->anchor.y * hud->bounds.y - 3, 6, 6, clr );
 
-			if ( photon->input->get_key_press( sdk::mouse_left ) ) {
-				cur_hud = hud;
+			if ( photon->input->get_key_press( mouse_left ) ) {
+				cur_hud  = hud;
 				grab_pos = photon->input->get_cursor_position( ) - pos;
 			}
 		}
 	}
 
 	if ( cur_hud ) {
-		if ( photon->input->get_key_held( sdk::mouse_left ) ) {
+		if ( photon->input->get_key_held( mouse_left ) ) {
 			const auto hud = cur_hud;
 
 			set_hud_anchor( hud );
@@ -226,7 +227,7 @@ void huds::paint_ui( ) {
 			align_hud_element( hud );
 		}
 
-		if ( photon->input->get_key_release( sdk::mouse_left ) ) {
+		if ( photon->input->get_key_release( mouse_left ) ) {
 			cur_hud = nullptr;
 		}
 	}

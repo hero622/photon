@@ -2,22 +2,22 @@
 
 #include <photon.h>
 
-concmd_cbk( example_command ) {
+CONCMD_CBK( example_command ) {
 	// get multiple types of values of the cvar
-	const auto cvar = photon->portal2->cvar->find_con_var( "example_convar" );
+	// const auto cvar = interfaces::cvar->find_con_var( "example_convar" );
 
-	const auto fl_value = cvar->get_float( );
-	const auto n_value = cvar->get_int( );
-	const auto col_value = cvar->get_color( );
-	const auto b_value = cvar->get_bool( );
-	const auto str_value = cvar->get_string( );
+	// const auto fl_value  = cvar->get_float( );
+	// const auto n_value   = cvar->get_int( );
+	// const auto col_value = cvar->get_color( );
+	// const auto b_value   = cvar->get_bool( );
+	// const auto str_value = cvar->get_string( );
 
-	photon->portal2->console->msg( "the value of example_convar is:\n" );
-	photon->portal2->console->msg( "float: %f\n", fl_value );
-	photon->portal2->console->msg( "int: %d\n", n_value );
-	photon->portal2->console->msg( "color: %d %d %d %d\n", col_value.r, col_value.g, col_value.b, col_value.a );
-	photon->portal2->console->msg( "bool: %d\n", ( int ) b_value );
-	photon->portal2->console->msg( "string: %s\n", str_value );
+	// interfaces::console->msg( "the value of example_convar is:\n" );
+	// interfaces::console->msg( "float: %f\n", fl_value );
+	// interfaces::console->msg( "int: %d\n", n_value );
+	// interfaces::console->msg( "color: %d %d %d %d\n", col_value.r, col_value.g, col_value.b, col_value.a );
+	// interfaces::console->msg( "bool: %d\n", ( int ) b_value );
+	// interfaces::console->msg( "string: %s\n", str_value );
 }
 
 bool convars::initialize( ) {

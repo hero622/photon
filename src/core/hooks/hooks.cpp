@@ -1,41 +1,43 @@
 #include "hooks.h"
 
 #include "core/huds/huds.h"
+#include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
 #include "core/mods/mods.h"
 #include "core/photon.h"
+#include "util/util.h"
 
 bool hooks::initialize( ) {
-	hk_virtual( photon->portal2->server_game_dll, game_frame, 4 );
-	hk_virtual( photon->portal2->engine, frame, os( 5, 6 ) );
-	hk_virtual( photon->portal2->client_state, set_signon_state, os( 15, 36 ) );
-	hk_virtual( photon->portal2->engine_vgui_internal, paint, os( 14, 15 ) );
-	hk_virtual( photon->portal2->surface, lock_cursor, 65 );
-	hk_virtual( photon->portal2->base_client_dll, in_key_event, 20 );
-	hk_virtual( photon->portal2->vgui_input, update_button_state, 87 );
-	hk_virtual( photon->portal2->surface, on_screen_size_changed, 114 );
+	HK_VIRTUAL( interfaces::server_game_dll, game_frame, 4 );
+	HK_VIRTUAL( interfaces::engine, frame, OS( 5, 6 ) );
+	HK_VIRTUAL( interfaces::client_state, set_signon_state, OS( 15, 36 ) );
+	HK_VIRTUAL( interfaces::engine_vgui_internal, paint, OS( 14, 15 ) );
+	HK_VIRTUAL( interfaces::surface, lock_cursor, 65 );
+	HK_VIRTUAL( interfaces::base_client_dll, in_key_event, 20 );
+	HK_VIRTUAL( interfaces::vgui_input, update_button_state, 87 );
+	HK_VIRTUAL( interfaces::surface, on_screen_size_changed, 114 );
 
-	hk_cmd( plugin_load );
-	hk_cmd( plugin_unload );
+	HK_CMD( plugin_load );
+	HK_CMD( plugin_unload );
 
 	return true;
 }
 
 void hooks::uninitialize( ) {
-	unhk_cmd( plugin_unload );
-	unhk_cmd( plugin_load );
+	UNHK_CMD( plugin_unload );
+	UNHK_CMD( plugin_load );
 
-	unhk( on_screen_size_changed );
-	unhk( update_button_state );
-	unhk( in_key_event );
-	unhk( lock_cursor );
-	unhk( paint );
-	unhk( set_signon_state );
-	unhk( frame );
-	unhk( game_frame );
+	UNHK( on_screen_size_changed );
+	UNHK( update_button_state );
+	UNHK( in_key_event );
+	UNHK( lock_cursor );
+	UNHK( paint );
+	UNHK( set_signon_state );
+	UNHK( frame );
+	UNHK( game_frame );
 }
 
-hk_fn( void, hooks::game_frame, bool simulating ) {
+HK_FN( void, hooks::game_frame, bool simulating ) {
 	photon->event->post( &plugin, "pre_tick" );
 
 	game_frame( ecx, simulating );
@@ -43,7 +45,7 @@ hk_fn( void, hooks::game_frame, bool simulating ) {
 	photon->event->post( &plugin, "post_tick" );
 }
 
-hk_fn( void, hooks::frame ) {
+HK_FN( void, hooks::frame ) {
 	photon->event->post( &plugin, "pre_frame" );
 
 	frame( ecx );
@@ -55,29 +57,29 @@ hk_fn( void, hooks::frame ) {
 		photon->event->post( &plugin, "post_frame" );
 }
 
-hk_fn( void, hooks::set_signon_state, int state, int count, void *unk ) {
+HK_FN( void, hooks::set_signon_state, int state, int count, void* unk ) {
 	set_signon_state( ecx, state, count, unk );
 
 	// this is probably not the best way, i saw SAR do something similar but this needs further thought
-	if ( state == sdk::signonstate_full )
+	if ( state == signonstate_full )
 		photon->event->post( &plugin, "session_start" );
 	else
 		photon->event->post( &plugin, "session_end" );
 }
 
-hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
+HK_FN( void, hooks::paint, paint_mode_t mode ) {
 	paint( ecx, mode );
 
-	photon->portal2->surface->start_drawing( );
+	interfaces::surface->start_drawing( );
 
-	if ( mode == sdk::paint_uipanels ) {
+	if ( mode == paint_uipanels ) {
 		photon->input->poll_input( );  // not sure if this is the best place to call this
 
 		huds::paint( );
 
 		photon->event->post( &plugin, "paint" );
 
-		if ( photon->input->get_key_press( sdk::key_insert ) )
+		if ( photon->input->get_key_press( key_insert ) )
 			gui::open = !gui::open;
 
 		if ( gui::open ) {
@@ -86,26 +88,26 @@ hk_fn( void, hooks::paint, sdk::paint_mode_t mode ) {
 		}
 	}
 
-	photon->portal2->surface->finish_drawing( );
+	interfaces::surface->finish_drawing( );
 }
 
 // unlock the cursor from the game when menu is open
-hk_fn( void, hooks::lock_cursor ) {
-	static void *input_ctx = photon->portal2->engine_client->get_input_context( 0 );
+HK_FN( void, hooks::lock_cursor ) {
+	static void* input_ctx = interfaces::engine_client->get_input_context( 0 );
 
 	if ( gui::open ) {
-		photon->portal2->surface->unlock_cursor( );
+		interfaces::surface->unlock_cursor( );
 
-		photon->portal2->input_stack_system->set_cursor_visible( input_ctx, true );
+		interfaces::input_stack_system->set_cursor_visible( input_ctx, true );
 	} else {
-		photon->portal2->input_stack_system->set_cursor_visible( input_ctx, false );
+		interfaces::input_stack_system->set_cursor_visible( input_ctx, false );
 
 		lock_cursor( ecx );
 	}
 }
 
 // block input to the game when photon's menu is open, only works in game, not in the menu
-hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const char *current_binding ) {
+HK_FN( int, hooks::in_key_event, int eventcode, button_code_t keynum, const char* current_binding ) {
 	if ( gui::open )
 		return 0;
 
@@ -113,7 +115,7 @@ hk_fn( int, hooks::in_key_event, int eventcode, sdk::button_code_t keynum, const
 }
 
 // block input to the menu, vgui has its own input system for some reason, so we have to hook another function
-hk_fn( void, hooks::update_button_state, const int *event ) {
+HK_FN( void, hooks::update_button_state, const int* event ) {
 	if ( gui::open ) {
 		/*
 		 * so we cant actually just return here because theres other
@@ -121,17 +123,17 @@ hk_fn( void, hooks::update_button_state, const int *event ) {
 		 * i didnt want to hook those functions so we just reset
 		 * the struct that those functions update here
 		 */
-		uint8_t *context_addr = ( uint8_t * ) ecx + 0xce8;  // m_hContext
-		int context = *( int * ) context_addr;
+		uint8_t* context_addr = ( uint8_t* ) ecx + 0xce8;  // m_hContext
+		int      context      = *( int* ) context_addr;
 
-		return utils::memory::call_virtual<88, void>( ecx, context );  // ResetInputContext
+		return util::call_virtual< 88, void >( ecx, context );  // ResetInputContext
 	}
 
 	update_button_state( ecx, event );
 }
 
 // recreate fonts because they get cleared everytime you change screen resolution
-hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
+HK_FN( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	on_screen_size_changed( ecx, old_width, old_height );
 
 	photon->event->post( &plugin, "on_screen_size_changed" );
@@ -141,15 +143,15 @@ hk_fn( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 }
 
 // prevent from loading the plugin twice (why doesnt source do this ???)
-hk_cmd_fn( hooks::plugin_load ) {
+HK_CMD_FN( hooks::plugin_load ) {
 	if ( args.arg_c( ) >= 2 && strstr( args[ 1 ], "photon" ) )
-		photon->portal2->console->warning( "Photon is already loaded.\n" );
+		interfaces::console->warning( "Photon is already loaded.\n" );
 	else
 		plugin_load( args );
 }
 
 // we need to unhook cengine::frame before the plugin gets unloaded
-hk_cmd_fn( hooks::plugin_unload ) {
+HK_CMD_FN( hooks::plugin_unload ) {
 	if ( args.arg_c( ) >= 2 && plugin.get_info( ) && ( !strcmp( args[ 1 ], "photon" ) || std::atoi( args[ 1 ] ) == plugin.info->index ) )
 		plugin.unload( );
 	else

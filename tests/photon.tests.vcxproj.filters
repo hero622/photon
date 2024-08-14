@@ -15,13 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\shared\ccon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\photon-sdk\utils\console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\convars\convars.cpp">
@@ -51,10 +59,10 @@
     <ClCompile Include="..\src\core\shared\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\interfaces\interfaces.cpp">
+    <ClCompile Include="..\src\core\shared\interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\photon-sdk\utils\memory.cpp">
+    <ClCompile Include="..\src\core\interfaces\interfaces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\shared\menu.cpp">
@@ -66,28 +74,14 @@
     <ClCompile Include="..\src\core\photon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\source-sdk\plugin.cpp">
+    <ClCompile Include="..\src\source-sdk\plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\shared\render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\photon-sdk\utils\string.cpp">
+    <ClCompile Include="..\src\util\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\shared\interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="hook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,0 @@
-[submodule "src/photon-sdk"]
-	path = "src/photon-sdk"
-	url = https://github.com/hero622/photon-sdk.git

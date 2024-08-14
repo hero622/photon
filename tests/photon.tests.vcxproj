@@ -99,6 +99,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="hook.h" />
+    <ClInclude Include="memory.h" />
+    <ClInclude Include="utest.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\src\core\convars\convars.cpp" />
     <ClCompile Include="..\src\core\hooks\hooks.cpp" />
     <ClCompile Include="..\src\core\huds\huds.cpp" />
@@ -115,16 +120,9 @@
     <ClCompile Include="..\src\core\shared\interface.cpp" />
     <ClCompile Include="..\src\core\shared\menu.cpp" />
     <ClCompile Include="..\src\core\shared\render.cpp" />
-    <ClCompile Include="..\src\core\source-sdk\plugin.cpp" />
-    <ClCompile Include="..\src\photon-sdk\utils\console.cpp" />
-    <ClCompile Include="..\src\photon-sdk\utils\memory.cpp" />
-    <ClCompile Include="..\src\photon-sdk\utils\string.cpp" />
+    <ClCompile Include="..\src\source-sdk\plugin.cpp" />
+    <ClCompile Include="..\src\util\util.cpp" />
     <ClCompile Include="tests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="hook.h" />
-    <ClInclude Include="memory.h" />
-    <ClInclude Include="utest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

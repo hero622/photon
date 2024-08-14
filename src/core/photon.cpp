@@ -5,31 +5,30 @@
 #include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
 #include "core/mods/mods.h"
+#include "util/util.h"
 
 #include <cstring>
 
 c_photon plugin;
 
-expose_single_interface_globalvar( c_photon, i_server_plugin_callbacks, interfaceversion_iserverplugincallbacks, plugin );
+EXPOSE_SINGLE_INTERFACE_GLOBALVAR( c_photon, i_server_plugin_callbacks, INTERFACEVERSION_ISERVERPLUGINCALLBACKS, plugin );
 
-photon_api::c_shared *photon;
+photon_api::c_shared* photon;
 
-c_photon::c_photon( ) {
-	info = new plugin_info_t( );
-	photon = new photon_api::c_shared( );
+bool c_photon::load( create_interface_fn interface_factory, create_interface_fn game_server_factory ) {
+	info            = new plugin_info_t( );
+	photon          = new photon_api::c_shared( );
 	photon->portal2 = new c_portal2( );
-	photon->con = new c_con( );
-	photon->hook = new c_hook( );
-	photon->event = new c_event( );
-	photon->hud = new c_hud( );
-	photon->render = new c_render( );
-	photon->input = new c_input( );
-	photon->menu = new c_menu( );
-}
+	photon->con     = new c_con( );
+	photon->hook    = new c_hook( );
+	photon->event   = new c_event( );
+	photon->hud     = new c_hud( );
+	photon->render  = new c_render( );
+	photon->input   = new c_input( );
+	photon->menu    = new c_menu( );
 
-bool c_photon::load( sdk::create_interface_fn interface_factory, sdk::create_interface_fn game_server_factory ) {
 #ifdef _DEBUG
-	utils::console::alloc( );
+	util::console::alloc( );
 #endif
 
 	if ( interfaces::initialize( ) ) {
@@ -39,31 +38,31 @@ bool c_photon::load( sdk::create_interface_fn interface_factory, sdk::create_int
 			gui::initialize( );
 
 			// only works when done early enough
-			photon->portal2->command_line->append_parm( "-background", "5" );
+			interfaces::command_line->append_parm( "-background", "5" );
 
-			photon->portal2->console->color_msg( { 0, 255, 0, 255 }, "Photon loaded.\n" );
+			interfaces::console->color_msg( { 0, 255, 0, 255 }, "Photon loaded.\n" );
 
 			if ( !mods::loadall( ) )
-				photon->portal2->console->warning( "Failed to load one or more mods.\n" );
+				interfaces::console->warning( "Failed to load one or more mods.\n" );
 
 			return true;
 		} else
-			photon->portal2->console->warning( "Failed to initialize one or more hooks.\n" );
+			interfaces::console->warning( "Failed to initialize one or more hooks.\n" );
 	} else
-		photon->portal2->console->warning( "Failed to initialize one or more interfaces.\n" );
+		interfaces::console->warning( "Failed to initialize one or more interfaces.\n" );
 
 	return false;
 }
 
 bool c_photon::get_info( ) {
-	auto server_plugin_helpers = reinterpret_cast<uint8_t *>( photon->portal2->server_plugin_helpers );
-	auto size = *reinterpret_cast<int *>( server_plugin_helpers + c_server_plugin_size );
+	auto server_plugin_helpers = reinterpret_cast< uint8_t* >( interfaces::server_plugin_helpers );
+	auto size                  = *reinterpret_cast< int* >( server_plugin_helpers + SERVER_PLUGIN_SIZE );
 	if ( size > 0 ) {
-		auto plugins = *reinterpret_cast<uint8_t **>( server_plugin_helpers + c_server_plugin_plugins );
+		auto plugins = *reinterpret_cast< uint8_t** >( server_plugin_helpers + SERVER_PLUGIN_PLUGINS );
 		for ( auto i = 0; i < size; ++i ) {
-			auto ptr = *reinterpret_cast<sdk::c_plugin **>( plugins + sizeof( uint8_t * ) * i );
-			if ( !std::strcmp( ptr->name, photon_plugin_sig ) ) {
-				info->ptr = ptr;
+			auto ptr = *reinterpret_cast< c_plugin** >( plugins + sizeof( uint8_t* ) * i );
+			if ( !std::strcmp( ptr->name, PLUGIN_SIGNATURE ) ) {
+				info->ptr   = ptr;
 				info->index = i;
 				return true;
 			}
@@ -73,13 +72,14 @@ bool c_photon::get_info( ) {
 }
 
 void c_photon::unload( ) {
-	if ( unloading ) return;
+	if ( unloading )
+		return;
 	unloading = true;
 
 	mods::unloadall( );
 
 	// this doesnt really do anything lol
-	photon->portal2->command_line->remove_parm( "-background" );
+	interfaces::command_line->remove_parm( "-background" );
 
 	gui::uninitialize( );
 
@@ -89,15 +89,15 @@ void c_photon::unload( ) {
 
 	if ( plugin.get_info( ) ) {
 		auto unload_cmd = std::string( "plugin_unload " ) + std::to_string( plugin.info->index );
-		photon->portal2->engine_client->cbuf_add( unload_cmd.c_str( ), safe_unload_delay );
+		interfaces::engine_client->cbuf_add( unload_cmd.c_str( ), SAFE_UNLOAD_DELAY );
 	}
 
-	photon->portal2->console->msg( "Goodbye.\n" );
+	interfaces::console->msg( "Goodbye.\n" );
 
 	interfaces::uninitialize( );
 
 #ifdef _DEBUG
-	utils::console::free( );
+	util::console::free( );
 #endif
 
 	delete_ptr( photon->menu );
@@ -111,31 +111,3 @@ void c_photon::unload( ) {
 	delete_ptr( photon );
 	delete_ptr( info );
 }
-
-void c_photon::pause( ) {}
-void c_photon::un_pause( ) {}
-const char *c_photon::get_plugin_description( ) {
-	return photon_plugin_sig;
-}
-void c_photon::level_init( char const *map_name ) {}
-void c_photon::server_activate( void *edict_list, int edict_count, int client_max ) {}
-void c_photon::game_frame( bool simulating ) {}
-void c_photon::level_shutdown( ) {}
-void c_photon::client_fully_connect( void *edict ) {}
-void c_photon::client_active( void *entity ) {}
-void c_photon::client_disconnect( void *entity ) {}
-void c_photon::client_put_in_server( void *entity, char const *playername ) {}
-void c_photon::set_command_client( int index ) {}
-void c_photon::client_settings_changed( void *edict ) {}
-int c_photon::client_connect( bool *allow_connect, void *entity, const char *name, const char *address, char *reject, int maxrejectlen ) {
-	return 0;
-}
-int c_photon::client_command( void *entity, const void *&args ) {
-	return 0;
-}
-int c_photon::network_id_validated( const char *user_name, const char *network_id ) {
-	return 0;
-}
-void c_photon::on_query_cvar_value_finished( int cookie, void *player_entity, int status, const char *cvar_name, const char *cvar_value ) {}
-void c_photon::on_edict_allocated( void *edict ) {}
-void c_photon::on_edict_freed( const void *edict ) {}

@@ -9,9 +9,7 @@
 
 ## Mods
 - Install mods by placing them in the `photon` folder inside the Portal 2 directory.
-- Load mods by typing `photon_load <mod name>` in the console.
-- Enable mods by typing `photon_enable <mod name>` in the console.
+- Enable them from the menu that you can open by pressing <kbd>Insert</kbd>.
 
 ## Development
-- [SDK](https://github.com/hero622/photon-sdk)
 - [Contributing](docs/contributing.md)
