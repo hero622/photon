@@ -70,7 +70,8 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;subhook.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>call ..\copy.bat</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,7 +96,8 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;subhook.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>call ..\copy.bat</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -113,11 +115,10 @@
     <ClCompile Include="..\src\core\mods\mods.cpp" />
     <ClCompile Include="..\src\core\photon.cpp" />
     <ClCompile Include="..\src\core\shared\ccon.cpp" />
-    <ClCompile Include="..\src\core\shared\event.cpp" />
+    <ClCompile Include="..\src\core\shared\common.cpp" />
     <ClCompile Include="..\src\core\shared\hook.cpp" />
     <ClCompile Include="..\src\core\shared\hud.cpp" />
     <ClCompile Include="..\src\core\shared\input.cpp" />
-    <ClCompile Include="..\src\core\shared\interface.cpp" />
     <ClCompile Include="..\src\core\shared\menu.cpp" />
     <ClCompile Include="..\src\core\shared\render.cpp" />
     <ClCompile Include="..\src\source-sdk\plugin.cpp" />

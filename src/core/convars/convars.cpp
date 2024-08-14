@@ -19,7 +19,7 @@ CONCMD_CBK( photon_load ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::load( args[ 1 ] );
 	} else {
-		interfaces::console->msg( "photon_load <mod name> - load a photon mod.\n" );
+		photon->common->log( "photon_load <mod name> - load a photon mod.\n" );
 	}
 }
 
@@ -27,7 +27,7 @@ CONCMD_CBK( photon_unload ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::unload( args[ 1 ] );
 	} else {
-		interfaces::console->msg( "photon_unload <mod name> - unload a photon mod.\n" );
+		photon->common->log( "photon_unload <mod name> - unload a photon mod.\n" );
 	}
 }
 
@@ -35,7 +35,7 @@ CONCMD_CBK( photon_enable ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::enable( &mods::mod_list[ args[ 1 ] ] );
 	} else {
-		interfaces::console->msg( "photon_enable <mod name> - enable a photon mod.\n" );
+		photon->common->log( "photon_enable <mod name> - enable a photon mod.\n" );
 	}
 }
 
@@ -43,7 +43,7 @@ CONCMD_CBK( photon_disable ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::disable( &mods::mod_list[ args[ 1 ] ] );
 	} else {
-		interfaces::console->msg( "photon_disable <mod name> - disable a photon mod.\n" );
+		photon->common->log( "photon_disable <mod name> - disable a photon mod.\n" );
 	}
 }
 
@@ -59,21 +59,21 @@ bool convars::initialize( ) {
 	photon->con->create_concmd( "photon_print", photon_print_cbk, "prints a list of all loaded photon mods.\n" );
 
 	// fast loads
-	ui_loadingscreen_transition_time    = interfaces::cvar->find_con_var( "ui_loadingscreen_transition_time" );
-	ui_loadingscreen_fadein_time        = interfaces::cvar->find_con_var( "ui_loadingscreen_fadein_time" );
-	ui_loadingscreen_mintransition_time = interfaces::cvar->find_con_var( "ui_loadingscreen_mintransition_time" );
+	ui_loadingscreen_transition_time    = photon->con->find_con_var( "ui_loadingscreen_transition_time" );
+	ui_loadingscreen_fadein_time        = photon->con->find_con_var( "ui_loadingscreen_fadein_time" );
+	ui_loadingscreen_mintransition_time = photon->con->find_con_var( "ui_loadingscreen_mintransition_time" );
 
-	ui_loadingscreen_transition_time->remove_flag( fcvar_developmentonly | fcvar_hidden );
-	ui_loadingscreen_fadein_time->remove_flag( fcvar_developmentonly | fcvar_hidden );
-	ui_loadingscreen_mintransition_time->remove_flag( fcvar_developmentonly | fcvar_hidden );
+	ui_loadingscreen_transition_time->remove_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
+	ui_loadingscreen_fadein_time->remove_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
+	ui_loadingscreen_mintransition_time->remove_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
 
 	return true;
 }
 
 void convars::uninitialize( ) {
-	ui_loadingscreen_transition_time->add_flag( fcvar_developmentonly | fcvar_hidden );
-	ui_loadingscreen_fadein_time->add_flag( fcvar_developmentonly | fcvar_hidden );
-	ui_loadingscreen_mintransition_time->add_flag( fcvar_developmentonly | fcvar_hidden );
+	ui_loadingscreen_transition_time->add_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
+	ui_loadingscreen_fadein_time->add_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
+	ui_loadingscreen_mintransition_time->add_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
 
 	photon->con->destruct_concmd( "photon_print" );
 	photon->con->destruct_concmd( "photon_disable" );

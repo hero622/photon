@@ -19,6 +19,8 @@ public:
 
 	virtual void hook_cmd( const char* name, fn_command_callback_t detour, fn_command_callback_t& original );  // Replace ConCommand callback to your own.
 	virtual void unhook_cmd( const char* name, fn_command_callback_t original );                               // Revert ConCommand callback.
+
+	virtual con_var* find_con_var( const char* name );  // Find a ConVar's pointer by name.
 };
 
 #define CONCMD_CBK( name ) \

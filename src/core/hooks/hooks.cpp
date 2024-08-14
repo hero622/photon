@@ -38,15 +38,15 @@ void hooks::uninitialize( ) {
 }
 
 HK_FN( void, hooks::game_frame, bool simulating ) {
-	photon->event->post( &plugin, "pre_tick" );
+	photon->common->post_event( &plugin, "pre_tick" );
 
 	game_frame( ecx, simulating );
 
-	photon->event->post( &plugin, "post_tick" );
+	photon->common->post_event( &plugin, "post_tick" );
 }
 
 HK_FN( void, hooks::frame ) {
-	photon->event->post( &plugin, "pre_frame" );
+	photon->common->post_event( &plugin, "pre_frame" );
 
 	frame( ecx );
 
@@ -54,7 +54,7 @@ HK_FN( void, hooks::frame ) {
 	// possibly i changed something about unloading and this doesnt get unhooked early enough?
 	// if there is more stuff being done here later, this might break, this should be looked into !!!
 	if ( photon )
-		photon->event->post( &plugin, "post_frame" );
+		photon->common->post_event( &plugin, "post_frame" );
 }
 
 HK_FN( void, hooks::set_signon_state, int state, int count, void* unk ) {
@@ -62,9 +62,9 @@ HK_FN( void, hooks::set_signon_state, int state, int count, void* unk ) {
 
 	// this is probably not the best way, i saw SAR do something similar but this needs further thought
 	if ( state == signonstate_full )
-		photon->event->post( &plugin, "session_start" );
+		photon->common->post_event( &plugin, "session_start" );
 	else
-		photon->event->post( &plugin, "session_end" );
+		photon->common->post_event( &plugin, "session_end" );
 }
 
 HK_FN( void, hooks::paint, paint_mode_t mode ) {
@@ -77,7 +77,7 @@ HK_FN( void, hooks::paint, paint_mode_t mode ) {
 
 		huds::paint( );
 
-		photon->event->post( &plugin, "paint" );
+		photon->common->post_event( &plugin, "paint" );
 
 		if ( photon->input->get_key_press( key_insert ) )
 			gui::open = !gui::open;
@@ -136,7 +136,7 @@ HK_FN( void, hooks::update_button_state, const int* event ) {
 HK_FN( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 	on_screen_size_changed( ecx, old_width, old_height );
 
-	photon->event->post( &plugin, "on_screen_size_changed" );
+	photon->common->post_event( &plugin, "on_screen_size_changed" );
 
 	// recreate fonts
 	gui::initialize( );
@@ -145,7 +145,7 @@ HK_FN( void, hooks::on_screen_size_changed, int old_width, int old_height ) {
 // prevent from loading the plugin twice (why doesnt source do this ???)
 HK_CMD_FN( hooks::plugin_load ) {
 	if ( args.arg_c( ) >= 2 && strstr( args[ 1 ], "photon" ) )
-		interfaces::console->warning( "Photon is already loaded.\n" );
+		photon->common->log_warn( "Photon is already loaded.\n" );
 	else
 		plugin_load( args );
 }

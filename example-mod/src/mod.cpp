@@ -20,11 +20,11 @@ bool c_photon_mod::load( photon_api::c_shared* photon ) {
 
 		huds::initialize( );
 
-		// interfaces::console->msg( "example mod loaded.\n" );
+		photon->common->log( "example mod loaded.\n" );
 
 		// post example event
 		// this will look like: "example mod:load" for other mods
-		photon->event->post( &mod, "load" );
+		photon->common->post_event( &mod, "load" );
 
 		photon->render->create_font( font, "Tahoma", 12, false, fontflag_dropshadow );
 	}
@@ -41,7 +41,7 @@ void c_photon_mod::unload( ) {
 
 	example_mod::hooks::uninitialize( );
 
-	// interfaces::console->msg( "example mod unloaded.\n" );
+	photon->common->log( "example mod unloaded.\n" );
 }
 
 void c_photon_mod::on_event( const char* msg ) {
@@ -70,11 +70,11 @@ void c_photon_mod::paint_menu( ) {
 	static float example_sliderf_val;
 	photon->menu->sliderf( example_sliderf_val, 0.f, 10.f, "example sliderf" );
 
-	// static std::size_t example_combo_val;
-	// const char*        example_combo_items[] = { "value 1", "value 2", "value 3" };
-	// photon->menu->combo( example_combo_val, example_combo_items, array_len( example_combo_items ), "example combo" );
+	static std::size_t example_combo_val;
+	const char*        example_combo_items[] = { "value 1", "value 2", "value 3" };
+	photon->menu->combo( example_combo_val, example_combo_items, ARRAY_LEN( example_combo_items ), "example combo" );
 
-	// static std::size_t example_multicombo_val;
-	// const char*        example_multicombo_items[] = { "value 1", "value 2", "value 3" };
-	// photon->menu->multicombo( example_multicombo_val, example_multicombo_items, array_len( example_multicombo_items ), "example multicombo" );
+	static std::size_t example_multicombo_val;
+	const char*        example_multicombo_items[] = { "value 1", "value 2", "value 3" };
+	photon->menu->multicombo( example_multicombo_val, example_multicombo_items, ARRAY_LEN( example_multicombo_items ), "example multicombo" );
 }

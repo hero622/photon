@@ -13,9 +13,4 @@ public:
 	con_command_base* find_command_base( const char* name ) {
 		return util::call_virtual< 13, con_command_base* >( this, name );
 	}
-
-public:
-	con_var* find_con_var( const char* name ) {
-		return reinterpret_cast< con_var* >( find_command_base( name ) );
-	}
 };

@@ -41,11 +41,10 @@
     <ClCompile Include="core\mods\mods.cpp" />
     <ClCompile Include="core\photon.cpp" />
     <ClCompile Include="core\shared\ccon.cpp" />
-    <ClCompile Include="core\shared\event.cpp" />
+    <ClCompile Include="core\shared\common.cpp" />
     <ClCompile Include="core\shared\hook.cpp" />
     <ClCompile Include="core\shared\hud.cpp" />
     <ClCompile Include="core\shared\input.cpp" />
-    <ClCompile Include="core\shared\interface.cpp" />
     <ClCompile Include="core\shared\menu.cpp" />
     <ClCompile Include="core\shared\render.cpp" />
     <ClCompile Include="source-sdk\plugin.cpp" />

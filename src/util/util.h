@@ -82,11 +82,3 @@ namespace util {
 	std::string ssprintf( const char* fmt, ... );
 	bool        replace( std::string& str, const std::string& from, const std::string& to );
 }  // namespace util
-
-#define delete_ptr( ptr ) \
-	if ( ptr ) {             \
-		delete ptr;             \
-		ptr = nullptr;          \
-	}
-
-#define array_len( array ) ( sizeof( array ) / sizeof( *( array ) ) )

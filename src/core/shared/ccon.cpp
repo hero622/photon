@@ -110,3 +110,7 @@ void c_con::unhook_cmd( const char* name, fn_command_callback_t original ) {
 
 	concmd->fn_command_callback = original;
 }
+
+con_var* c_con::find_con_var( const char* name ) {
+	return reinterpret_cast< con_var* >( interfaces::cvar->find_command_base( name ) );
+}

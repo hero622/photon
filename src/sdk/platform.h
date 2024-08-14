@@ -41,3 +41,11 @@
 
 #define OS( win, linux ) linux
 #endif
+
+#define DELETE_PTR( ptr ) \
+	if ( ptr ) {             \
+		delete ptr;             \
+		ptr = nullptr;          \
+	}
+
+#define ARRAY_LEN( array ) ( sizeof( array ) / sizeof( *( array ) ) )

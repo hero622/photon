@@ -35,9 +35,6 @@
     <ClCompile Include="..\src\core\convars\convars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\shared\event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\core\menu\framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -59,9 +56,6 @@
     <ClCompile Include="..\src\core\shared\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\shared\interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\core\interfaces\interfaces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\util\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\shared\common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

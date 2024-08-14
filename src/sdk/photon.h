@@ -1,11 +1,10 @@
 #pragma once
 
 #include "ccon.h"
-#include "event.h"
+#include "common.h"
 #include "hook.h"
 #include "hud.h"
 #include "input.h"
-#include "interfaces.h"
 #include "menu.h"
 #include "platform.h"
 #include "render.h"
@@ -14,14 +13,13 @@
 namespace photon_api {
 	class c_shared {
 	public:
-		c_portal2* portal2;  // Contains game interfaces exposed by Photon.
-		c_con*     con;      // Create ConVars and ConCommands.
-		c_hook*    hook;     // Hook virtual/inline functions.
-		c_event*   event;    // Post events to other plugins.
-		c_hud*     hud;      // Register HUDs and THUDs.
-		c_render*  render;   // Wrapper around Source's Surface interface.
-		c_input*   input;    // Wrapper around Source's InputSystem interface.
-		c_menu*    menu;     // Photon's own menu framework.
+		c_common* common;  // Common functions.
+		c_con*    con;     // Create ConVars and ConCommands.
+		c_hook*   hook;    // Hook virtual/inline functions.
+		c_hud*    hud;     // Register HUDs and THUDs.
+		c_render* render;  // Wrapper around Source's Surface interface.
+		c_input*  input;   // Wrapper around Source's InputSystem interface.
+		c_menu*   menu;    // Photon's own menu framework.
 	};
 
 	struct mod_info_t {

@@ -12,15 +12,14 @@ UTEST_STATE( );
 
 int main( int argc, const char* const argv[] ) {
 	// setup photon environment
-	photon          = new photon_api::c_shared( );
-	photon->portal2 = new c_portal2( );
-	photon->con     = new c_con( );
-	photon->hook    = new c_hook( );
-	photon->event   = new c_event( );
-	photon->hud     = new c_hud( );
-	photon->render  = new c_render( );
-	photon->input   = new c_input( );
-	photon->menu    = new c_menu( );
+	photon         = new photon_api::c_shared( );
+	photon->common = new c_common( );
+	photon->con    = new c_con( );
+	photon->hook   = new c_hook( );
+	photon->hud    = new c_hud( );
+	photon->render = new c_render( );
+	photon->input  = new c_input( );
+	photon->menu   = new c_menu( );
 
 	return utest_main( argc, argv );
 }

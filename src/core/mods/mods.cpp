@@ -39,9 +39,9 @@ bool mods::load( const char* name ) {
 	}
 
 #ifdef _WIN32
-	interfaces::console->warning( "Failed to load library (%lu).\n", GetLastError( ) );
+	photon->common->log_warn( "Failed to load library (%lu).\n", GetLastError( ) );
 #else
-	interfaces::console->warning( "Failed to load library (%s).\n", dlerror( ) );
+	photon->common->log_warn( "Failed to load library (%s).\n", dlerror( ) );
 #endif
 
 	return false;
@@ -112,12 +112,12 @@ void mods::disable( mod_info_t* mod ) {
 }
 
 void mods::print( ) {
-	interfaces::console->msg( "Loaded photon mods (%d):\n", mod_list.size( ) );
+	photon->common->log( "Loaded photon mods (%d):\n", mod_list.size( ) );
 	for ( const auto& mod : mod_list ) {
 		const char* status = mod.second.is_loaded ? "enabled" : "disabled";
 		const auto  info   = mod.second.ptr->get_info( );
 
-		interfaces::console->msg( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
+		photon->common->log( "%s: %s@%s (%s)\n", mod.first.c_str( ), info.name, info.version, status );
 	}
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../platform.h"
 #include "color.h"
-#include "sdk/platform.h"
 #include "utlvector.h"
 
 class c_command {
