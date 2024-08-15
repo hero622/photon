@@ -106,23 +106,6 @@
     <ClInclude Include="utest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\core\convars\convars.cpp" />
-    <ClCompile Include="..\src\core\hooks\hooks.cpp" />
-    <ClCompile Include="..\src\core\huds\huds.cpp" />
-    <ClCompile Include="..\src\core\interfaces\interfaces.cpp" />
-    <ClCompile Include="..\src\core\menu\framework.cpp" />
-    <ClCompile Include="..\src\core\menu\gui.cpp" />
-    <ClCompile Include="..\src\core\mods\mods.cpp" />
-    <ClCompile Include="..\src\core\photon.cpp" />
-    <ClCompile Include="..\src\core\shared\ccon.cpp" />
-    <ClCompile Include="..\src\core\shared\common.cpp" />
-    <ClCompile Include="..\src\core\shared\hook.cpp" />
-    <ClCompile Include="..\src\core\shared\hud.cpp" />
-    <ClCompile Include="..\src\core\shared\input.cpp" />
-    <ClCompile Include="..\src\core\shared\menu.cpp" />
-    <ClCompile Include="..\src\core\shared\render.cpp" />
-    <ClCompile Include="..\src\source-sdk\plugin.cpp" />
-    <ClCompile Include="..\src\util\util.cpp" />
     <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

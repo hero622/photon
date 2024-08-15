@@ -17,7 +17,7 @@ OBJS=$(patsubst $(SDIR)/%.cpp, $(ODIR)/%.o, $(SRCS))
 DEPS=$(OBJS:%.o=%.d)
 
 WARNINGS=-Wall -Wno-parentheses -Wno-unknown-pragmas -Wno-delete-non-virtual-dtor
-CXXFLAGS=-std=c++17 -m32 $(WARNINGS) -I$(SDIR) -fPIC -D_GNU_SOURCE -I$(SDIR)/sdk # i think this is cooked either way im gonna check later
+CXXFLAGS=-std=c++20 -m32 $(WARNINGS) -I$(SDIR) -fPIC -D_GNU_SOURCE -I$(SDIR)/sdk # i think this is cooked either way im gonna check later
 LDFLAGS=-m32 -shared -lstdc++fs
 
 # Import config.mk, which can be used for optional config

@@ -1,8 +1,8 @@
 #include "mod.h"
 
 #include "convars/convars.h"
-#include "hooks/hooks.h"
 #include "huds/hud.h"
+#include "signals/signals.h"
 
 c_photon_mod mod;
 
@@ -15,7 +15,7 @@ h_font font;
 bool c_photon_mod::load( photon_api::c_shared* photon ) {
 	::photon = photon;
 
-	if ( example_mod::hooks::initialize( ) ) {
+	if ( signals::initialize( ) ) {
 		convars::initialize( );
 
 		huds::initialize( );
@@ -39,7 +39,7 @@ void c_photon_mod::unload( ) {
 
 	convars::uninitialize( );
 
-	example_mod::hooks::uninitialize( );
+	signals::uninitialize( );
 
 	photon->common->log( "example mod unloaded.\n" );
 }

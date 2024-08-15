@@ -15,7 +15,7 @@ int main( int argc, const char* const argv[] ) {
 	photon         = new photon_api::c_shared( );
 	photon->common = new c_common( );
 	photon->con    = new c_con( );
-	photon->hook   = new c_hook( );
+	photon->signal = new c_signal( );
 	photon->hud    = new c_hud( );
 	photon->render = new c_render( );
 	photon->input  = new c_input( );

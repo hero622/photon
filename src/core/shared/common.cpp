@@ -76,3 +76,7 @@ void c_common::post_event( void* sender, const char* msg ) {
 uint8_t* c_common::pattern_scan( const char* module_name, const char* signature ) {
 	return util::pattern_scan( module_name, signature );
 }
+
+void* c_common::get_module_handle( const char* module_name ) {
+	return util::get_module_handle( module_name );
+}

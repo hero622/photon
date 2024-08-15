@@ -2,11 +2,81 @@
 
 #include "core/convars/convars.h"
 #include "core/huds/huds.h"
+#include "core/interfaces/interfaces.h"
 #include "core/mods/mods.h"
+#include "core/photon.h"
 #include "framework.h"
-#include "sdk/photon.h"
+
+// unlock the cursor from the game when menu is open
+SIGNAL_CALLBACK( void, lock_cursor ) {
+	static void* input_ctx = interfaces::engine_client->get_input_context( 0 );
+
+	if ( gui::open ) {
+		interfaces::surface->unlock_cursor( );
+
+		interfaces::input_stack_system->set_cursor_visible( input_ctx, true );
+	} else {
+		interfaces::input_stack_system->set_cursor_visible( input_ctx, false );
+
+		original( ecx );
+	}
+}
+
+SIGNAL_CALLBACK( void, paint, paint_mode_t, mode ) {
+	original( ecx, mode );
+
+	interfaces::surface->start_drawing( );
+
+	if ( mode == paint_uipanels ) {
+		photon->input->poll_input( );  // not sure if this is the best place to call this
+
+		huds::paint( );
+
+		photon->common->post_event( &plugin, "paint" );
+
+		if ( photon->input->get_key_press( key_insert ) )
+			gui::open = !gui::open;
+
+		if ( gui::open ) {
+			gui::paint( );
+			huds::paint_ui( );
+		}
+	}
+
+	interfaces::surface->finish_drawing( );
+}
+
+// block input to the game when photon's menu is open, only works in game, not in the menu
+SIGNAL_CALLBACK( int, in_key_event, int, eventcode, button_code_t, keynum, const char*, current_binding ) {
+	if ( gui::open )
+		return 0;
+
+	return original( ecx, eventcode, keynum, current_binding );
+}
+
+// block input to the menu, vgui has its own input system for some reason, so we have to hook another function
+SIGNAL_CALLBACK( void, update_button_state, const int*, event ) {
+	if ( gui::open ) {
+		/*
+		 * so we cant actually just return here because theres other
+		 * functions calling SetKeyCodeState and SetMouseCodeState,
+		 * i didnt want to hook those functions so we just reset
+		 * the struct that those functions update here
+		 */
+		uint8_t* context_addr = ( uint8_t* ) ecx + 0xce8;  // m_hContext
+		int      context      = *( int* ) context_addr;
+
+		return util::call_virtual< 88, void >( ecx, context );  // ResetInputContext
+	}
+
+	original( ecx, event );
+}
 
 bool gui::initialize( ) {
+	photon->signal->get( "lock_cursor" )->add_callback( &lock_cursor_cbk );
+	photon->signal->get( "paint" )->add_callback( &paint_cbk );
+	photon->signal->get( "in_key_event" )->add_callback( &in_key_event_cbk );
+
 	photon->render->create_font( framework::fonts::normal, "Segoe UI Light", 22, false, fontflag_antialias );
 	photon->render->create_font( framework::fonts::title, "Segoe UI Light", 30, false, fontflag_antialias );
 
@@ -16,6 +86,10 @@ bool gui::initialize( ) {
 void gui::uninitialize( ) {
 	photon->render->destruct_font( framework::fonts::title );
 	photon->render->destruct_font( framework::fonts::normal );
+
+	photon->signal->get( "in_key_event" )->remove_callback( &in_key_event_cbk );
+	photon->signal->get( "paint" )->remove_callback( &paint_cbk );
+	photon->signal->get( "lock_cursor" )->remove_callback( &lock_cursor_cbk );
 }
 
 void gui::paint( ) {

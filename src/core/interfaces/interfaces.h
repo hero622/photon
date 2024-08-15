@@ -14,14 +14,10 @@ namespace interfaces {
 	inline i_scheme_manager*     scheme_manager;
 	inline i_scheme*             scheme;
 	inline i_surface*            surface;
-	inline void*                 base_client_dll;
 	inline void*                 client_state;
 	inline void*                 engine_api;
-	inline void*                 engine_vgui_internal;
 	inline void*                 engine;
-	inline void*                 server_game_dll;
 	inline void*                 server_plugin_helpers;
-	inline void*                 vgui_input;
 
 	bool initialize( );
 	void uninitialize( );

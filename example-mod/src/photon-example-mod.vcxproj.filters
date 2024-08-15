@@ -21,10 +21,10 @@
     <ClInclude Include="huds\hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hooks\hooks.h">
+    <ClInclude Include="convars\convars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="convars\convars.h">
+    <ClInclude Include="signals\signals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +35,10 @@
     <ClCompile Include="huds\hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hooks\hooks.cpp">
+    <ClCompile Include="convars\convars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="convars\convars.cpp">
+    <ClCompile Include="signals\signals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

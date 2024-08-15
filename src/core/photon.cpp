@@ -1,10 +1,10 @@
 #include "photon.h"
 
 #include "core/convars/convars.h"
-#include "core/hooks/hooks.h"
 #include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
 #include "core/mods/mods.h"
+#include "core/signals/signals.h"
 #include "util/util.h"
 
 #include <cstring>
@@ -20,7 +20,7 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 	photon         = new photon_api::c_shared( );
 	photon->common = new c_common( );
 	photon->con    = new c_con( );
-	photon->hook   = new c_hook( );
+	photon->signal = new c_signal( );
 	photon->hud    = new c_hud( );
 	photon->render = new c_render( );
 	photon->input  = new c_input( );
@@ -31,7 +31,7 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 #endif
 
 	if ( interfaces::initialize( ) ) {
-		if ( hooks::initialize( ) ) {
+		if ( signals::initialize( ) ) {
 			convars::initialize( );
 
 			gui::initialize( );
@@ -84,7 +84,7 @@ void c_photon::unload( ) {
 
 	convars::uninitialize( );
 
-	hooks::uninitialize( );
+	signals::uninitialize( );
 
 	if ( plugin.get_info( ) ) {
 		auto unload_cmd = std::string( "plugin_unload " ) + std::to_string( plugin.info->index );
@@ -104,7 +104,7 @@ void c_photon::unload( ) {
 	DELETE_PTR( photon->render );
 	DELETE_PTR( photon->hud );
 	DELETE_PTR( photon->common );
-	DELETE_PTR( photon->hook );
+	DELETE_PTR( photon->signal );
 	DELETE_PTR( photon->con );
 	DELETE_PTR( photon->common );
 	DELETE_PTR( photon );

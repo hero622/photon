@@ -11,13 +11,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\convars\convars.h" />
-    <ClInclude Include="core\hooks\hooks.h" />
     <ClInclude Include="core\huds\huds.h" />
     <ClInclude Include="core\interfaces\interfaces.h" />
     <ClInclude Include="core\menu\framework.h" />
     <ClInclude Include="core\menu\gui.h" />
     <ClInclude Include="core\mods\mods.h" />
     <ClInclude Include="core\photon.h" />
+    <ClInclude Include="core\signals\signals.h" />
     <ClInclude Include="source-sdk\interfaces.h" />
     <ClInclude Include="source-sdk\interfaces\command_line.h" />
     <ClInclude Include="source-sdk\interfaces\console.h" />
@@ -33,7 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\convars\convars.cpp" />
-    <ClCompile Include="core\hooks\hooks.cpp" />
     <ClCompile Include="core\huds\huds.cpp" />
     <ClCompile Include="core\interfaces\interfaces.cpp" />
     <ClCompile Include="core\menu\framework.cpp" />
@@ -42,11 +41,12 @@
     <ClCompile Include="core\photon.cpp" />
     <ClCompile Include="core\shared\ccon.cpp" />
     <ClCompile Include="core\shared\common.cpp" />
-    <ClCompile Include="core\shared\hook.cpp" />
     <ClCompile Include="core\shared\hud.cpp" />
     <ClCompile Include="core\shared\input.cpp" />
     <ClCompile Include="core\shared\menu.cpp" />
     <ClCompile Include="core\shared\render.cpp" />
+    <ClCompile Include="core\shared\signal.cpp" />
+    <ClCompile Include="core\signals\signals.cpp" />
     <ClCompile Include="source-sdk\plugin.cpp" />
     <ClCompile Include="util\util.cpp" />
   </ItemGroup>
@@ -99,10 +99,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SUBHOOK_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,10 +123,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SUBHOOK_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

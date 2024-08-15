@@ -2,12 +2,12 @@
 
 #include "ccon.h"
 #include "common.h"
-#include "hook.h"
 #include "hud.h"
 #include "input.h"
 #include "menu.h"
 #include "platform.h"
 #include "render.h"
+#include "signal.h"
 #include "source_sdk.h"
 
 namespace photon_api {
@@ -15,7 +15,7 @@ namespace photon_api {
 	public:
 		c_common* common;  // Common functions.
 		c_con*    con;     // Create ConVars and ConCommands.
-		c_hook*   hook;    // Hook virtual/inline functions.
+		c_signal* signal;  // Photon's callback based hooking system.
 		c_hud*    hud;     // Register HUDs and THUDs.
 		c_render* render;  // Wrapper around Source's Surface interface.
 		c_input*  input;   // Wrapper around Source's InputSystem interface.

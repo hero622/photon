@@ -10,4 +10,5 @@ public:
 	virtual void*    get_interface( const char* module_name, const char* interface_name );
 	virtual void     post_event( void* sender, const char* msg );
 	virtual uint8_t* pattern_scan( const char* module_name, const char* signature );
+	virtual void*    get_module_handle( const char* module_name );
 };
