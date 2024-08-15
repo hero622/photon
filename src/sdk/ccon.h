@@ -17,18 +17,8 @@ public:
 	virtual con_command* create_concmd( const char* name, fn_command_callback_t cbk, const char* help_string = 0, int flags = 0 );  // Create ConCommands.
 	virtual void         destruct_concmd( const char* name );                                                                       // Destruct ConCommands.
 
-	virtual void hook_cmd( const char* name, fn_command_callback_t detour, fn_command_callback_t& original );  // Replace ConCommand callback to your own.
-	virtual void unhook_cmd( const char* name, fn_command_callback_t original );                               // Revert ConCommand callback.
+	virtual void hook_cmd( const char* name, fn_command_callback_t detour );  // Replace ConCommand callback to your own.
+	virtual void unhook_cmd( const char* name );                              // Revert ConCommand callback.
 
 	virtual con_var* find_con_var( const char* name );  // Find a ConVar's pointer by name.
 };
-
-#define CONCMD_CBK( name ) \
-	static void name##_cbk( const c_command& args )
-
-#define DECL_HK_CMD( name )         \
-	inline fn_command_callback_t name; \
-	static void                  name##_hk( const c_command& args )
-
-#define HK_CMD_FN( name ) \
-	void name##_hk( const c_command& args )

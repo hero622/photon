@@ -15,7 +15,7 @@ void convars::set_fast_loads( bool enable ) {
 	ui_loadingscreen_mintransition_time->set_value( enable ? 0.0f : 0.5f );
 }
 
-CONCMD_CBK( photon_load ) {
+static void photon_load( const c_command& args ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::load( args[ 1 ] );
 	} else {
@@ -23,7 +23,7 @@ CONCMD_CBK( photon_load ) {
 	}
 }
 
-CONCMD_CBK( photon_unload ) {
+static void photon_unload( const c_command& args ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::unload( args[ 1 ] );
 	} else {
@@ -31,7 +31,7 @@ CONCMD_CBK( photon_unload ) {
 	}
 }
 
-CONCMD_CBK( photon_enable ) {
+static void photon_enable( const c_command& args ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::enable( &mods::mod_list[ args[ 1 ] ] );
 	} else {
@@ -39,7 +39,7 @@ CONCMD_CBK( photon_enable ) {
 	}
 }
 
-CONCMD_CBK( photon_disable ) {
+static void photon_disable( const c_command& args ) {
 	if ( args.arg_c( ) >= 2 ) {
 		mods::disable( &mods::mod_list[ args[ 1 ] ] );
 	} else {
@@ -47,16 +47,16 @@ CONCMD_CBK( photon_disable ) {
 	}
 }
 
-CONCMD_CBK( photon_print ) {
+static void photon_print( const c_command& args ) {
 	mods::print( );
 }
 
 bool convars::initialize( ) {
-	photon->con->create_concmd( "photon_load", photon_load_cbk, "photon_load <mod name> - load a photon mod.\n" );
-	photon->con->create_concmd( "photon_unload", photon_unload_cbk, "photon_unload <mod name> - unload a photon mod.\n" );
-	photon->con->create_concmd( "photon_enable", photon_enable_cbk, "photon_enable <mod name> - enable a photon mod.\n" );
-	photon->con->create_concmd( "photon_disable", photon_disable_cbk, "photon_disable <mod name> - disable a photon mod.\n" );
-	photon->con->create_concmd( "photon_print", photon_print_cbk, "prints a list of all loaded photon mods.\n" );
+	photon->con->create_concmd( "photon_load", photon_load, "photon_load <mod name> - load a photon mod.\n" );
+	photon->con->create_concmd( "photon_unload", photon_unload, "photon_unload <mod name> - unload a photon mod.\n" );
+	photon->con->create_concmd( "photon_enable", photon_enable, "photon_enable <mod name> - enable a photon mod.\n" );
+	photon->con->create_concmd( "photon_disable", photon_disable, "photon_disable <mod name> - disable a photon mod.\n" );
+	photon->con->create_concmd( "photon_print", photon_print, "prints a list of all loaded photon mods.\n" );
 
 	// fast loads
 	ui_loadingscreen_transition_time    = photon->con->find_con_var( "ui_loadingscreen_transition_time" );

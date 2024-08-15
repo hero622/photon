@@ -86,10 +86,6 @@ bool gui::initialize( ) {
 void gui::uninitialize( ) {
 	photon->render->destruct_font( framework::fonts::title );
 	photon->render->destruct_font( framework::fonts::normal );
-
-	photon->signal->get( "in_key_event" )->remove_callback( &in_key_event_cbk );
-	photon->signal->get( "paint" )->remove_callback( &paint_cbk );
-	photon->signal->get( "lock_cursor" )->remove_callback( &lock_cursor_cbk );
 }
 
 void gui::paint( ) {

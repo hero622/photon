@@ -3,7 +3,6 @@
 #include "core/huds/huds.h"
 #include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
-#include "core/mods/mods.h"
 #include "core/photon.h"
 
 SIGNAL( int, game_frame, bool, simulating );
@@ -69,21 +68,10 @@ bool signals::initialize( ) {
 	photon->signal->get( "set_signon_state" )->add_callback( &set_signon_state_cbk );
 	photon->signal->get( "on_screen_size_changed" )->add_callback( &on_screen_size_changed_cbk );
 
-	// HK_CMD( plugin_load );
-	// HK_CMD( plugin_unload );
-
 	return true;
 }
 
 void signals::uninitialize( ) {
-	// UNHK_CMD( plugin_unload );
-	// UNHK_CMD( plugin_load );
-
-	photon->signal->get( "on_screen_size_changed" )->remove_callback( &on_screen_size_changed_cbk );
-	photon->signal->get( "set_signon_state" )->remove_callback( &set_signon_state_cbk );
-	photon->signal->get( "frame" )->remove_callback( &frame_cbk );
-	photon->signal->get( "game_frame" )->remove_callback( &game_frame_cbk );
-
 	photon->signal->remove( "on_screen_size_changed" );
 	photon->signal->remove( "update_button_state" );
 	photon->signal->remove( "in_key_event" );
@@ -93,19 +81,3 @@ void signals::uninitialize( ) {
 	photon->signal->remove( "frame" );
 	photon->signal->remove( "game_frame" );
 }
-
-// prevent from loading the plugin twice (why doesnt source do this ???)
-// HK_CMD_FN( hooks::plugin_load ) {
-// 	if ( args.arg_c( ) >= 2 && strstr( args[ 1 ], "photon" ) )
-// 		photon->common->log_warn( "Photon is already loaded.\n" );
-// 	else
-// 		plugin_load( args );
-// }
-
-// // we need to unhook cengine::frame before the plugin gets unloaded
-// HK_CMD_FN( hooks::plugin_unload ) {
-// 	if ( args.arg_c( ) >= 2 && plugin.get_info( ) && ( !strcmp( args[ 1 ], "photon" ) || std::atoi( args[ 1 ] ) == plugin.info->index ) )
-// 		plugin.unload( );
-// 	else
-// 		plugin_unload( args );
-// }

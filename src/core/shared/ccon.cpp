@@ -9,6 +9,8 @@
 static std::unordered_map< const char*, con_var* >     convars;
 static std::unordered_map< const char*, con_command* > concmds;
 
+static std::unordered_map< const char*, fn_command_callback_t > hooked_cbks;
+
 con_var* c_con::create_convar( const char* name, const char* default_value, int flags ) {
 	return create_convar( name, default_value, flags, 0, 0 );
 }
@@ -93,17 +95,19 @@ void c_con::destruct_concmd( const char* name ) {
 	concmds.erase( name );
 }
 
-void c_con::hook_cmd( const char* name, fn_command_callback_t detour, fn_command_callback_t& original ) {
+void c_con::hook_cmd( const char* name, fn_command_callback_t detour ) {
 	auto concmd = reinterpret_cast< con_command* >( interfaces::cvar->find_command_base( name ) );
 
 	if ( !concmd )
 		return;
 
-	original                    = concmd->fn_command_callback;
+	hooked_cbks.insert( std::make_pair( name, concmd->fn_command_callback ) );
 	concmd->fn_command_callback = detour;
 }
-void c_con::unhook_cmd( const char* name, fn_command_callback_t original ) {
+void c_con::unhook_cmd( const char* name ) {
 	auto concmd = reinterpret_cast< con_command* >( interfaces::cvar->find_command_base( name ) );
+	auto original = hooked_cbks[ name ];
+	hooked_cbks.erase( name );
 
 	if ( !concmd || !original )
 		return;

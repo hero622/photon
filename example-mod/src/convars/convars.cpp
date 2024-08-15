@@ -2,7 +2,7 @@
 
 #include <photon.h>
 
-CONCMD_CBK( example_command ) {
+static void example_command( const c_command& args ) {
 	// get multiple types of values of the cvar
 	const auto cvar = photon->con->find_con_var( "example_convar" );
 
@@ -21,7 +21,7 @@ CONCMD_CBK( example_command ) {
 }
 
 bool convars::initialize( ) {
-	photon->con->create_concmd( "example_command", example_command_cbk, "example command.\n" );
+	photon->con->create_concmd( "example_command", example_command, "example command.\n" );
 
 	photon->con->create_convar( "example_convar", "0", FCVAR_NONE, "example convar.\n", true, 0, true, 1, 0 );
 

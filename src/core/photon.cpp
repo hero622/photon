@@ -15,6 +15,22 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR( c_photon, i_server_plugin_callbacks, INTERFAC
 
 photon_api::c_shared* photon;
 
+// prevent from loading the plugin twice (why doesnt source do this ???)
+static void plugin_load( const c_command& args ) {
+	if ( args.arg_c( ) >= 2 && strstr( args[ 1 ], "photon" ) )
+		photon->common->log_warn( "Photon is already loaded.\n" );
+	else
+		plugin_load( args );
+}
+
+// // we need to unhook cengine::frame before the plugin gets unloaded
+static void plugin_unload( const c_command& args ) {
+	if ( args.arg_c( ) >= 2 && plugin.get_info( ) && ( !strcmp( args[ 1 ], "photon" ) || std::atoi( args[ 1 ] ) == plugin.info->index ) )
+		plugin.unload( );
+	else
+		plugin_unload( args );
+}
+
 bool c_photon::load( create_interface_fn interface_factory, create_interface_fn game_server_factory ) {
 	info           = new plugin_info_t( );
 	photon         = new photon_api::c_shared( );
@@ -35,6 +51,9 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 			convars::initialize( );
 
 			gui::initialize( );
+
+			photon->con->hook_cmd( "plugin_load", &plugin_load );
+			photon->con->hook_cmd( "plugin_unload", &plugin_unload );
 
 			// only works when done early enough
 			interfaces::command_line->append_parm( "-background", "5" );
@@ -79,6 +98,9 @@ void c_photon::unload( ) {
 
 	// this doesnt really do anything lol
 	interfaces::command_line->remove_parm( "-background" );
+
+	photon->con->unhook_cmd( "plugin_unload" );
+	photon->con->unhook_cmd( "plugin_load" );
 
 	gui::uninitialize( );
 
