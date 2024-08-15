@@ -41,8 +41,6 @@ public:
 	virtual signal_t* get( const char* name );
 };
 
-#define _SIGNAL_NAME( _0, _1, _2, _3, _4, _5, _6, NAME, ... ) NAME
-
 #define _SIGNAL0( t, name )                                                                                                                \
 	static t __fastcall name##_handler( void* ecx, int edx ) {                                                                                \
 		t    ret = 0;                                                                                                                            \
@@ -84,11 +82,12 @@ public:
 		return ret;                                                                                                                                                            \
 	}
 
-#define SIGNAL( t, name, ... ) _SIGNAL_NAME( _0, ##__VA_ARGS__, _SIGNAL3, _3, _SIGNAL2, _2, _SIGNAL1, _1, _SIGNAL0 )( t, name, ##__VA_ARGS__ )
-
 #define _SIGNAL_CALLBACK0( t, name )                               t name##_cbk( t( __rescall* original )( void* ), void* ecx )
 #define _SIGNAL_CALLBACK1( t, name, a1_t, a1 )                     t name##_cbk( t( __rescall* original )( void*, a1_t ), void* ecx, a1_t a1 )
 #define _SIGNAL_CALLBACK2( t, name, a1_t, a1, a2_t, a2 )           t name##_cbk( t( __rescall* original )( void*, a1_t, a2_t ), void* ecx, a1_t a1, a2_t a2 )
 #define _SIGNAL_CALLBACK3( t, name, a1_t, a1, a2_t, a2, a3_t, a3 ) t name##_cbk( t( __rescall* original )( void*, a1_t, a2_t, a3_t ), void* ecx, a1_t a1, a2_t a2, a3_t a3 )
 
-#define SIGNAL_CALLBACK( t, name, ... ) _SIGNAL_NAME( _0, ##__VA_ARGS__, _SIGNAL_CALLBACK3, _3, _SIGNAL_CALLBACK2, _2, _SIGNAL_CALLBACK1, _1, _SIGNAL_CALLBACK0 )( t, name, ##__VA_ARGS__ )
+#define _SIGNAL_NAME( _0, _1, _2, _3, _4, _5, _6, NAME, ... ) NAME
+
+#define SIGNAL( t, name, ... )          _SIGNAL_NAME( _0 __VA_OPT__(, ) __VA_ARGS__, _SIGNAL3, _3, _SIGNAL2, _2, _SIGNAL1, _1, _SIGNAL0 )( t, name __VA_OPT__(, ) __VA_ARGS__ )
+#define SIGNAL_CALLBACK( t, name, ... ) _SIGNAL_NAME( _0 __VA_OPT__(, ) __VA_ARGS__, _SIGNAL_CALLBACK3, _3, _SIGNAL_CALLBACK2, _2, _SIGNAL_CALLBACK1, _1, _SIGNAL_CALLBACK0 )( t, name __VA_OPT__(, ) __VA_ARGS__ )
