@@ -9,7 +9,7 @@ AlignOperands: true
 AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: Always
 AllowShortIfStatementsOnASingleLine: Never
-BreakTemplateDeclarations: Yes
+AlwaysBreakTemplateDeclarations : true
 ColumnLimit: 0
 Cpp11BracedListStyle: false
 IncludeBlocks: Regroup
