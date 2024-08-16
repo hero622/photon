@@ -229,7 +229,7 @@ void gui::framework::sliderf( float& val, float min, float max, const std::strin
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
 
-void gui::framework::combo( std::size_t& val, std::vector< std::string > items, const std::string& label ) {
+void gui::framework::combo( std::size_t& val, const std::vector< std::string >& items, const std::string& label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size      = vec2_t( 160, 26 );
@@ -271,7 +271,7 @@ void gui::framework::combo( std::size_t& val, std::vector< std::string > items, 
 	cur_menu.cursor.y += size.y + text_size.y + 4;
 }
 
-void gui::framework::multicombo( std::size_t& val, std::vector< std::string > items, const std::string& label ) {
+void gui::framework::multicombo( std::size_t& val, const std::vector< std::string >& items, const std::string& label ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 
 	const auto size      = vec2_t( 160, 26 );

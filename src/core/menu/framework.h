@@ -56,7 +56,7 @@ namespace gui {
 		bool checkbox( bool& val, const std::string& label );
 		void slider( int& val, int min, int max, const std::string& label );
 		void sliderf( float& val, float min, float max, const std::string& label );
-		void combo( std::size_t& val, std::vector< std::string > items, const std::string& label );
-		void multicombo( std::size_t& val, std::vector< std::string > items, const std::string& label );
+		void combo( std::size_t& val, const std::vector< std::string >& items, const std::string& label );
+		void multicombo( std::size_t& val, const std::vector< std::string >& items, const std::string& label );
 	}  // namespace framework
 }  // namespace gui

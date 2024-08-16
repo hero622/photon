@@ -56,15 +56,17 @@ void* c_common::get_interface( const char* module_name, const char* interface_na
 
 		result = fn( interface_name, nullptr );
 
-		if ( !result )
+		if ( !result ) {
+			util::console::log( "[!] couldn't find interface %s in %s.\n", interface_name, module_name );
 			return nullptr;
+		}
 
 		util::console::log( "[+] found interface %s in %s at %p.\n", interface_name, module_name, result );
 
 		return result;
 	}
 
-	util::console::log( "[!] couldn't find interface %s in %s.\n", interface_name, module_name );
+	util::console::log( "[!] couldn't find CreateInterface fn in %s.\n", module_name );
 
 	return nullptr;
 }
