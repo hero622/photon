@@ -23,7 +23,7 @@ static void plugin_load( const c_command& args ) {
 		plugin_load( args );
 }
 
-// // we need to unhook cengine::frame before the plugin gets unloaded
+// we need to unhook cengine::frame before the plugin gets unloaded
 static void plugin_unload( const c_command& args ) {
 	if ( args.arg_c( ) >= 2 && plugin.get_info( ) && ( !strcmp( args[ 1 ], "photon" ) || std::atoi( args[ 1 ] ) == plugin.info->index ) )
 		plugin.unload( );

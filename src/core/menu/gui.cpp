@@ -8,7 +8,7 @@
 #include "framework.h"
 
 // unlock the cursor from the game when menu is open
-SIGNAL_CALLBACK( void, lock_cursor ) {
+SIGNAL_CALLBACK( void, __rescall, lock_cursor ) {
 	static void* input_ctx = interfaces::engine_client->get_input_context( 0 );
 
 	if ( gui::open ) {
@@ -22,7 +22,7 @@ SIGNAL_CALLBACK( void, lock_cursor ) {
 	}
 }
 
-SIGNAL_CALLBACK( void, paint, paint_mode_t, mode ) {
+SIGNAL_CALLBACK( void, __rescall, paint, paint_mode_t, mode ) {
 	original( ecx, mode );
 
 	interfaces::surface->start_drawing( );
@@ -47,7 +47,7 @@ SIGNAL_CALLBACK( void, paint, paint_mode_t, mode ) {
 }
 
 // block input to the game when photon's menu is open, only works in game, not in the menu
-SIGNAL_CALLBACK( int, in_key_event, int, eventcode, button_code_t, keynum, const char*, current_binding ) {
+SIGNAL_CALLBACK( int, __rescall, in_key_event, int, eventcode, button_code_t, keynum, const char*, current_binding ) {
 	if ( gui::open )
 		return 0;
 
@@ -55,7 +55,7 @@ SIGNAL_CALLBACK( int, in_key_event, int, eventcode, button_code_t, keynum, const
 }
 
 // block input to the menu, vgui has its own input system for some reason, so we have to hook another function
-SIGNAL_CALLBACK( void, update_button_state, const int*, event ) {
+SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
 	if ( gui::open ) {
 		/*
 		 * so we cant actually just return here because theres other

@@ -5,16 +5,16 @@
 #include "core/menu/gui.h"
 #include "core/photon.h"
 
-SIGNAL( int, game_frame, bool, simulating );
-SIGNAL( int, frame );
-SIGNAL( int, set_signon_state, int, state, int, count, void*, unk );
-SIGNAL( int, paint, paint_mode_t, mode );
-SIGNAL( int, lock_cursor );
-SIGNAL( int, in_key_event, int, eventcode, button_code_t, keyname, const char*, current_binding );
-SIGNAL( int, update_button_state, const int*, event );
-SIGNAL( int, on_screen_size_changed, int, old_width, int, old_height );
+SIGNAL( int, __rescall, game_frame, bool, simulating );
+SIGNAL( int, __rescall, frame );
+SIGNAL( int, __rescall, set_signon_state, int, state, int, count, void*, unk );
+SIGNAL( int, __rescall, paint, paint_mode_t, mode );
+SIGNAL( int, __rescall, lock_cursor );
+SIGNAL( int, __rescall, in_key_event, int, eventcode, button_code_t, keyname, const char*, current_binding );
+SIGNAL( int, __rescall, update_button_state, const int*, event );
+SIGNAL( int, __rescall, on_screen_size_changed, int, old_width, int, old_height );
 
-SIGNAL_CALLBACK( void, game_frame, bool, simulating ) {
+SIGNAL_CALLBACK( void, __rescall, game_frame, bool, simulating ) {
 	photon->common->post_event( &plugin, "pre_tick" );
 
 	original( ecx, simulating );
@@ -22,7 +22,7 @@ SIGNAL_CALLBACK( void, game_frame, bool, simulating ) {
 	photon->common->post_event( &plugin, "post_tick" );
 }
 
-SIGNAL_CALLBACK( void, frame ) {
+SIGNAL_CALLBACK( void, __rescall, frame ) {
 	photon->common->post_event( &plugin, "pre_frame" );
 
 	original( ecx );
@@ -34,7 +34,7 @@ SIGNAL_CALLBACK( void, frame ) {
 		photon->common->post_event( &plugin, "post_frame" );
 }
 
-SIGNAL_CALLBACK( void, set_signon_state, int, state, int, count, void*, unk ) {
+SIGNAL_CALLBACK( void, __rescall, set_signon_state, int, state, int, count, void*, unk ) {
 	original( ecx, state, count, unk );
 
 	// this is probably not the best way, i saw SAR do something similar but this needs further thought
@@ -44,7 +44,7 @@ SIGNAL_CALLBACK( void, set_signon_state, int, state, int, count, void*, unk ) {
 		photon->common->post_event( &plugin, "session_end" );
 }
 
-SIGNAL_CALLBACK( void, on_screen_size_changed, int, old_width, int, old_height ) {
+SIGNAL_CALLBACK( void, __rescall, on_screen_size_changed, int, old_width, int, old_height ) {
 	original( ecx, old_width, old_height );
 
 	photon->common->post_event( &plugin, "on_screen_size_changed" );

@@ -1,8 +1,8 @@
 #include "signals.h"
 
-SIGNAL( int, calc_view_model_lag, vec3_t&, origin, vec3_t&, angles, vec3_t&, original_angles );
+SIGNAL( int, __rescall, calc_view_model_lag, vec3_t&, origin, vec3_t&, angles, vec3_t&, original_angles );
 
-SIGNAL_CALLBACK( void, calc_view_model_lag, vec3_t&, origin, vec3_t&, angles, vec3_t&, original_angles ) {
+SIGNAL_CALLBACK( void, __rescall, calc_view_model_lag, vec3_t&, origin, vec3_t&, angles, vec3_t&, original_angles ) {
 }
 
 bool signals::initialize( ) {
