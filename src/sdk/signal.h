@@ -38,6 +38,7 @@ public:
 	virtual void      enable( signal_t* signal, void* handler );
 	virtual void      disable( signal_t* signal );
 	virtual signal_t* get( const char* name );
+	virtual void      remove_all( );
 };
 
 #ifdef _WIN32
@@ -119,7 +120,7 @@ public:
 		return ret;                                                                                                                                                                                          \
 	}
 
-#define _SIGNAL_NOTMEMBER0( t, callconv, name )                                                                                 \
+#define _SIGNAL0_NOTMEMBER( t, callconv, name )                                                                                 \
 	static t callconv name##_handler( ) {                                                                                          \
 		t    ret = 0;                                                                                                                 \
 		auto sig = photon->signal->get( #name );                                                                                      \
@@ -129,7 +130,7 @@ public:
 		}                                                                                                                             \
 		return ret;                                                                                                                   \
 	}
-#define _SIGNAL_NOTMEMBER1( t, callconv, name, a1_t, a1 )                                                                                \
+#define _SIGNAL1_NOTMEMBER( t, callconv, name, a1_t, a1 )                                                                                \
 	static t callconv name##_handler( a1_t a1 ) {                                                                                           \
 		t    ret = 0;                                                                                                                          \
 		auto sig = photon->signal->get( #name );                                                                                               \
@@ -139,7 +140,7 @@ public:
 		}                                                                                                                                      \
 		return ret;                                                                                                                            \
 	}
-#define _SIGNAL_NOTMEMBER2( t, callconv, name, a1_t, a1, a2_t, a2 )                                                                                \
+#define _SIGNAL2_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2 )                                                                                \
 	static t callconv name##_handler( a1_t a1, a2_t a2 ) {                                                                                            \
 		t    ret = 0;                                                                                                                                    \
 		auto sig = photon->signal->get( #name );                                                                                                         \
@@ -149,7 +150,7 @@ public:
 		}                                                                                                                                                \
 		return ret;                                                                                                                                      \
 	}
-#define _SIGNAL_NOTMEMBER3( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3 )                                                                                \
+#define _SIGNAL3_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3 )                                                                                \
 	static t callconv name##_handler( a1_t a1, a2_t a2, a3_t a3 ) {                                                                                             \
 		t    ret = 0;                                                                                                                                              \
 		auto sig = photon->signal->get( #name );                                                                                                                   \
@@ -159,7 +160,7 @@ public:
 		}                                                                                                                                                          \
 		return ret;                                                                                                                                                \
 	}
-#define _SIGNAL_NOTMEMBER4( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3_, a4_t, a4 )                                                                               \
+#define _SIGNAL4_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3_, a4_t, a4 )                                                                               \
 	static t callconv name##_handler( a1_t a1, a2_t a2, a3_t a3, a4_t a4 ) {                                                                                              \
 		t    ret = 0;                                                                                                                                                        \
 		auto sig = photon->signal->get( #name );                                                                                                                             \
@@ -169,7 +170,7 @@ public:
 		}                                                                                                                                                                    \
 		return ret;                                                                                                                                                          \
 	}
-#define _SIGNAL_NOTMEMBER5( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3_, a4_t, a4, a5_t, a5 )                                                                               \
+#define _SIGNAL5_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3_, a4_t, a4, a5_t, a5 )                                                                               \
 	static t callconv name##_handler( a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5 ) {                                                                                               \
 		t    ret = 0;                                                                                                                                                                  \
 		auto sig = photon->signal->get( #name );                                                                                                                                       \
@@ -179,7 +180,7 @@ public:
 		}                                                                                                                                                                              \
 		return ret;                                                                                                                                                                    \
 	}
-#define _SIGNAL_NOTMEMBER6( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3_, a4_t, a4, a5_t, a5, a6_t, a6 )                                                                               \
+#define _SIGNAL6_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3_, a4_t, a4, a5_t, a5, a6_t, a6 )                                                                               \
 	static t callconv name##_handler( a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5, a6_t a6 ) {                                                                                                \
 		t    ret = 0;                                                                                                                                                                            \
 		auto sig = photon->signal->get( #name );                                                                                                                                                 \
@@ -198,13 +199,13 @@ public:
 #define _SIGNAL_CALLBACK5( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4, a5_t, a5 )           t name##_cbk( t( callconv* original )( void*, a1_t, a2_t, a3_t, a4_t, a5_t ), void* ecx, a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5 )
 #define _SIGNAL_CALLBACK6( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4, a5_t, a5, a6_t, a6 ) t name##_cbk( t( callconv* original )( void*, a1_t, a2_t, a3_t, a4_t, a5_t, a6_t ), void* ecx, a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5, a6_t a6 )
 
-#define _SIGNAL_CALLBACK_NOTMEMBER0( t, callconv, name )                                                             t name##_cbk( t( callconv* original )(  )
-#define _SIGNAL_CALLBACK_NOTMEMBER1( t, callconv, name, a1_t, a1 )                                                   t name##_cbk( t( callconv* original )( a1_t ), a1_t a1 )
-#define _SIGNAL_CALLBACK_NOTMEMBER2( t, callconv, name, a1_t, a1, a2_t, a2 )                                         t name##_cbk( t( callconv* original )( a1_t, a2_t ), a1_t a1, a2_t a2 )
-#define _SIGNAL_CALLBACK_NOTMEMBER3( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3 )                               t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t ), a1_t a1, a2_t a2, a3_t a3 )
-#define _SIGNAL_CALLBACK_NOTMEMBER4( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4 )                     t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t, a4_t ), a1_t a1, a2_t a2, a3_t a3, a4_t a4 )
-#define _SIGNAL_CALLBACK_NOTMEMBER5( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4, a5_t, a5 )           t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t, a4_t, a5_t ), a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5 )
-#define _SIGNAL_CALLBACK_NOTMEMBER6( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4, a5_t, a5, a6_t, a6 ) t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t, a4_t, a5_t, a6_t ), a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5, a6_t a6 )
+#define _SIGNAL_CALLBACK0_NOTMEMBER( t, callconv, name )                                                             t name##_cbk( t( callconv* original )(  )
+#define _SIGNAL_CALLBACK1_NOTMEMBER( t, callconv, name, a1_t, a1 )                                                   t name##_cbk( t( callconv* original )( a1_t ), a1_t a1 )
+#define _SIGNAL_CALLBACK2_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2 )                                         t name##_cbk( t( callconv* original )( a1_t, a2_t ), a1_t a1, a2_t a2 )
+#define _SIGNAL_CALLBACK3_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3 )                               t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t ), a1_t a1, a2_t a2, a3_t a3 )
+#define _SIGNAL_CALLBACK4_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4 )                     t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t, a4_t ), a1_t a1, a2_t a2, a3_t a3, a4_t a4 )
+#define _SIGNAL_CALLBACK5_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4, a5_t, a5 )           t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t, a4_t, a5_t ), a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5 )
+#define _SIGNAL_CALLBACK6_NOTMEMBER( t, callconv, name, a1_t, a1, a2_t, a2, a3_t, a3, a4_t, a4, a5_t, a5, a6_t, a6 ) t name##_cbk( t( callconv* original )( a1_t, a2_t, a3_t, a4_t, a5_t, a6_t ), a1_t a1, a2_t a2, a3_t a3, a4_t a4, a5_t a5, a6_t a6 )
 
 #define _SIGNAL_NAME__thiscall( _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, NAME, ... ) NAME
 #define _SIGNAL_NAME__rescall( _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, NAME, ... )  NAME

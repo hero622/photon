@@ -72,12 +72,5 @@ bool signals::initialize( ) {
 }
 
 void signals::uninitialize( ) {
-	photon->signal->remove( "on_screen_size_changed" );
-	photon->signal->remove( "update_button_state" );
-	photon->signal->remove( "in_key_event" );
-	photon->signal->remove( "lock_cursor" );
-	photon->signal->remove( "paint" );
-	photon->signal->remove( "set_signon_state" );
-	photon->signal->remove( "frame" );
-	photon->signal->remove( "game_frame" );
+	photon->signal->remove_all( );
 }
