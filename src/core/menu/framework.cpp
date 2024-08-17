@@ -17,8 +17,8 @@ void gui::framework::begin( vec2_t pos, vec2_t size ) {
 	// block input to other controls when a dropdown is open
 	cur_menu.block_input = !cur_dropdown.id.empty( );
 
-	photon->render->draw_rounded_outlined_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.size.x, cur_menu.size.y, colors::dark, rounding * 2 );
-	photon->render->draw_rounded_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.size.x - 2, cur_menu.size.y - 2, colors::bg, rounding * 2 );
+	photon->render->draw_outlined_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.size.x, cur_menu.size.y, colors::dark );
+	photon->render->draw_filled_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.size.x - 2, cur_menu.size.y - 2, colors::bg );
 
 	interfaces::surface->enable_clipping = true;
 	interfaces::surface->set_clip_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.pos.x + cur_menu.size.x - 1, cur_menu.pos.y + cur_menu.size.y - 1 );
@@ -31,8 +31,8 @@ void gui::framework::end( ) {
 
 		const auto size = vec2_t( 160, 26 );
 
-		photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, cur_dropdown.items.size( ) * size.y, colors::dark, rounding );
-		photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, cur_dropdown.items.size( ) * size.y - 2, colors::black, rounding );
+		photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, cur_dropdown.items.size( ) * size.y, colors::dark );
+		photon->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, cur_dropdown.items.size( ) * size.y - 2, colors::black );
 
 		for ( std::size_t i = 0; i < cur_dropdown.items.size( ); ++i ) {
 			const auto& item = cur_dropdown.items[ i ];
@@ -70,10 +70,9 @@ bool gui::framework::tab( int& selected, vec2_t pos, vec2_t size, const std::str
 
 	interfaces::surface->set_clip_rect( 0, 0, photon->render->get_screen_size( ).x, photon->render->get_screen_size( ).y );
 
-	photon->render->draw_rounded_outlined_rect( pos.x, pos.y, size.x, size.y, active ? colors::white : hover ? colors::dark
-	                                                                                                         : colors::darker,
-	                                            rounding );
-	photon->render->draw_rounded_rect( pos.x + 1, pos.y + 1, size.x - 2, size.y - 2, colors::bg, rounding );
+	photon->render->draw_outlined_rect( pos.x, pos.y, size.x, size.y, active ? colors::white : hover ? colors::dark
+	                                                                                                 : colors::darker );
+	photon->render->draw_filled_rect( pos.x + 1, pos.y + 1, size.x - 2, size.y - 2, colors::bg );
 
 	const auto text_size = photon->render->get_text_size( fonts::title, title.c_str( ) );
 
@@ -97,8 +96,8 @@ bool gui::framework::mod( mods::mod_info_t* info ) {
 
 	bool hover = photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::dark : colors::darker, rounding );
-	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, rounding );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::dark : colors::darker );
+	photon->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
 
 	const auto mod_info = info->ptr->get_info( );
 
@@ -136,8 +135,8 @@ bool gui::framework::button( vec2_t size, const std::string& label ) {
 	bool hover    = !cur_menu.block_input && photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 	bool clicking = hover && photon->input->get_key_held( mouse_left );
 
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? clicking ? colors::white : colors::dark : colors::darker, rounding );
-	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, rounding );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? clicking ? colors::white : colors::dark : colors::darker );
+	photon->render->draw_filled_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg );
 
 	const auto text_size = photon->render->get_text_size( fonts::normal, label.c_str( ) );
 
@@ -164,8 +163,8 @@ bool gui::framework::checkbox( bool& val, const std::string& label ) {
 		result = true;
 	}
 
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, val ? colors::white : colors::dark, rounding );
-	photon->render->draw_rounded_rect( cur_pos.x + 3, cur_pos.y + 3, size.x - 6, size.y - 6, val ? colors::white : color_t( 0, 0, 0, 0 ), rounding );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, val ? colors::white : colors::dark );
+	photon->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, size.x - 6, size.y - 6, val ? colors::white : color_t( 0, 0, 0, 0 ) );
 
 	photon->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 2, fonts::normal, colors::white, false, label.c_str( ) );
 
@@ -188,16 +187,15 @@ void gui::framework::slider( int& val, int min, int max, const std::string& labe
 	if ( clicking ) {
 		value = ( photon->input->get_cursor_position( ).x - ( cur_pos.x + 3 ) ) / ( size.x - 6 );
 		val   = value * ( max - min );
+		value = ( float ) val / ( max - min );
 	}
 
 	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::white, false, label.c_str( ) );
 
 	cur_pos.y += text_size.y;
 
-	int w = value * ( size.x - 6 );
-
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark, rounding );
-	photon->render->draw_rounded_rect( cur_pos.x + 3, cur_pos.y + 3, w, size.y - 6, colors::white, min( rounding, w ) );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark );
+	photon->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, value * ( size.x - 6 ), size.y - 6, colors::white );
 
 	photon->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 3, fonts::normal, colors::white, false, util::ssprintf( "%d", val ).c_str( ) );
 
@@ -224,10 +222,8 @@ void gui::framework::sliderf( float& val, float min, float max, const std::strin
 
 	cur_pos.y += text_size.y;
 
-	int w = value * ( size.x - 6 );
-
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark, rounding );
-	photon->render->draw_rounded_rect( cur_pos.x + 3, cur_pos.y + 3, w, size.y - 6, colors::white, min( rounding, w ) );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, clicking ? colors::white : colors::dark );
+	photon->render->draw_filled_rect( cur_pos.x + 3, cur_pos.y + 3, value * ( size.x - 6 ), size.y - 6, colors::white );
 
 	photon->render->draw_text( cur_pos.x + size.x + 4, cur_pos.y - 3, fonts::normal, colors::white, false, util::ssprintf( "%.1f", val ).c_str( ) );
 
@@ -269,7 +265,7 @@ void gui::framework::combo( std::size_t& val, const std::vector< std::string >& 
 
 	cur_pos.y += text_size.y;
 
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark, rounding );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark );
 
 	photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 2, fonts::normal, colors::white, false, items[ val ].c_str( ) );
 
@@ -310,7 +306,7 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 
 	cur_pos.y += text_size.y;
 
-	photon->render->draw_rounded_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark, rounding );
+	photon->render->draw_outlined_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::white : colors::dark );
 
 	std::string display_text;
 	bool        comma = false;
