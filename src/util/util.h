@@ -16,6 +16,7 @@
 #define MAX_PATH 4096
 #endif
 
+#include "math.h"
 #include "sdk/platform.h"
 
 namespace util {

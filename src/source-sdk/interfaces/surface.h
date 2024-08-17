@@ -17,6 +17,9 @@ public:
 	void draw_line( int x0, int y0, int x1, int y1 ) {
 		return util::call_virtual< 18, void >( this, x0, y0, x1, y1 );
 	}
+	void draw_poly_line( int* x, int* y, int num_points ) {
+		return util::call_virtual< 19, void >( this, x, y, num_points );
+	}
 	int draw_get_texture_id( const char* filename ) {
 		return util::call_virtual< 33, int >( this, filename );
 	}
@@ -55,6 +58,9 @@ public:
 	}
 	void get_text_size( h_font font, const wchar_t* text, int& wide, int& tall ) {
 		return util::call_virtual< 77, void >( this, font, text, &wide, &tall );
+	}
+	void draw_textured_polygon( int n, vertex_t* vertices, bool clip_vertices = true ) {
+		return util::call_virtual< 104, void >( this, n, vertices, clip_vertices );
 	}
 	void get_clip_rect( int& x0, int& y0, int& x1, int& y1 ) {
 		return util::call_virtual< 144, void >( this, &x0, &y0, &x1, &y1 );

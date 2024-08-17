@@ -18,4 +18,8 @@ public:
 	virtual h_font get_font( unsigned long id );
 	virtual vec2_t normalize( vec2_t vec );  // Translate screen X, Y pixel position to a normal value between (0, 1).
 	virtual vec2_t to_screen( vec2_t vec );  // Translate X, Y position between (0, 1) to a position on the screen.
+	virtual void   draw_polygon( int n, vertex_t* vertices, color_t color );
+	virtual void   draw_outlined_polygon( int n, vertex_t* vertices, color_t color );
+	virtual void   draw_rounded_rect( int x, int y, int w, int h, color_t color, int rounding );
+	virtual void   draw_rounded_outlined_rect( int x, int y, int w, int h, color_t color, int rounding );
 };

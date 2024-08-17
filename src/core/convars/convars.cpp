@@ -67,10 +67,14 @@ bool convars::initialize( ) {
 	ui_loadingscreen_fadein_time->remove_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
 	ui_loadingscreen_mintransition_time->remove_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
 
+	set_fast_loads( true );
+
 	return true;
 }
 
 void convars::uninitialize( ) {
+	set_fast_loads( false );
+
 	ui_loadingscreen_transition_time->add_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
 	ui_loadingscreen_fadein_time->add_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );
 	ui_loadingscreen_mintransition_time->add_flag( FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN );

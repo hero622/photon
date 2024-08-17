@@ -7,6 +7,8 @@
 
 namespace gui {
 	namespace framework {
+		constexpr int rounding = 4;
+
 		namespace colors {
 			inline color_t bg     = color_t( 0, 0, 0, 200 );
 			inline color_t black  = color_t( 0, 0, 0, 255 );

@@ -76,6 +76,7 @@ bool gui::initialize( ) {
 	photon->signal->get( "lock_cursor" )->add_callback( &lock_cursor_cbk );
 	photon->signal->get( "paint" )->add_callback( &paint_cbk );
 	photon->signal->get( "in_key_event" )->add_callback( &in_key_event_cbk );
+	photon->signal->get( "update_button_state" )->add_callback( &update_button_state_cbk );
 
 	photon->render->create_font( framework::fonts::normal, "Segoe UI Light", 22, false, fontflag_antialias );
 	photon->render->create_font( framework::fonts::title, "Segoe UI Light", 30, false, fontflag_antialias );
@@ -117,7 +118,7 @@ void gui::paint( ) {
 		}
 	}
 	if ( framework::tab( tab, vec2_t( screen_size.x / 2 + 90 + 6, screen_size.y / 2 - tab_height / 2 ), vec2_t( 130, tab_height ), "settings" ) ) {
-		static bool fast_loads;
+		static bool fast_loads = true;
 		if ( framework::checkbox( fast_loads, "fast loads" ) )
 			convars::set_fast_loads( fast_loads );
 

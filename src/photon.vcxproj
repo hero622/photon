@@ -29,6 +29,7 @@
     <ClInclude Include="source-sdk\interfaces\scheme.h" />
     <ClInclude Include="source-sdk\interfaces\surface.h" />
     <ClInclude Include="source-sdk\plugin.h" />
+    <ClInclude Include="util\math.h" />
     <ClInclude Include="util\util.h" />
   </ItemGroup>
   <ItemGroup>

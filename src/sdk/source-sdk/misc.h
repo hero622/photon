@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vector.h"
+
 enum signonstate_t {
 	signonstate_none        = 0,
 	signonstate_challenge   = 1,
@@ -163,6 +165,17 @@ enum button_code_t {
 
 	mouse_last  = mouse_wheel_down,
 	mouse_count = mouse_last - mouse_first + 1,
+};
+
+struct vertex_t {
+	vec2_t position;
+	vec2_t tex_coord;
+
+	vertex_t( ) {}
+	vertex_t( const vec2_t& pos, const vec2_t& coord = vec2_t( 0, 0 ) ) {
+		position  = pos;
+		tex_coord = coord;
+	}
 };
 
 #define FCVAR_NONE                    0
