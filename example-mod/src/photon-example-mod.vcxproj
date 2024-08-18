@@ -10,16 +10,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="convars\convars.h" />
-    <ClInclude Include="huds\hud.h" />
-    <ClInclude Include="mod.h" />
-    <ClInclude Include="signals\signals.h" />
+    <_WildCardClCompile Include=".\**\*.cpp" />
+    <_WildCardClInclude Include=".\**\*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="convars\convars.cpp" />
-    <ClCompile Include="huds\hud.cpp" />
-    <ClCompile Include="mod.cpp" />
-    <ClCompile Include="signals\signals.cpp" />
+    <ClCompile Include="@(_WildCardClCompile)" />
+    <ClInclude Include="@(_WildCardClInclude)" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

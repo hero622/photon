@@ -10,46 +10,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\convars\convars.h" />
-    <ClInclude Include="core\huds\huds.h" />
-    <ClInclude Include="core\interfaces\interfaces.h" />
-    <ClInclude Include="core\menu\framework.h" />
-    <ClInclude Include="core\menu\gui.h" />
-    <ClInclude Include="core\mods\mods.h" />
-    <ClInclude Include="core\photon.h" />
-    <ClInclude Include="core\signals\signals.h" />
-    <ClInclude Include="source-sdk\interfaces.h" />
-    <ClInclude Include="source-sdk\interfaces\command_line.h" />
-    <ClInclude Include="source-sdk\interfaces\console.h" />
-    <ClInclude Include="source-sdk\interfaces\cvar.h" />
-    <ClInclude Include="source-sdk\interfaces\engine_client.h" />
-    <ClInclude Include="source-sdk\interfaces\font_manager.h" />
-    <ClInclude Include="source-sdk\interfaces\input_system.h" />
-    <ClInclude Include="source-sdk\interfaces\mem_alloc.h" />
-    <ClInclude Include="source-sdk\interfaces\scheme.h" />
-    <ClInclude Include="source-sdk\interfaces\surface.h" />
-    <ClInclude Include="source-sdk\plugin.h" />
-    <ClInclude Include="util\math.h" />
-    <ClInclude Include="util\util.h" />
+    <_WildCardClCompile Include="..\vendor\subhook\subhook.c" />
+    <_WildCardClCompile Include=".\**\*.cpp" />
+    <_WildCardClInclude Include=".\**\*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\convars\convars.cpp" />
-    <ClCompile Include="core\huds\huds.cpp" />
-    <ClCompile Include="core\interfaces\interfaces.cpp" />
-    <ClCompile Include="core\menu\framework.cpp" />
-    <ClCompile Include="core\menu\gui.cpp" />
-    <ClCompile Include="core\mods\mods.cpp" />
-    <ClCompile Include="core\photon.cpp" />
-    <ClCompile Include="core\shared\ccon.cpp" />
-    <ClCompile Include="core\shared\common.cpp" />
-    <ClCompile Include="core\shared\hud.cpp" />
-    <ClCompile Include="core\shared\input.cpp" />
-    <ClCompile Include="core\shared\menu.cpp" />
-    <ClCompile Include="core\shared\render.cpp" />
-    <ClCompile Include="core\shared\signal.cpp" />
-    <ClCompile Include="core\signals\signals.cpp" />
-    <ClCompile Include="source-sdk\plugin.cpp" />
-    <ClCompile Include="util\util.cpp" />
+    <ClCompile Include="@(_WildCardClCompile)" />
+    <ClInclude Include="@(_WildCardClInclude)" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -85,13 +52,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
-    <IncludePath>$(SolutionDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)vendor;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
-    <IncludePath>$(SolutionDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)vendor;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -109,8 +76,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\deps\subhook;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;subhook.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call ..\copy.bat</Command>
@@ -135,8 +102,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\deps\subhook;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;subhook.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>call ..\copy.bat</Command>

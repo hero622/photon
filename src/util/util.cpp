@@ -35,6 +35,8 @@ void util::console::free( ) {
 #endif
 }
 
+static std::vector< util::module_info_t > g_module_info;
+
 bool util::get_module_info( const char* module_name, module_info_t* module_info ) {
 	if ( g_module_info.empty( ) ) {
 #ifdef _WIN32
@@ -89,7 +91,7 @@ bool util::get_module_info( const char* module_name, module_info_t* module_info 
 	}
 
 	for ( const auto& info : g_module_info ) {
-		if ( std::strcmp( info.name, module_name ) )
+		if ( _stricmp( info.name, module_name ) )
 			continue;
 
 		if ( module_info != nullptr ) {

@@ -16,6 +16,10 @@
 #define MAX_PATH 4096
 #endif
 
+#ifndef _WIN32
+#define _stricmp strcasecmp
+#endif
+
 #include "math.h"
 #include "sdk/platform.h"
 
@@ -36,7 +40,6 @@ namespace util {
 		std::uintptr_t addr;
 		std::size_t    size;
 	};
-	static std::vector< module_info_t > g_module_info;
 
 	bool          get_module_info( const char* module_name, module_info_t* module_info );
 	std::uint8_t* pattern_scan( const char* module_name, const char* signature ) noexcept;

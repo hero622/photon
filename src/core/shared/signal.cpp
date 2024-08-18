@@ -2,9 +2,9 @@
 
 #include "sdk/signal.h"
 
-#include "deps/subhook/subhook.h"
 #include "sdk/photon.h"
 
+#include <subhook/subhook.h>
 #include <unordered_map>
 
 static std::unordered_map< std::string, signal_t* > signals;
