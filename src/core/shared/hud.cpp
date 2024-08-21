@@ -29,7 +29,7 @@ void c_hud::unreg( photon_api::i_thud* thud ) {
 
 static photon_api::i_hud* cur_hud;
 
-static inline void setup_draw( int& x, int& y, int w, int h ) {
+static inline void setup_context( int& x, int& y, int w, int h ) {
 	cur_hud->bounds.x = std::fmax( cur_hud->bounds.x, x + w );
 	cur_hud->bounds.y = std::fmax( cur_hud->bounds.y, y + h );
 
@@ -52,23 +52,23 @@ void c_hud::draw_filled_rect( int x, int y, int w, int h, color_t color ) {
 	if ( !cur_hud )
 		return;
 
-	setup_draw( x, y, w, h );
+	setup_context( x, y, w, h );
 
 	photon->render->draw_filled_rect( x, y, w, h, color );
 }
-void c_hud::draw_outlined_rect( int x, int y, int w, int h, color_t color ) {
+void c_hud::draw_outlined_rect( int x, int y, int w, int h, color_t color, int stroke_width ) {
 	if ( !cur_hud )
 		return;
 
-	setup_draw( x, y, w, h );
+	setup_context( x, y, w, h );
 
-	photon->render->draw_outlined_rect( x, y, w, h, color );
+	photon->render->draw_outlined_rect( x, y, w, h, color, stroke_width );
 }
 void c_hud::draw_line( int x, int y, int w, int h, color_t color ) {
 	if ( !cur_hud )
 		return;
 
-	setup_draw( x, y, w, h );
+	setup_context( x, y, w, h );
 
 	photon->render->draw_line( x, y, w, h, color );
 }
@@ -78,7 +78,7 @@ void c_hud::draw_text( int x, int y, h_font font, color_t color, bool center, co
 
 	const auto text_size = photon->render->get_text_size( font, text );
 
-	setup_draw( x, y, text_size.x, text_size.y );
+	setup_context( x, y, text_size.x, text_size.y );
 
 	photon->render->draw_text( x, y, font, color, center, text );
 }
@@ -86,7 +86,7 @@ void c_hud::draw_texture( int x, int y, int w, int h, const char* texture, color
 	if ( !cur_hud )
 		return;
 
-	setup_draw( x, y, w, h );
+	setup_context( x, y, w, h );
 
 	photon->render->draw_texture( x, y, w, h, texture, color );
 }

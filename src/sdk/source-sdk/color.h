@@ -3,7 +3,16 @@
 #include <cstdint>
 
 struct color_t {
-	uint8_t r, g, b, a;
+	union {
+		struct {
+			uint8_t r;
+			uint8_t g;
+			uint8_t b;
+			uint8_t a;
+		};
+
+		uint32_t rgba;
+	};
 
 	color_t( ) {}
 	color_t( uint8_t r, uint8_t g, uint8_t b ) {
@@ -17,5 +26,8 @@ struct color_t {
 		this->g = g;
 		this->b = b;
 		this->a = a;
+	}
+	color_t( uint32_t rgba ) {
+		this->rgba = rgba;
 	}
 };

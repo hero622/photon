@@ -6,9 +6,11 @@ void c_render::draw_filled_rect( int x, int y, int w, int h, color_t color ) {
 	interfaces::surface->draw_filled_rect( x, y, x + w, y + h );
 }
 
-void c_render::draw_outlined_rect( int x, int y, int w, int h, color_t color ) {
+void c_render::draw_outlined_rect( int x, int y, int w, int h, color_t color, int stroke_width ) {
 	interfaces::surface->draw_set_color( color.r, color.g, color.b, color.a );
-	interfaces::surface->draw_outlined_rect( x, y, x + w, y + h );
+	for ( int i = 0; i < stroke_width; ++i ) {
+		interfaces::surface->draw_outlined_rect( x - i, y - i, x + w + i, y + h + i );
+	}
 }
 
 void c_render::draw_line( int x, int y, int w, int h, color_t color ) {

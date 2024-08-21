@@ -44,7 +44,7 @@ public:
 	virtual void draw_begin( photon_api::i_hud* hud );
 	virtual void draw_end( );
 	virtual void draw_filled_rect( int x, int y, int w, int h, color_t color );
-	virtual void draw_outlined_rect( int x, int y, int w, int h, color_t color );
+	virtual void draw_outlined_rect( int x, int y, int w, int h, color_t color, int stroke_width = 1 );
 	virtual void draw_line( int x, int y, int w, int h, color_t color );
 	virtual void draw_text( int x, int y, h_font font, color_t color, bool center, const char* text );
 	virtual void draw_texture( int x, int y, int w, int h, const char* texture, color_t color = color_t( 255, 255, 255, 255 ) );

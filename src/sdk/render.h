@@ -7,7 +7,7 @@
 class c_render {
 public:
 	virtual void   draw_filled_rect( int x, int y, int w, int h, color_t color );
-	virtual void   draw_outlined_rect( int x, int y, int w, int h, color_t color );
+	virtual void   draw_outlined_rect( int x, int y, int w, int h, color_t color, int stroke_width = 1 );
 	virtual void   draw_line( int x, int y, int w, int h, color_t color );
 	virtual bool   create_font( h_font& font, const char* font_name, int size, bool bold, int flags );
 	virtual void   destruct_font( h_font font );

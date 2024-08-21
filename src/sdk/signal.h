@@ -2,7 +2,6 @@
 
 #include <vector>
 
-// member functions only for now (__thiscall conv etc.)
 class signal_t {
 	friend class c_signal;
 

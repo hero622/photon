@@ -5,6 +5,7 @@
 #include "core/interfaces/interfaces.h"
 #include "core/mods/mods.h"
 #include "core/photon.h"
+#include "dx9.h"
 #include "framework.h"
 
 // unlock the cursor from the game when menu is open
@@ -81,10 +82,14 @@ bool gui::initialize( ) {
 	photon->render->create_font( framework::fonts::normal, "Segoe UI Light", 22, false, fontflag_antialias );
 	photon->render->create_font( framework::fonts::title, "Segoe UI Light", 30, false, fontflag_antialias );
 
+	dx9::initialize( );
+
 	return true;
 }
 
 void gui::uninitialize( ) {
+	dx9::uninitialize( );
+
 	photon->render->destruct_font( framework::fonts::title );
 	photon->render->destruct_font( framework::fonts::normal );
 }

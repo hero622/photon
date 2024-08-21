@@ -1,10 +1,4 @@
-#include "hook.h"
-#include "memory.h"
-
-/*
- * NOTE: NONE OF THIS IS TESTED ON LINUX, MIGHT NOT EVEN WORK AT ALL
- * ALSO HAVENT EVEN MADE MAKEFILE YET
- */
+#include "signal.h"
 
 #pragma optimize( "", off )
 
