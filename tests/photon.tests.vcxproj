@@ -104,6 +104,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <_WildCardClCompile Include="..\vendor\subhook\subhook.c" />
+    <_WildCardClCompile Include="..\vendor\lodepng\lodepng.cpp" />
     <_WildCardClCompile Include="..\src\**\*.cpp" />
     <_WildCardClCompile Include=".\**\*.cpp" />
     <_WildCardClInclude Include=".\**\*.h" />

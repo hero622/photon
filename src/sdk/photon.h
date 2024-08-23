@@ -24,6 +24,7 @@ namespace photon_api {
 
 	struct mod_info_t {
 		const char* name;     // Name of mod.
+		const char* author;   // Author of mod.
 		const char* version;  // Version of mod using semantic versioning.
 	};
 

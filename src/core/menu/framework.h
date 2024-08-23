@@ -8,17 +8,25 @@
 namespace gui {
 	namespace framework {
 		namespace colors {
-			inline color_t bg     = color_t( 0, 0, 0, 200 );
-			inline color_t black  = color_t( 0, 0, 0, 255 );
-			inline color_t white  = color_t( 255, 255, 255, 255 );
-			inline color_t dark   = color_t( 64, 64, 64, 255 );
-			inline color_t darker = color_t( 32, 32, 32, 255 );
+			// constant colors
+			inline color_t white = color_t( 255, 255, 255 );
+			inline color_t gray  = color_t( 64, 64, 64 );
+			inline color_t green = color_t( 36, 140, 45 );
+			inline color_t red   = color_t( 168, 43, 43 );
+
+			// theme colors
+			inline color_t bg;
+			inline color_t fg;
+			inline color_t text;
+			inline color_t accent;
+			inline color_t disabled;
 		}  // namespace colors
 
 		namespace fonts {
+			inline h_font smaller;
 			inline h_font normal;
 			inline h_font title;
-			inline h_font icon;
+			inline h_font bigtitle;
 		}  // namespace fonts
 
 		struct menu_t {
@@ -47,16 +55,30 @@ namespace gui {
 		};
 		inline dropdown_t cur_dropdown;
 
+		struct colorpicker_t {
+
+		};
+		inline colorpicker_t cur_colorpicker;
+
+		inline std::string cur_slider;     // FIXME: make this somehow be only for current menu but still persist
+		inline int         scroll_offset;  // ditto
+
+		void set_theme( bool dark = false );
+
 		void begin( vec2_t pos, vec2_t size );
 		void end( );
-		bool tab( int& selected, vec2_t pos, vec2_t size, const std::string& title );
-		bool mod( mods::mod_info_t* info );
+		bool tab( int& selected, vec2_t pos, vec2_t size, const std::string& label, bool use_texture = false );
+		bool mod( mods::mod_info_t& info );
+		void split( int width );
+		bool icon_button( vec2_t size, const std::string& texture );
 
-		bool button( vec2_t size, const std::string& label );
-		bool checkbox( bool& val, const std::string& label );
+		bool button( vec2_t size, const std::string& label, bool enabled = true, h_font font = fonts::normal, color_t color = colors::accent );
+		bool toggle( bool& val, const std::string& label );
 		void slider( int& val, int min, int max, const std::string& label );
 		void sliderf( float& val, float min, float max, const std::string& label );
+		void colorpicker( color_t& val, const std::string& label );
 		void combo( std::size_t& val, const std::vector< std::string >& items, const std::string& label );
 		void multicombo( std::size_t& val, const std::vector< std::string >& items, const std::string& label );
+		void separator( const std::string& label );
 	}  // namespace framework
 }  // namespace gui

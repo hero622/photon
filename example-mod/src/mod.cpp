@@ -55,20 +55,26 @@ void c_photon_mod::on_event( const char* msg ) {
 
 photon_api::mod_info_t c_photon_mod::get_info( ) {
 	photon_api::mod_info_t info;
-	info.name    = "example mod";
+	info.name    = "Example Mod";
+	info.author  = "hero";
 	info.version = "0.0.1";
 	return info;
 }
 
 void c_photon_mod::paint_menu( ) {
-	static bool example_checkbox_val;
-	photon->menu->checkbox( example_checkbox_val, "example checkbox" );
+	static bool example_toggle_val;
+	photon->menu->toggle( example_toggle_val, "example toggle" );
 
 	static int example_slider_val;
 	photon->menu->slider( example_slider_val, 0, 100, "example slider" );
 
 	static float example_sliderf_val;
 	photon->menu->sliderf( example_sliderf_val, 0.f, 10.f, "example sliderf" );
+
+	static color_t example_colorpicker_val;
+	photon->menu->colorpicker( example_colorpicker_val, "example colorpicker" );
+
+	photon->menu->separator( "example separator" );
 
 	static std::size_t example_combo_val;
 	const char*        example_combo_items[] = { "value 1", "value 2", "value 3" };

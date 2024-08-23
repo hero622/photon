@@ -85,4 +85,5 @@ namespace util {
 
 	std::string ssprintf( const char* fmt, ... );
 	bool        replace( std::string& str, const std::string& from, const std::string& to );
+	std::string to_upper( std::string str );
 }  // namespace util

@@ -9,8 +9,8 @@
 bool c_menu::button( vec2_t size, const char* label ) {
 	return gui::framework::button( size, label );
 }
-bool c_menu::checkbox( bool& val, const char* label ) {
-	return gui::framework::checkbox( val, label );
+bool c_menu::toggle( bool& val, const char* label ) {
+	return gui::framework::toggle( val, label );
 }
 void c_menu::slider( int& val, int min, int max, const char* label ) {
 	return gui::framework::slider( val, min, max, label );
@@ -35,4 +35,7 @@ void c_menu::multicombo( std::size_t& val, const char* items[], std::size_t item
 	}
 
 	return gui::framework::multicombo( val, items_vector, label );
+}
+void c_menu::separator( const char* label ) {
+	return gui::framework::separator( label );
 }
