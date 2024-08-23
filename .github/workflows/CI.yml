@@ -10,6 +10,8 @@ on:
       - '.gitattributes'
       - '.gitignore'
       - 'docs/**'
+      - 'example-mod/**'
+      - 'tests/**'
       - '**.md'
       - 'LICENSE'
   pull_request:
@@ -17,7 +19,6 @@ on:
 
 jobs:
   build-lin:
-    if: false
     name: Linux Build
     runs-on: ubuntu-20.04
     steps:
@@ -31,18 +32,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y g++-10-multilib
       - name: Build
-        run: make -j$(nproc)
+        run: |
+          cmake -B build
+          cmake --build build --config Debug
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: photon-linux
-          path: photon.so
+          path: libphoton.so
           if-no-files-found: error
   build-win:
     name: Windows Build
     runs-on: windows-2019
-    env:
-      POWERSHELL_TELEMETRY_OPTOUT: 1
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -52,7 +53,9 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
       - name: Build
-        run: msbuild -m -t:photon -p:"Configuration=Release;Platform=x86" photon.sln
+        run: |
+          cmake -B build -A Win32
+          cmake --build build --config Debug
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:

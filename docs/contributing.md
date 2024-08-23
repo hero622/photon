@@ -7,13 +7,13 @@ Requires CMake 3.15
 #### Windows
 ```
 cmake -B build -A Win32
-cmake --build build --config Release
+cmake --build build --config Debug
 ```
 
 #### Linux
 ```
 cmake -B build
-cmake --build build
+cmake --build build --config Debug
 ```
 
 ## Pull requests
