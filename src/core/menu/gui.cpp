@@ -76,7 +76,7 @@ SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
 		uint8_t* context_addr = ( uint8_t* ) ecx + 0xce8;  // m_hContext
 		int      context      = *( int* ) context_addr;
 
-		return util::call_virtual< 88, void >( ecx, context );  // ResetInputContext
+		return util::call_virtual< OS( 88, 89 ), void >( ecx, context );  // ResetInputContext
 	}
 
 	original( ecx, event );

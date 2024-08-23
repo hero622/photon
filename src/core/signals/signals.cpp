@@ -69,7 +69,7 @@ bool signals::initialize( ) {
 	photon->signal->create( "paint" )->in_module( MODULE( "engine" ) )->in_interface( "VEngineVGui001" )->from_vtable( OS( 14, 15 ) )->enable( &paint_handler );
 	photon->signal->create( "lock_cursor" )->at_address( interfaces::surface )->from_vtable( 65 )->enable( &lock_cursor_handler );
 	photon->signal->create( "in_key_event" )->in_module( MODULE( "client" ) )->in_interface( "VClient016" )->from_vtable( 20 )->enable( &in_key_event_handler );
-	photon->signal->create( "update_button_state" )->in_module( MODULE( "vgui2" ) )->in_interface( "VGUI_Input005" )->from_vtable( 87 )->enable( &update_button_state_handler );
+	photon->signal->create( "update_button_state" )->in_module( MODULE( "vgui2" ) )->in_interface( "VGUI_Input005" )->from_vtable( OS( 87, 88 ) )->enable( &update_button_state_handler );
 	photon->signal->create( "on_screen_size_changed" )->at_address( interfaces::surface )->from_vtable( 114 )->enable( &on_screen_size_changed_handler );
 
 #ifdef _WIN32
