@@ -398,7 +398,7 @@ void gui::framework::slider( int& val, int min, int max, const std::string& labe
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, value * size.x, size.y - 13, colors::accent, 4 );
 
 	const auto text_size = photon->render->get_text_size( fonts::smaller, util::ssprintf( "%d", val ).c_str( ) );
-	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 8, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%d", val ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 12, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%d", val ).c_str( ) );
 
 	cur_pos2 += vec2_t( radius_half, radius_half );
 	cur_pos2.x += value * ( size.x - radius );
@@ -443,7 +443,7 @@ void gui::framework::sliderf( float& val, float min, float max, const std::strin
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, value * size.x, size.y - 13, colors::accent, 4 );
 
 	const auto text_size = photon->render->get_text_size( fonts::smaller, util::ssprintf( "%.1f", val ).c_str( ) );
-	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 8, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%.1f", val ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 12, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%.1f", val ).c_str( ) );
 
 	cur_pos2 += vec2_t( radius_half, radius_half );
 	cur_pos2.x += value * ( size.x - radius );
