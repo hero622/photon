@@ -82,6 +82,8 @@ SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
 	original( ecx, event );
 }
 
+static color_t* hue_tex;
+
 bool gui::initialize( ) {
 	framework::set_theme( false );
 
@@ -90,11 +92,22 @@ bool gui::initialize( ) {
 	photon->render->create_font( framework::fonts::title, "D-DIN EXP", 24, true, fontflag_antialias );
 	photon->render->create_font( framework::fonts::bigtitle, "D-DIN EXP", 32, true, fontflag_antialias );
 
-	photon->render->load_texture( "photon_icon", resource::icons::photon, 50, 50, sizeof( resource::icons::photon ) );
-	photon->render->load_texture( "photon_list", resource::icons::list, 32, 32, sizeof( resource::icons::list ) );
-	photon->render->load_texture( "photon_gear", resource::icons::gear, 32, 32, sizeof( resource::icons::gear ) );
-	photon->render->load_texture( "photon_left_arrow", resource::icons::left_arrow, 32, 32, sizeof( resource::icons::left_arrow ) );
-	photon->render->load_texture( "photon_arrows", resource::icons::arrows, 32, 32, sizeof( resource::icons::arrows ) );
+	photon->render->load_texture_png( "photon_icon", resource::icons::photon, 50, 50, sizeof( resource::icons::photon ) );
+	photon->render->load_texture_png( "photon_list", resource::icons::list, 32, 32, sizeof( resource::icons::list ) );
+	photon->render->load_texture_png( "photon_gear", resource::icons::gear, 32, 32, sizeof( resource::icons::gear ) );
+	photon->render->load_texture_png( "photon_left_arrow", resource::icons::left_arrow, 32, 32, sizeof( resource::icons::left_arrow ) );
+	photon->render->load_texture_png( "photon_arrows", resource::icons::arrows, 32, 32, sizeof( resource::icons::arrows ) );
+
+	// initialize hue gradient texture (this should probably be in framework)
+	constexpr int tex_height = 180;
+
+	hue_tex = new color_t[ 1 * tex_height ];
+	for ( int i = 0; i < tex_height; ++i ) {
+		float hue = i * ( 1.f / tex_height );
+
+		hue_tex[ i ] = color_t::from_hsv( hue, 1.f, 1.f );
+	}
+	photon->render->load_texture_raw( "photon_hue_gradient", ( uint8_t* ) hue_tex, 1, tex_height );
 
 	photon->signal->get( "lock_cursor" )->add_callback( &lock_cursor_cbk );
 	photon->signal->get( "paint" )->add_callback( &paint_cbk );
@@ -108,6 +121,8 @@ bool gui::initialize( ) {
 
 void gui::uninitialize( ) {
 	dx9::uninitialize( );
+
+	DELETE_PTR( hue_tex );
 
 	photon->render->destruct_font( framework::fonts::bigtitle );
 	photon->render->destruct_font( framework::fonts::title );
@@ -161,13 +176,21 @@ void gui::paint( ) {
 		}
 	}
 	if ( framework::tab( tab, { screen_half.x + 100 + 8, screen_half.y - tab_height / 2 }, { tab_height, tab_height }, "photon_gear", true ) ) {
+		framework::separator( "menu settings" );
+
+		framework::colorpicker( framework::colors::accent, "accent color" );
+
 		static bool dark_mode = false;
 		if ( framework::toggle( dark_mode, "dark mode" ) )
 			framework::set_theme( dark_mode );
 
+		framework::separator( "game settings" );
+
 		static bool fast_loads = true;
 		if ( framework::toggle( fast_loads, "fast loads" ) )
 			convars::set_fast_loads( fast_loads );
+
+		framework::separator( "hud settings" );
 
 		framework::slider( huds::safezone_x, 0, 32, "hud safezone x" );
 		framework::slider( huds::safezone_y, 0, 32, "hud safezone y" );

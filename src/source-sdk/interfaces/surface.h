@@ -62,6 +62,9 @@ public:
 	void draw_textured_polygon( int n, vertex_t* vertices, bool clip_vertices = true ) {
 		return util::call_virtual< 104, void >( this, n, vertices, clip_vertices );
 	}
+	void draw_filled_rect_fade( int x0, int y0, int x1, int y1, unsigned int alpha0, unsigned int alpha1, bool horizontal ) {
+		return util::call_virtual< 121, void >( this, x0, y0, x1, y1, alpha0, alpha1, horizontal );
+	}
 	void get_clip_rect( int& x0, int& y0, int& x1, int& y1 ) {
 		return util::call_virtual< 144, void >( this, &x0, &y0, &x1, &y1 );
 	}
@@ -74,11 +77,11 @@ public:
 		return ( *reinterpret_cast< fn_t** >( this ) )[ 160 ]( this, font, x, y, r, g, b, a, text );
 	}
 	void start_drawing( ) {
-		auto paint_traverse_ex = util::get_virtual< 117 >( this );
+		static auto paint_traverse_ex = util::get_virtual< 117 >( this );
 		return util::read< void( __rescall* )( void* ) >( paint_traverse_ex + OS( 0x7f, 0x53d ) )( this );
 	}
 	void finish_drawing( ) {
-		auto paint_traverse_ex = util::get_virtual< 117 >( this );
+		static auto paint_traverse_ex = util::get_virtual< 117 >( this );
 		return util::read< void( __rescall* )( ) >( paint_traverse_ex + OS( 0x25b, 0x163 ) )( );
 	}
 

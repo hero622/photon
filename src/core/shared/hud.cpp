@@ -72,6 +72,31 @@ void c_hud::draw_line( int x, int y, int w, int h, color_t color ) {
 
 	photon->render->draw_line( x, y, w, h, color );
 }
+void c_hud::draw_polygon( int n, vertex_t* vertices, color_t color ) {
+	// FIXME: do some calculation here to figure out bounds
+	// if ( !cur_hud )
+	// 	return;
+
+	// setup_context( x, y, w, h );
+
+	// photon->render->draw_polygon( n, vertices, color );
+}
+void c_hud::draw_rounded_rect( int x, int y, int w, int h, color_t color, int rounding ) {
+	if ( !cur_hud )
+		return;
+
+	setup_context( x, y, w, h );
+
+	photon->render->draw_rounded_rect( x, y, w, h, color, rounding );
+}
+void c_hud::draw_circle( int x, int y, int radius, color_t color ) {
+	if ( !cur_hud )
+		return;
+
+	setup_context( x, y, radius * 2, radius * 2 );  // XXX: maybe wrong ? too lazy to test rn
+
+	photon->render->draw_circle( x, y, radius, color );
+}
 void c_hud::draw_text( int x, int y, h_font font, color_t color, bool center, const char* text ) {
 	if ( !cur_hud )
 		return;
@@ -89,4 +114,12 @@ void c_hud::draw_texture( int x, int y, int w, int h, const char* texture, color
 	setup_context( x, y, w, h );
 
 	photon->render->draw_texture( x, y, w, h, texture, color );
+}
+void c_hud::draw_gradient( int x, int y, int w, int h, color_t color1, color_t color2, bool horizontal ) {
+	if ( !cur_hud )
+		return;
+
+	setup_context( x, y, w, h );
+
+	photon->render->draw_gradient( x, y, w, h, color1, color2, horizontal );
 }

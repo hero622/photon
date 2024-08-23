@@ -11,13 +11,11 @@ void gui::framework::set_theme( bool dark ) {
 		colors::bg       = color_t( 255, 255, 255, 255 );
 		colors::fg       = color_t( 200, 200, 200, 255 );
 		colors::text     = color_t( 0, 0, 0, 200 );
-		colors::accent   = color_t( 66, 128, 244, 255 );
 		colors::disabled = color_t( 0, 0, 0, 64 );
 	} else {
 		colors::bg       = color_t( 21, 21, 21, 255 );
 		colors::fg       = color_t( 59, 59, 59, 255 );
 		colors::text     = color_t( 255, 255, 255, 64 );
-		colors::accent   = color_t( 66, 128, 244, 255 );
 		colors::disabled = color_t( 255, 255, 255, 2 );
 	}
 }
@@ -30,8 +28,8 @@ void gui::framework::begin( vec2_t pos, vec2_t size ) {
 
 	cur_menu.cursor = vec2_t( 8, 8 );
 
-	// block input to other controls when a dropdown is open
-	cur_menu.block_input = !cur_dropdown.id.empty( );
+	// block input to other controls when a dropdown or colorpicker is open
+	cur_menu.block_input = !cur_dropdown.id.empty( ) || !cur_colorpicker.id.empty( );
 
 	photon->render->draw_rounded_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.size.x, cur_menu.size.y, colors::bg, 8 );
 
@@ -75,6 +73,9 @@ void gui::framework::end( ) {
 	} else
 		scroll_offset = 0;  // reset scroll offset if content can fit in page
 
+	interfaces::surface->set_clip_rect( 0, 0, photon->render->get_screen_size( ).x, photon->render->get_screen_size( ).y );
+	interfaces::surface->enable_clipping = false;
+
 	// draw dropdowns
 	if ( !cur_dropdown.id.empty( ) ) {
 		auto cur_pos = cur_dropdown.pos;
@@ -110,8 +111,102 @@ void gui::framework::end( ) {
 		}
 	}
 
-	interfaces::surface->set_clip_rect( 0, 0, photon->render->get_screen_size( ).x, photon->render->get_screen_size( ).y );
-	interfaces::surface->enable_clipping = false;
+	// draw colorpickers
+	if ( !cur_colorpicker.id.empty( ) ) {
+		auto cur_pos = cur_colorpicker.pos;
+
+		auto size = vec2_t( 220, 200 );
+
+		cur_pos.x += 20;
+
+		photon->render->draw_rounded_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::fg, 8 );
+		photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
+
+		cur_pos += vec2_t( 8, 8 );
+		size -= vec2_t( 16, 16 );
+
+		const auto width  = size.x - 24;
+		const auto height = size.y - 20;
+
+		/* logic */
+		bool hover_sv = photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + width - 2, cur_pos.y + height - 2 );
+		bool hover_h  = photon->input->is_cursor_in_area( cur_pos.x + size.x - 18, cur_pos.y, cur_pos.x + size.x - 18 + 20, cur_pos.y + height - 2 );
+		bool hover_a  = photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y + size.y - 14, cur_pos.x + width - 2, cur_pos.y + size.y - 14 + 14 );
+		bool holding  = photon->input->get_key_held( mouse_left );
+		bool clicking = photon->input->get_key_press( mouse_left );
+
+		float& h = cur_colorpicker.h;
+		float& s = cur_colorpicker.s;
+		float& v = cur_colorpicker.v;
+		float& a = cur_colorpicker.a;
+
+		// clicking out
+		// HACK: check if not first frame by checking if alpha is initialized
+		if ( a != -1 && clicking && !hover_sv && !hover_h && !hover_a ) {
+			cur_colorpicker = colorpicker_t( );
+			return;
+		}
+
+		a = cur_colorpicker.value.a / 255.f;
+
+#define SV_ID "photon colorpicker sv"
+#define H_ID  "photon colorpicker h"
+#define A_ID  "photon colorpicker a"
+
+		if ( holding && cur_slider.empty( ) ) {
+			if ( hover_sv )
+				cur_slider = SV_ID;
+			else if ( hover_h )
+				cur_slider = H_ID;
+			else if ( hover_a )
+				cur_slider = A_ID;
+		} else if ( !holding && !cur_slider.empty( ) )
+			cur_slider.clear( );
+
+		if ( cur_slider == SV_ID ) {
+			s = std::clamp( ( photon->input->get_cursor_position( ).x - cur_pos.x ) / ( width - 2 ), 0.f, 1.f );
+			v = 1.f - std::clamp( ( photon->input->get_cursor_position( ).y - cur_pos.y ) / ( height - 2 ), 0.f, 1.f );
+		} else if ( cur_slider == H_ID )
+			h = std::clamp( ( photon->input->get_cursor_position( ).y - cur_pos.y ) / ( height - 2 ), 0.f, 1.f );
+		else if ( cur_slider == A_ID )
+			a = std::clamp( ( photon->input->get_cursor_position( ).x - cur_pos.x ) / ( width - 2 ), 0.f, 1.f );
+
+#undef SV_ID
+#undef H_ID
+#undef A_ID
+
+		color_t col = color_t::from_hsv( h, s, v );
+		col.a       = a * 255;
+
+		cur_colorpicker.value = col;
+
+		/* drawing */
+		// saturation, value
+		photon->render->draw_outlined_rect( cur_pos.x - 1, cur_pos.y - 1, width + 2, height + 2, colors::fg );
+		photon->render->draw_gradient( cur_pos.x, cur_pos.y, width, height, { 255, 255, 255 }, color_t::from_hsv( h, 1.f, 1.f ), true );
+		photon->render->draw_gradient( cur_pos.x, cur_pos.y, width, height, { 0, 0, 0, 0 }, { 0, 0, 0 }, false );
+
+		// hue
+		photon->render->draw_outlined_rect( cur_pos.x + size.x - 18 - 1, cur_pos.y - 1, 20, height + 2, colors::fg );
+		photon->render->draw_texture( cur_pos.x + size.x - 18, cur_pos.y, 18, height, "photon_hue_gradient" );
+
+		// alpha
+		photon->render->draw_outlined_rect( cur_pos.x - 1, cur_pos.y + size.y - 14 - 1, width + 2, 16, colors::fg );
+		photon->render->draw_filled_rect( cur_pos.x, cur_pos.y + size.y - 14, width, 14, col );
+
+		/* draw cursors */
+		// saturation, value
+		photon->render->draw_outlined_rect( cur_pos.x + s * ( width - 2 ) - 1, cur_pos.y + ( 1.f - v ) * ( height - 2 ) - 1, 4, 4, colors::gray );
+		photon->render->draw_filled_rect( cur_pos.x + s * ( width - 2 ), cur_pos.y + ( 1.f - v ) * ( height - 2 ), 2, 2, { 255, 255, 255, 64 } );
+
+		// hue
+		photon->render->draw_outlined_rect( cur_pos.x + size.x - 18 - 1, cur_pos.y + h * ( height - 2 ) - 1, 20, 3, colors::gray );
+		photon->render->draw_filled_rect( cur_pos.x + size.x - 18, cur_pos.y + h * ( height - 2 ), 18, 1, { 255, 255, 255, 64 } );
+
+		// alpha
+		photon->render->draw_outlined_rect( cur_pos.x + a * ( width - 2 ) - 1, cur_pos.y + size.y - 14 - 1, 3, 16, colors::gray );
+		photon->render->draw_filled_rect( cur_pos.x + a * ( width - 2 ), cur_pos.y + size.y - 14, 1, 14, { 255, 255, 255, 64 } );
+	}
 }
 
 bool gui::framework::tab( int& selected, vec2_t pos, vec2_t size, const std::string& label, bool texture ) {
@@ -302,13 +397,14 @@ void gui::framework::slider( int& val, int min, int max, const std::string& labe
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, size.x, size.y - 13, colors::fg, 4 );
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, value * size.x, size.y - 13, colors::accent, 4 );
 
+	const auto text_size = photon->render->get_text_size( fonts::smaller, util::ssprintf( "%d", val ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 8, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%d", val ).c_str( ) );
+
 	cur_pos2 += vec2_t( radius_half, radius_half );
 	cur_pos2.x += value * ( size.x - radius );
 
 	photon->render->draw_circle( cur_pos2.x, cur_pos2.y, radius, colors::accent );
 	photon->render->draw_circle( cur_pos2.x, cur_pos2.y, radius - 4, colors::white );
-
-	photon->render->draw_text( cur_pos2.x, cur_pos2.y - 26, fonts::smaller, colors::text, true, util::ssprintf( "%d", val ).c_str( ) );
 
 	cur_menu.cursor.y += size.y + 16;
 }
@@ -346,18 +442,55 @@ void gui::framework::sliderf( float& val, float min, float max, const std::strin
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, size.x, size.y - 13, colors::fg, 4 );
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, value * size.x, size.y - 13, colors::accent, 4 );
 
+	const auto text_size = photon->render->get_text_size( fonts::smaller, util::ssprintf( "%.1f", val ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 8, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%.1f", val ).c_str( ) );
+
 	cur_pos2 += vec2_t( radius_half, radius_half );
 	cur_pos2.x += value * ( size.x - radius );
 
 	photon->render->draw_circle( cur_pos2.x, cur_pos2.y, radius, colors::accent );
 	photon->render->draw_circle( cur_pos2.x, cur_pos2.y, radius - 4, colors::white );
 
-	photon->render->draw_text( cur_pos2.x, cur_pos2.y - 26, fonts::smaller, colors::text, true, util::ssprintf( "%.1f", val ).c_str( ) );
-
 	cur_menu.cursor.y += size.y + 16;
 }
 
 void gui::framework::colorpicker( color_t& val, const std::string& label ) {
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+	cur_pos.y -= scroll_offset;
+
+	const auto size = vec2_t( 20, 20 );
+
+	auto cur_pos2 = align_right( cur_pos, size );
+
+	bool open = cur_colorpicker.id == label;
+
+	bool hover    = ( !cur_menu.block_input || open ) && photon->input->is_cursor_in_area( cur_pos2.x, cur_pos2.y, cur_pos2.x + size.x, cur_pos2.y + size.y );
+	bool clicking = hover && photon->input->get_key_press( mouse_left );
+
+	if ( clicking ) {
+		if ( open )
+			cur_colorpicker = colorpicker_t( );
+		else {
+			cur_colorpicker.id    = label;
+			cur_colorpicker.pos   = cur_pos2;
+			cur_colorpicker.value = val;
+			val.to_hsv( cur_colorpicker.h, cur_colorpicker.s, cur_colorpicker.v );
+		}
+
+		open = !open;
+	}
+
+	if ( open )
+		val = cur_colorpicker.value;
+
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+
+	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, colors::gray, 8 );
+
+	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
+	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, val, 8 );
+
+	cur_menu.cursor.y += size.y + 16;
 }
 
 void gui::framework::combo( std::size_t& val, const std::vector< std::string >& items, const std::string& label ) {

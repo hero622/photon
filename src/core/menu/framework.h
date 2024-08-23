@@ -15,10 +15,10 @@ namespace gui {
 			inline color_t red   = color_t( 168, 43, 43 );
 
 			// theme colors
+			inline color_t accent = color_t( 66, 128, 244, 255 );
 			inline color_t bg;
 			inline color_t fg;
 			inline color_t text;
-			inline color_t accent;
 			inline color_t disabled;
 		}  // namespace colors
 
@@ -56,12 +56,16 @@ namespace gui {
 		inline dropdown_t cur_dropdown;
 
 		struct colorpicker_t {
-
+			std::string id;
+			vec2_t      pos;
+			color_t     value;
+			float       h, s, v;
+			float       a{ -1 };
 		};
 		inline colorpicker_t cur_colorpicker;
 
-		inline std::string cur_slider;     // FIXME: make this somehow be only for current menu but still persist
-		inline int         scroll_offset;  // ditto
+		inline std::string cur_slider;
+		inline int         scroll_offset;  // FIXME: make this somehow be only for current menu but still persist
 
 		void set_theme( bool dark = false );
 

@@ -19,6 +19,7 @@ void c_menu::sliderf( float& val, float min, float max, const char* label ) {
 	return gui::framework::sliderf( val, min, max, label );
 }
 void c_menu::colorpicker( color_t& val, const char* label ) {
+	return gui::framework::colorpicker( val, label );
 }
 void c_menu::combo( std::size_t& val, const char* items[], std::size_t items_count, const char* label ) {
 	std::vector< std::string > items_vector;

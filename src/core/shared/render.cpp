@@ -105,7 +105,22 @@ void c_render::draw_texture( int x, int y, int w, int h, const char* texture, co
 	interfaces::surface->draw_textured_rect( x, y, x + w, y + h );
 }
 
-void c_render::load_texture( const char* name, const uint8_t* png, int w, int h, size_t size ) {
+void c_render::draw_gradient( int x, int y, int w, int h, color_t color1, color_t color2, bool horizontal ) {
+	interfaces::surface->draw_set_color( color1.r, color1.g, color1.b, color1.a );
+	interfaces::surface->draw_filled_rect( x, y, x + w, y + h );
+
+	interfaces::surface->draw_set_color( color2.r, color2.g, color2.b, color2.a );
+	interfaces::surface->draw_filled_rect_fade( x, y, x + w, y + h, 0, 255, horizontal );
+}
+
+void c_render::load_texture_raw( const char* name, const uint8_t* rgba, int w, int h ) {
+	int id = interfaces::surface->create_new_texture_id( true );
+	interfaces::surface->draw_set_texture_rgba( id, rgba, w, h );
+
+	texture_ids.insert( std::make_pair( name, id ) );
+}
+
+void c_render::load_texture_png( const char* name, const uint8_t* png, int w, int h, size_t size ) {
 	std::vector< uint8_t > rgba;
 
 	auto _w = std::uint32_t( w );
@@ -113,10 +128,7 @@ void c_render::load_texture( const char* name, const uint8_t* png, int w, int h,
 
 	lodepng::decode( rgba, _w, _h, png, size );
 
-	int id = interfaces::surface->create_new_texture_id( true );
-	interfaces::surface->draw_set_texture_rgba( id, rgba.data( ), w, h );
-
-	texture_ids.insert( std::make_pair( name, id ) );
+	load_texture_raw( name, rgba.data( ), w, h );
 }
 
 bool c_render::create_font( h_font& font, const char* font_name, int size, bool bold, int flags ) {
