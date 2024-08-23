@@ -43,7 +43,7 @@ void gui::framework::end( ) {
 	if ( max_y > 0 ) {
 		const auto cur_pos = vec2_t( cur_menu.pos.x + cur_menu.size.x - 14, cur_menu.pos.y + 8 );
 
-		const auto height = max( cur_menu.size.y - max_y, 16 );
+		const auto height = std::max( cur_menu.size.y - max_y, 16.f );
 		const auto size   = vec2_t( 8, cur_menu.size.y - height - 16 );
 
 		bool hover    = !cur_menu.block_input && photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + cur_menu.size.y - 16 );

@@ -61,3 +61,7 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# cmkr
+/**/CMakeLists.txt linguist-generated
+/**/cmkr.cmake linguist-vendored

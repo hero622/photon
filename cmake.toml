@@ -1,0 +1,45 @@
+[project]
+name = "photon"
+
+[target.subhook]
+type    = "static"
+alias   = "Zeex::subhook"
+sources = ["vendor/subhook/subhook.c"]
+headers = ["vendor/subhook/subhook.h"]
+
+msvc.compile-options     = ["/MP"]
+msvc.compile-definitions = ["SUBHOOK_STATIC"]
+gcc.compile-options      = ["-m32"]
+
+[target.lodepng]
+type    = "static"
+alias   = "lvandeve::lodepng"
+sources = ["vendor/lodepng/lodepng.cpp"]
+headers = ["vendor/lodepng/lodepng.h"]
+
+msvc.compile-options = ["/MP"]
+gcc.compile-options  = ["-m32"]
+
+[target.photon]
+type                = "shared"
+sources             = ["src/**.cpp", "src/**.h"]
+include-directories = ["src", "vendor"]
+compile-features    = ["cxx_std_20"]
+compile-definitions = ["NOMINMAX"]
+link-libraries      = ["Zeex::subhook", "lvandeve::lodepng"]
+
+msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
+msvc.compile-definitions = ["SUBHOOK_STATIC"]
+gcc.compile-options      = ["-m32", "-fPIC"]
+gcc.compile-definitions  = ["_GNU_SOURCE"]
+
+[target.example-mod]
+type                = "shared"
+sources             = ["example-mod/**.cpp", "example-mod/**.h"]
+include-directories = ["example-mod", "src/sdk"]
+compile-features    = ["cxx_std_20"]
+compile-definitions = ["NOMINMAX"]
+
+msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
+gcc.compile-options      = ["-m32", "-fPIC"]
+gcc.compile-definitions  = ["_GNU_SOURCE"]
