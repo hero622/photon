@@ -84,13 +84,17 @@ SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
 
 static color_t* hue_tex;
 
-bool gui::initialize( ) {
-	framework::set_theme( false );
-
+void gui::create_fonts( ) {
 	photon->render->create_font( framework::fonts::smaller, "D-DIN EXP", 16, false, fontflag_antialias );
 	photon->render->create_font( framework::fonts::normal, "D-DIN EXP", 20, true, fontflag_antialias );
 	photon->render->create_font( framework::fonts::title, "D-DIN EXP", 24, true, fontflag_antialias );
 	photon->render->create_font( framework::fonts::bigtitle, "D-DIN EXP", 32, true, fontflag_antialias );
+}
+
+bool gui::initialize( ) {
+	framework::set_theme( false );
+
+	gui::create_fonts( );
 
 	photon->render->load_texture_png( "photon_icon", resource::icons::photon, 50, 50, sizeof( resource::icons::photon ) );
 	photon->render->load_texture_png( "photon_list", resource::icons::list, 32, 32, sizeof( resource::icons::list ) );

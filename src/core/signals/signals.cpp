@@ -59,7 +59,7 @@ SIGNAL_CALLBACK( void, __rescall, on_screen_size_changed, int, old_width, int, o
 	photon->common->post_event( &plugin, "on_screen_size_changed" );
 
 	// recreate fonts
-	gui::initialize( );
+	gui::create_fonts( );
 }
 
 bool signals::initialize( ) {
