@@ -1,3 +1,8 @@
+[cmake]
+version = "3.15"
+cpp-flags = ["-m32"] # this spams a bunch of warning when compiling using msvc, TODO: find a way to only do this with gcc
+c-flags = ["-m32"]
+
 [project]
 name = "photon"
 
@@ -9,7 +14,6 @@ headers = ["vendor/subhook/subhook.h"]
 
 msvc.compile-options     = ["/MP"]
 msvc.compile-definitions = ["SUBHOOK_STATIC"]
-gcc.compile-options      = ["-m32"]
 
 [target.lodepng]
 type    = "static"
@@ -18,7 +22,6 @@ sources = ["vendor/lodepng/lodepng.cpp"]
 headers = ["vendor/lodepng/lodepng.h"]
 
 msvc.compile-options = ["/MP"]
-gcc.compile-options  = ["-m32"]
 
 [target.photon]
 type                = "shared"
@@ -30,7 +33,7 @@ link-libraries      = ["Zeex::subhook", "lvandeve::lodepng"]
 
 msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
 msvc.compile-definitions = ["SUBHOOK_STATIC"]
-gcc.compile-options      = ["-m32", "-fPIC"]
+gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]
 
 [target.example-mod]
@@ -41,5 +44,5 @@ compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
 
 msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
-gcc.compile-options      = ["-m32", "-fPIC"]
+gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]

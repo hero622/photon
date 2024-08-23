@@ -24,6 +24,10 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
 	configure_file(cmake.toml cmake.toml COPYONLY)
 endif()
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 ")
+
+set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 ")
+
 project(photon)
 
 # Target: subhook
@@ -51,12 +55,6 @@ if(MSVC) # msvc
 	)
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU") # gcc
-	target_compile_options(subhook PUBLIC
-		-m32
-	)
-endif()
-
 # Target: lodepng
 set(lodepng_SOURCES
 	cmake.toml
@@ -73,12 +71,6 @@ add_library(lvandeve::lodepng ALIAS lodepng)
 if(MSVC) # msvc
 	target_compile_options(lodepng PUBLIC
 		"/MP"
-	)
-endif()
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU") # gcc
-	target_compile_options(lodepng PUBLIC
-		-m32
 	)
 endif()
 
@@ -176,8 +168,8 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU") # gcc
 	target_compile_options(photon PUBLIC
-		-m32
 		-fPIC
+		-fpermissive
 	)
 endif()
 
@@ -232,8 +224,8 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU") # gcc
 	target_compile_options(example-mod PUBLIC
-		-m32
 		-fPIC
+		-fpermissive
 	)
 endif()
 

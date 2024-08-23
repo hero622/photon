@@ -4,6 +4,8 @@
 #include "core/mods/mods.h"
 #include "util/util.h"
 
+#include <stdarg.h>
+
 void c_common::log( const char* fmt, ... ) {
 	/* this sucks */
 	va_list ap1, ap2;

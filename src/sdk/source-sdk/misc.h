@@ -72,7 +72,7 @@ enum button_code_t {
 	key_q,
 	key_r,
 	key_s,
-	key_t,
+	key_T,  // linux typedef shit
 	key_u,
 	key_v,
 	key_w,

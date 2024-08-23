@@ -2,10 +2,18 @@
 
 ## Building
 
-### CMake
+Requires CMake 3.15
+
+#### Windows
 ```
 cmake -B build -A Win32
 cmake --build build --config Release
+```
+
+#### Linux
+```
+cmake -B build
+cmake --build build
 ```
 
 ## Pull requests

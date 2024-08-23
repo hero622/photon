@@ -1,5 +1,7 @@
 #pragma once
 
+#include "sdk/platform.h"
+
 namespace math {
 	constexpr float pi   = 3.1415926535897932384f;
 	constexpr float pi_2 = pi * 2.f;
