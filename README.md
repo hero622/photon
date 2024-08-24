@@ -80,9 +80,9 @@ bool c_photon_mod::load( photon_api::c_shared* photon ) {
 }
 
 void c_photon_mod::unload( ) {
-    // unallocate stuff here etc.
+	// unallocate stuff here etc.
 
-    photon->common->log( "example mod unloaded.\n" );
+	photon->common->log( "example mod unloaded.\n" );
 }
 
 void c_photon_mod::on_event( const char* msg ) {
