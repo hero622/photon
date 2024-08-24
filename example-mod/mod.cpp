@@ -13,7 +13,7 @@ photon_api::c_shared* photon;
 h_font font;
 
 bool c_photon_mod::load( photon_api::c_shared* photon ) {
-	::photon = photon;
+	::photon = photon;  // expose photon interface globally.
 
 	if ( signals::initialize( ) ) {
 		convars::initialize( );
