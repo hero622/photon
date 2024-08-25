@@ -1,0 +1,123 @@
+#include "configs.h"
+
+#include "util/util.h"
+
+#include <fstream>
+#include <nlohmann/json.hpp>
+
+using namespace nlohmann::json_abi_v3_11_3::detail;
+
+static nlohmann::json cfg;   // actual key:value json
+static nlohmann::json ptrs;  // internal list of pointers to variables
+
+static std::string cur_mod;
+
+void configs::iterate_cfgs( ) {
+	cfgs.clear( );
+
+	for ( const auto& entry : std::filesystem::directory_iterator( "photon/cfgs" ) ) {
+		cfgs.push_back( entry.path( ).stem( ).string( ) );
+	}
+}
+
+bool configs::initialize( ) {
+	iterate_cfgs( );
+
+	return true;
+}
+
+void configs::uninitialize( ) {
+}
+
+void configs::save( const char* cfg_name ) {
+	for ( auto& [ module, obj ] : cfg.items( ) ) {
+		for ( auto& [ key, value ] : obj.items( ) ) {
+			switch ( value.type( ) ) {
+			case value_t::array: /* array = color_t */ {
+				color_t col = *( color_t* ) ptrs[ module ][ key ].get< uint32_t >( );
+				value       = { col.r, col.g, col.b, col.a };
+				continue;
+			}
+			case value_t::string:
+				value = *( const char** ) ptrs[ module ][ key ].get< uint32_t >( );
+				continue;
+			case value_t::boolean:
+				value = *( bool* ) ptrs[ module ][ key ].get< uint32_t >( );
+				continue;
+			case value_t::number_integer:
+				value = *( int32_t* ) ptrs[ module ][ key ].get< uint32_t >( );
+				continue;
+			case value_t::number_unsigned:
+				value = *( uint32_t* ) ptrs[ module ][ key ].get< uint32_t >( );
+				continue;
+			case value_t::number_float:
+				value = *( float* ) ptrs[ module ][ key ].get< uint32_t >( );
+				continue;
+			}
+		}
+	}
+
+	std::ofstream o( util::ssprintf( "photon/cfgs/%s.json", cfg_name ) );
+	o << std::setw( 4 ) << cfg << std::endl;
+}
+
+void configs::load( const char* cfg_name ) {
+	std::ifstream i( util::ssprintf( "photon/cfgs/%s.json", cfg_name ) );
+	i >> cfg;
+
+	for ( auto& [ module, obj ] : cfg.items( ) ) {
+		for ( auto& [ key, value ] : obj.items( ) ) {
+			switch ( value.type( ) ) {
+			case value_t::array: /* array = color_t */
+				*( uint32_t* ) ptrs[ module ][ key ].get< uintptr_t >( ) = *( uint32_t* ) value.get< std::vector< std::uint8_t > >( ).data( );
+				continue;
+			case value_t::string:
+				*( const char** ) ptrs[ module ][ key ].get< uintptr_t >( ) = strdup( value.get< std::string >( ).c_str( ) );
+				continue;
+			case value_t::boolean:
+				*( bool* ) ptrs[ module ][ key ].get< uintptr_t >( ) = value.get< bool >( );
+				continue;
+			case value_t::number_integer:
+				*( int32_t* ) ptrs[ module ][ key ].get< uintptr_t >( ) = value.get< int32_t >( );
+				continue;
+			case value_t::number_unsigned:
+				*( uint32_t* ) ptrs[ module ][ key ].get< uintptr_t >( ) = value.get< uint32_t >( );
+				continue;
+			case value_t::number_float:
+				*( float* ) ptrs[ module ][ key ].get< uintptr_t >( ) = value.get< float >( );
+				continue;
+			}
+		}
+	}
+}
+
+void configs::begin( const char* module_name ) {
+	cur_mod = module_name;
+}
+void configs::end( ) {
+	cur_mod.clear( );
+}
+
+#define SERIALIZE( var_name, var )                   \
+	{                                                   \
+		if ( cur_mod.empty( ) )                            \
+			return;                                           \
+		cfg[ cur_mod ][ var_name ]  = var;                 \
+		ptrs[ cur_mod ][ var_name ] = ( uintptr_t ) & var; \
+	}
+
+void configs::serialize( const char* var_name, const char*& var ) SERIALIZE( var_name, var );
+void configs::serialize( const char* var_name, bool& var ) SERIALIZE( var_name, var );
+void configs::serialize( const char* var_name, int32_t& var ) SERIALIZE( var_name, var );
+void configs::serialize( const char* var_name, uint32_t& var ) SERIALIZE( var_name, var );
+void configs::serialize( const char* var_name, float& var ) SERIALIZE( var_name, var );
+void configs::serialize( const char* var_name, color_t& var ) {
+	if ( cur_mod.empty( ) )
+		return;
+	cfg[ cur_mod ][ var_name ]  = { var.r, var.g, var.b, var.a };
+	ptrs[ cur_mod ][ var_name ] = ( uintptr_t ) &var;
+}
+void configs::deserialize( const char* module_name ) {
+	cfg[ module_name ].clear( );
+	ptrs[ module_name ].clear( );
+}

@@ -14,6 +14,7 @@ int main( int argc, const char* const argv[] ) {
 	photon->render = new c_render( );
 	photon->input  = new c_input( );
 	photon->menu   = new c_menu( );
+	photon->config = new c_config( );
 
 	return utest_main( argc, argv );
 }

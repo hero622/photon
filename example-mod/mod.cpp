@@ -1,5 +1,6 @@
 #include "mod.h"
 
+#include "config/config.h"
 #include "convars/convars.h"
 #include "huds/hud.h"
 #include "signals/signals.h"
@@ -15,19 +16,25 @@ h_font font;
 bool c_photon_mod::load( photon_api::c_shared* photon ) {
 	::photon = photon;  // expose photon interface globally.
 
-	if ( signals::initialize( ) ) {
-		convars::initialize( );
+	if ( !signals::initialize( ) )
+		return false;
 
-		huds::initialize( );
+	if ( !convars::initialize( ) )
+		return false;
 
-		photon->common->log( "example mod loaded.\n" );
+	if ( !huds::initialize( ) )
+		return false;
 
-		// post example event
-		// this will look like: "example mod:load" for other mods
-		photon->common->post_event( &mod, "load" );
+	if ( !config::initialize( ) )
+		return false;
 
-		photon->render->create_font( font, "Tahoma", 12, false, fontflag_dropshadow );
-	}
+	photon->common->log( "example mod loaded.\n" );
+
+	// post example event
+	// this will look like: "example mod:load" for other mods
+	photon->common->post_event( &mod, "load" );
+
+	photon->render->create_font( font, "Tahoma", 12, false, fontflag_dropshadow );
 
 	return true;
 }
@@ -35,10 +42,9 @@ bool c_photon_mod::load( photon_api::c_shared* photon ) {
 void c_photon_mod::unload( ) {
 	photon->render->destruct_font( font );
 
+	config::uninitialize( );
 	huds::uninitialize( );
-
 	convars::uninitialize( );
-
 	signals::uninitialize( );
 
 	photon->common->log( "example mod unloaded.\n" );
@@ -62,25 +68,14 @@ photon_api::mod_info_t c_photon_mod::get_info( ) {
 }
 
 void c_photon_mod::paint_menu( ) {
-	static bool example_toggle_val;
-	photon->menu->toggle( example_toggle_val, "example toggle" );
-
-	static int example_slider_val;
-	photon->menu->slider( example_slider_val, 0, 100, "example slider" );
-
-	static float example_sliderf_val;
-	photon->menu->sliderf( example_sliderf_val, 0.f, 10.f, "example sliderf" );
-
-	static color_t example_colorpicker_val;
-	photon->menu->colorpicker( example_colorpicker_val, "example colorpicker" );
+	photon->menu->toggle( config::example_boolean, "example toggle" );
+	photon->menu->slider( config::example_integer, 0, 100, "example slider" );
+	photon->menu->sliderf( config::example_float, 0.f, 10.f, "example sliderf" );
+	photon->menu->colorpicker( config::example_color, "example colorpicker" );
 
 	photon->menu->separator( "example separator" );
 
-	static std::size_t example_combo_val;
-	const char*        example_combo_items[] = { "value 1", "value 2", "value 3" };
-	photon->menu->combo( example_combo_val, example_combo_items, ARRAY_LEN( example_combo_items ), "example combo" );
-
-	static std::size_t example_multicombo_val;
-	const char*        example_multicombo_items[] = { "value 1", "value 2", "value 3" };
-	photon->menu->multicombo( example_multicombo_val, example_multicombo_items, ARRAY_LEN( example_multicombo_items ), "example multicombo" );
+	static const char* values[] = { "value 1", "value 2", "value 3" };
+	photon->menu->combo( config::example_combo_value, values, 3, "example combo" );
+	photon->menu->multicombo( config::example_mcombo_value, values, 3, "example multicombo" );
 }

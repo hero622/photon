@@ -1,10 +1,17 @@
 #include "framework.h"
 
+#include "core/configs/configs.h"
 #include "core/interfaces/interfaces.h"
 #include "core/mods/mods.h"
 #include "util/util.h"
 
 #include <algorithm>
+
+static inline vec2_t align_right( vec2_t pos, vec2_t size ) {
+	auto pos_x = gui::framework::cur_menu.pos.x + gui::framework::cur_menu.size.x - size.x - 20;
+
+	return vec2_t( pos_x, pos.y );
+}
 
 void gui::framework::set_theme( bool dark ) {
 	if ( !dark ) {
@@ -228,8 +235,8 @@ bool gui::framework::tab( int& selected, vec2_t pos, vec2_t size, const std::str
 		const auto text_size = photon->render->get_text_size( fonts::title, util::to_upper( label ).c_str( ) );
 		photon->render->draw_text( pos.x + size.x / 2, pos.y + size.y / 2 - text_size.y / 2, fonts::title, colors::text, true, util::to_upper( label ).c_str( ) );
 	} else {
-		// yep these numbers are hardcoded idc
-		photon->render->draw_texture( pos.x + 12, pos.y + 12, 32, 32, label.c_str( ), colors::text );
+		auto tex_size = size / 1.75f;
+		photon->render->draw_texture( pos.x + size.x / 2 - tex_size.x / 2, pos.y + size.y / 2 - tex_size.y / 2, round( tex_size.x ), round( tex_size.y ), label.c_str( ), colors::text );
 	}
 
 	interfaces::surface->set_clip_rect( cur_menu.pos.x + 1, cur_menu.pos.y + 1, cur_menu.pos.x + cur_menu.size.x - 1, cur_menu.pos.y + cur_menu.size.y - 1 );
@@ -280,12 +287,39 @@ bool gui::framework::mod( mods::mod_info_t& info ) {
 	return result;
 }
 
+bool gui::framework::config( const std::string& label ) {
+	const auto size     = vec2_t( cur_menu.size.x - 16, 36 );
+	const auto btn_size = vec2_t( 28, 28 );
+
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+	cur_pos.y -= scroll_offset;
+
+	photon->render->draw_rounded_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::fg, 8 );
+	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
+
+	photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 8, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+
+	cur_menu.cursor.x = align_right( cur_pos, btn_size * 2 ).x - cur_menu.pos.x - 4;
+	cur_menu.cursor.y += 4;
+
+	if ( icon_button( btn_size, "photon_download", true ) )
+		configs::save( label.c_str( ) );
+
+	if ( icon_button( btn_size, "photon_upload", true ) )
+		configs::load( label.c_str( ) );
+
+	cur_menu.cursor.x = 8;
+	cur_menu.cursor.y += size.y + 4;
+
+	return true;
+}
+
 void gui::framework::split( int width ) {
 	cur_menu.cursor.x += width + 8;
 	cur_menu.cursor.y = 8;
 }
 
-bool gui::framework::icon_button( vec2_t size, const std::string& texture ) {
+bool gui::framework::icon_button( vec2_t size, const std::string& texture, bool same_line ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 	cur_pos.y -= scroll_offset;
 
@@ -296,9 +330,13 @@ bool gui::framework::icon_button( vec2_t size, const std::string& texture ) {
 	if ( hover )
 		photon->render->draw_outlined_rect( cur_pos.x - 1, cur_pos.y - 1, size.x + 2, size.y + 2, colors::bg, 3 );
 
-	photon->render->draw_texture( cur_pos.x + 12, cur_pos.y + 12, 32, 32, texture.c_str( ), colors::text );
+	auto tex_size = size / 1.75f;
+	photon->render->draw_texture( cur_pos.x + size.x / 2 - tex_size.x / 2, cur_pos.y + size.y / 2 - tex_size.y / 2, round( tex_size.x ), round( tex_size.y ), texture.c_str( ), colors::text );
 
-	cur_menu.cursor.y += size.y + 8;
+	if ( !same_line )
+		cur_menu.cursor.y += size.y + 8;
+	else
+		cur_menu.cursor.x += size.x + 4;
 
 	return clicking;
 }
@@ -324,12 +362,6 @@ bool gui::framework::button( vec2_t size, const std::string& label, bool enabled
 	cur_menu.cursor.y += size.y + 8;
 
 	return clicking;
-}
-
-static inline vec2_t align_right( vec2_t pos, vec2_t size ) {
-	auto pos_x = gui::framework::cur_menu.pos.x + gui::framework::cur_menu.size.x - size.x - 20;
-
-	return vec2_t( pos_x, pos.y );
 }
 
 bool gui::framework::toggle( bool& val, const std::string& label ) {

@@ -1,5 +1,6 @@
 #include "photon.h"
 
+#include "core/configs/configs.h"
 #include "core/convars/convars.h"
 #include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
@@ -41,35 +42,49 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 	photon->render = new c_render( );
 	photon->input  = new c_input( );
 	photon->menu   = new c_menu( );
+	photon->config = new c_config( );
 
 #ifdef _DEBUG
 	util::console::alloc( );
 #endif
 
-	if ( interfaces::initialize( ) ) {
-		if ( signals::initialize( ) ) {
-			convars::initialize( );
-
-			gui::initialize( );
-
-			photon->con->hook_cmd( "plugin_load", &plugin_load );
-			photon->con->hook_cmd( "plugin_unload", &plugin_unload );
-
-			// only works when done early enough
-			interfaces::command_line->append_parm( "-background", "5" );
-
-			photon->common->log( { 0, 255, 0, 255 }, "Photon loaded.\n" );
-
-			if ( !mods::loadall( ) )
-				photon->common->log_warn( "Failed to load one or more mods.\n" );
-
-			return true;
-		} else
-			photon->common->log_warn( "Failed to initialize one or more hooks.\n" );
-	} else
+	if ( !interfaces::initialize( ) ) {
 		photon->common->log_warn( "Failed to initialize one or more interfaces.\n" );
+		return false;
+	}
 
-	return false;
+	if ( !signals::initialize( ) ) {
+		photon->common->log_warn( "Failed to initialize one or more signals.\n" );
+		return false;
+	}
+
+	if ( !convars::initialize( ) ) {
+		photon->common->log_warn( "Failed to initialize one or more convars.\n" );
+		return false;
+	}
+
+	if ( !configs::initialize( ) ) {
+		photon->common->log_warn( "Failed to initialize configs.\n" );
+		return false;
+	}
+
+	if ( !gui::initialize( ) ) {
+		photon->common->log_warn( "Failed to initialize gui.\n" );
+		return false;
+	}
+
+	photon->con->hook_cmd( "plugin_load", &plugin_load );
+	photon->con->hook_cmd( "plugin_unload", &plugin_unload );
+
+	// only works when done early enough
+	interfaces::command_line->append_parm( "-background", "5" );
+
+	photon->common->log( { 0, 255, 0, 255 }, "Photon loaded.\n" );
+
+	if ( !mods::loadall( ) )
+		photon->common->log_warn( "Failed to load one or more mods.\n" );
+
+	return true;
 }
 
 bool c_photon::get_info( ) {
@@ -103,9 +118,8 @@ void c_photon::unload( ) {
 	photon->con->unhook_cmd( "plugin_load" );
 
 	gui::uninitialize( );
-
+	configs::uninitialize( );
 	convars::uninitialize( );
-
 	signals::uninitialize( );
 
 	if ( plugin.get_info( ) ) {
@@ -121,6 +135,7 @@ void c_photon::unload( ) {
 	util::console::free( );
 #endif
 
+	DELETE_PTR( photon->config );
 	DELETE_PTR( photon->menu );
 	DELETE_PTR( photon->input );
 	DELETE_PTR( photon->render );

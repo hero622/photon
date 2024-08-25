@@ -1,6 +1,7 @@
 #include "gui.h"
 
 #include "../resource/resource.h"
+#include "core/configs/configs.h"
 #include "core/convars/convars.h"
 #include "core/huds/huds.h"
 #include "core/interfaces/interfaces.h"
@@ -101,6 +102,8 @@ bool gui::initialize( ) {
 	photon->render->load_texture_png( "photon_gear", resource::icons::gear, 32, 32, sizeof( resource::icons::gear ) );
 	photon->render->load_texture_png( "photon_left_arrow", resource::icons::left_arrow, 32, 32, sizeof( resource::icons::left_arrow ) );
 	photon->render->load_texture_png( "photon_arrows", resource::icons::arrows, 32, 32, sizeof( resource::icons::arrows ) );
+	photon->render->load_texture_png( "photon_download", resource::icons::download, 16, 16, sizeof( resource::icons::download ) );
+	photon->render->load_texture_png( "photon_upload", resource::icons::upload, 16, 16, sizeof( resource::icons::upload ) );
 
 	// initialize hue gradient texture (this should probably be in framework)
 	constexpr int tex_height = 180;
@@ -154,6 +157,9 @@ void gui::paint( ) {
 	framework::begin( menu_pos, menu_size );
 
 	if ( framework::tab( tab, { screen_half.x - 100 - tab_height - 8, screen_half.y - tab_height / 2 }, { tab_height, tab_height }, "photon_list", true ) ) {
+		for ( auto& cfg : configs::cfgs ) {
+			framework::config( cfg );
+		}
 	}
 	if ( framework::tab( tab, { screen_half.x - 100, screen_half.y - tab_height / 2 }, { 200, tab_height }, "MODS" ) ) {
 		if ( !cur_mod ) {

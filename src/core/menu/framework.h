@@ -73,8 +73,9 @@ namespace gui {
 		void end( );
 		bool tab( int& selected, vec2_t pos, vec2_t size, const std::string& label, bool use_texture = false );
 		bool mod( mods::mod_info_t& info );
+		bool config( const std::string& label );
 		void split( int width );
-		bool icon_button( vec2_t size, const std::string& texture );
+		bool icon_button( vec2_t size, const std::string& texture, bool same_line = false );
 
 		bool button( vec2_t size, const std::string& label, bool enabled = true, h_font font = fonts::normal, color_t color = colors::accent );
 		bool toggle( bool& val, const std::string& label );

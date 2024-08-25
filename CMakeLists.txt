@@ -77,6 +77,8 @@ endif()
 # Target: photon
 set(photon_SOURCES
 	cmake.toml
+	"src/core/configs/configs.cpp"
+	"src/core/configs/configs.h"
 	"src/core/convars/convars.cpp"
 	"src/core/convars/convars.h"
 	"src/core/huds/huds.cpp"
@@ -95,6 +97,7 @@ set(photon_SOURCES
 	"src/core/photon.h"
 	"src/core/shared/ccon.cpp"
 	"src/core/shared/common.cpp"
+	"src/core/shared/config.cpp"
 	"src/core/shared/hud.cpp"
 	"src/core/shared/input.cpp"
 	"src/core/shared/menu.cpp"
@@ -104,6 +107,7 @@ set(photon_SOURCES
 	"src/core/signals/signals.h"
 	"src/sdk/ccon.h"
 	"src/sdk/common.h"
+	"src/sdk/config.h"
 	"src/sdk/hud.h"
 	"src/sdk/input.h"
 	"src/sdk/menu.h"
@@ -176,6 +180,7 @@ endif()
 target_include_directories(photon PUBLIC
 	src
 	vendor
+	"vendor/json/single_include"
 )
 
 target_link_libraries(photon PUBLIC
@@ -186,6 +191,8 @@ target_link_libraries(photon PUBLIC
 # Target: example-mod
 set(example-mod_SOURCES
 	cmake.toml
+	"example-mod/config/config.cpp"
+	"example-mod/config/config.h"
 	"example-mod/convars/convars.cpp"
 	"example-mod/convars/convars.h"
 	"example-mod/huds/hud.cpp"
