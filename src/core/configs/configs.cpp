@@ -66,7 +66,13 @@ void configs::load( const char* cfg_name ) {
 	i >> cfg;
 
 	for ( auto& [ module, obj ] : cfg.items( ) ) {
+		if ( !ptrs.contains( module ) )
+			continue;
+
 		for ( auto& [ key, value ] : obj.items( ) ) {
+			if ( !ptrs[ module ].contains( key ) )
+				continue;
+
 			switch ( value.type( ) ) {
 			case value_t::array: /* array = color_t */
 				*( uint32_t* ) ptrs[ module ][ key ].get< uintptr_t >( ) = *( uint32_t* ) value.get< std::vector< std::uint8_t > >( ).data( );
@@ -118,6 +124,6 @@ void configs::serialize( const char* var_name, color_t& var ) {
 	ptrs[ cur_mod ][ var_name ] = ( uintptr_t ) &var;
 }
 void configs::deserialize( const char* module_name ) {
-	cfg[ module_name ].clear( );
-	ptrs[ module_name ].clear( );
+	cfg.erase( module_name );
+	ptrs.erase( module_name );
 }
