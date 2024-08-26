@@ -5,41 +5,21 @@
 #include <vector>
 
 namespace photon_api {
-	enum hud_type {
-		hudtype_hud,
-		hudtype_thud,
-	};
-
-	struct hud_t {
-		hud_type type;    // determines if the hud is a thud or not.
-		vec2_t   pos;     // values between (0, 1).
-		vec2_t   anchor;  // values between (0, 1).
-		float    scale;   // scale value to multiply by. (currently useless)
-		vec2_t   bounds;  // screen boundaries.
-	};
-
-	class i_hud : public hud_t {
+	class i_hud {
 	public:
-		virtual void        paint( )    = 0;
-		virtual const char* get_name( ) = 0;
-	};
+		vec2_t pos;     // values between (0, 1).
+		vec2_t anchor;  // values between (0, 1).
+		float  scale;   // scale value to multiply by. (currently useless)
+		vec2_t bounds;  // screen boundaries.
 
-	class i_thud : public hud_t {
-	public:
-		unsigned long font;                        // don't modify this!
-		const char*   format = "{name}: {value}";  // don't modify this!
-
-		virtual const char* get_text( ) = 0;  // return c string value.
-		virtual const char* get_name( ) = 0;  // return c string name.
+		virtual void paint( ) = 0;
 	};
 }  // namespace photon_api
 
 class c_hud {
 public:
-	virtual void reg( photon_api::i_hud* hud );      // register a hud component by pointer.
-	virtual void reg( photon_api::i_thud* thud );    // register a thud component by pointer.
-	virtual void unreg( photon_api::i_hud* hud );    // unregister a hud component by pointer.
-	virtual void unreg( photon_api::i_thud* thud );  // unregister a thud component by pointer.
+	virtual void reg( photon_api::i_hud* hud );    // register a hud component by pointer.
+	virtual void unreg( photon_api::i_hud* hud );  // unregister a hud component by pointer.
 
 	virtual void draw_begin( photon_api::i_hud* hud );
 	virtual void draw_end( );

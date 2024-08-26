@@ -18,14 +18,14 @@ struct point_distance_t {
 	float  dist;  // squared distance
 };
 
-static vec2_t get_abs_pos( photon_api::hud_t* hud ) {
+static vec2_t get_abs_pos( photon_api::i_hud* hud ) {
 	const auto pos    = photon->render->to_screen( hud->pos );
 	const auto anchor = hud->anchor * hud->bounds;
 
 	return pos - anchor;
 }
 
-static void set_abs_pos( photon_api::hud_t* hud, vec2_t pos ) {
+static void set_abs_pos( photon_api::i_hud* hud, vec2_t pos ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
 	const auto anchor = hud->anchor * hud->bounds;
@@ -38,7 +38,7 @@ static void set_abs_pos( photon_api::hud_t* hud, vec2_t pos ) {
 	hud->pos = photon->render->normalize( new_pos );
 }
 
-static void set_hud_anchor( photon_api::hud_t* hud ) {
+static void set_hud_anchor( photon_api::i_hud* hud ) {
 	const auto screen_size = photon->render->get_screen_size( );
 
 	const auto center = get_abs_pos( hud ) + hud->bounds / 2;
@@ -58,7 +58,7 @@ static void set_hud_anchor( photon_api::hud_t* hud ) {
 		hud->anchor.y = 0.5f;
 }
 
-static hud_bounds_t get_hud_bounds( photon_api::hud_t* hud ) {
+static hud_bounds_t get_hud_bounds( photon_api::i_hud* hud ) {
 	const auto hud_pos = get_abs_pos( hud );
 
 	hud_bounds_t bounds;
@@ -103,7 +103,7 @@ static void calculate_distances( std::vector< point_distance_t >& distances, con
  * get all distances to all hud element's edges, sort them, align to closest
  * this whole thing might be overcomplicated, but this was my best idea
  */
-static void align_hud_element( photon_api::hud_t* hud ) {
+static void align_hud_element( photon_api::i_hud* hud ) {
 	const auto clr = color_t( 255, 0, 255, 255 );
 
 	const auto screen_size = photon->render->get_screen_size( );
@@ -170,25 +170,7 @@ static void align_hud_element( photon_api::hud_t* hud ) {
 
 void huds::paint( ) {
 	for ( const auto& hud : huds ) {
-		if ( hud->type == photon_api::hudtype_hud ) {
-			( ( photon_api::i_hud* ) hud )->paint( );
-		} else {
-			const auto thud = ( photon_api::i_thud* ) hud;
-
-			// TODO: improve on this system or maybe even rework the thud system completely
-			auto text = std::string( thud->format );
-
-			util::replace( text, "{name}", std::string( thud->get_name( ) ) );
-			util::replace( text, "{value}", std::string( thud->get_text( ) ) );
-
-			const auto font = photon->render->get_font( thud->font );
-
-			thud->bounds = photon->render->get_text_size( font, text.c_str( ) );
-
-			const auto pos = get_abs_pos( thud );
-
-			photon->render->draw_text( pos.x, pos.y, font, { 255, 255, 255, 255 }, false, text.c_str( ) );
-		}
+		hud->paint( );
 	}
 }
 
@@ -197,8 +179,9 @@ void huds::paint_ui( ) {
 
 	const auto screen_size = photon->render->get_screen_size( );
 
-	static photon_api::hud_t* cur_hud;
-	static vec2_t             grab_pos;
+	static photon_api::i_hud* cur_hud;
+
+	static vec2_t grab_pos;
 
 	for ( const auto& hud : huds ) {
 		vec2_t orig_cur_pos;

@@ -7,22 +7,11 @@
 #include <cstddef>
 
 void c_hud::reg( photon_api::i_hud* hud ) {
-	hud->type = photon_api::hudtype_hud;
 	huds::huds.push_back( hud );
-}
-void c_hud::reg( photon_api::i_thud* thud ) {
-	thud->type = photon_api::hudtype_thud;
-	huds::huds.push_back( thud );
 }
 void c_hud::unreg( photon_api::i_hud* hud ) {
 	for ( std::size_t i = 0; i < huds::huds.size( ); ++i ) {
 		if ( huds::huds[ i ] == hud )
-			huds::huds.erase( huds::huds.begin( ) + i );
-	}
-}
-void c_hud::unreg( photon_api::i_thud* thud ) {
-	for ( std::size_t i = 0; i < huds::huds.size( ); ++i ) {
-		if ( huds::huds[ i ] == thud )
 			huds::huds.erase( huds::huds.begin( ) + i );
 	}
 }
