@@ -65,7 +65,9 @@ namespace gui {
 		inline colorpicker_t cur_colorpicker;
 
 		inline std::string cur_slider;
-		inline int         scroll_offset;  // FIXME: make this somehow be only for current menu but still persist
+		inline std::string cur_textbox;
+
+		inline int scroll_offset;  // FIXME: make this somehow be only for current menu but still persist
 
 		void set_theme( bool dark = false );
 
@@ -74,8 +76,9 @@ namespace gui {
 		bool tab( int& selected, vec2_t pos, vec2_t size, const std::string& label, bool use_texture = false );
 		bool mod( mods::mod_info_t& info );
 		bool config( const std::string& label );
+		bool icon_button( vec2_t size, const std::string& texture, bool same_line = false, color_t color = colors::bg );
+		void set_cursor( vec2_t pos );
 		void split( int width );
-		bool icon_button( vec2_t size, const std::string& texture, bool same_line = false );
 
 		bool button( vec2_t size, const std::string& label, bool enabled = true, h_font font = fonts::normal, color_t color = colors::accent );
 		bool toggle( bool& val, const std::string& label );
@@ -84,6 +87,7 @@ namespace gui {
 		void colorpicker( color_t& val, const std::string& label );
 		void combo( std::size_t& val, const std::vector< std::string >& items, const std::string& label );
 		void multicombo( std::size_t& val, const std::vector< std::string >& items, const std::string& label );
+		void textbox( const char*& val, const std::string& label );
 		void separator( const std::string& label );
 	}  // namespace framework
 }  // namespace gui

@@ -89,7 +89,7 @@ void gui::create_fonts( ) {
 	photon->render->create_font( framework::fonts::smaller, "D-DIN EXP", 16, false, fontflag_antialias );
 	photon->render->create_font( framework::fonts::normal, "D-DIN EXP", 20, true, fontflag_antialias );
 	photon->render->create_font( framework::fonts::title, "D-DIN EXP", 24, true, fontflag_antialias );
-	photon->render->create_font( framework::fonts::bigtitle, "D-DIN EXP", 32, true, fontflag_antialias );
+	photon->render->create_font( framework::fonts::bigtitle, "D-DIN EXP", 28, true, fontflag_antialias );
 }
 
 bool gui::initialize( ) {
@@ -104,6 +104,11 @@ bool gui::initialize( ) {
 	photon->render->load_texture_png( "photon_arrows", resource::icons::arrows, 32, 32, sizeof( resource::icons::arrows ) );
 	photon->render->load_texture_png( "photon_download", resource::icons::download, 16, 16, sizeof( resource::icons::download ) );
 	photon->render->load_texture_png( "photon_upload", resource::icons::upload, 16, 16, sizeof( resource::icons::upload ) );
+	photon->render->load_texture_png( "photon_trash_can", resource::icons::trash_can, 16, 16, sizeof( resource::icons::trash_can ) );
+	photon->render->load_texture_png( "photon_plus", resource::icons::plus, 16, 16, sizeof( resource::icons::plus ) );
+	photon->render->load_texture_png( "photon_refresh", resource::icons::refresh, 16, 16, sizeof( resource::icons::refresh ) );
+	photon->render->load_texture_png( "photon_caret_down", resource::icons::caret_down, 8, 8, sizeof( resource::icons::caret_down ) );
+	photon->render->load_texture_png( "photon_caret_up", resource::icons::caret_up, 8, 8, sizeof( resource::icons::caret_up ) );
 
 	// initialize hue gradient texture (this should probably be in framework)
 	constexpr int tex_height = 180;
@@ -157,6 +162,17 @@ void gui::paint( ) {
 	framework::begin( menu_pos, menu_size );
 
 	if ( framework::tab( tab, { screen_half.x - 100 - tab_height - 8, screen_half.y - tab_height / 2 }, { tab_height, tab_height }, "photon_list", true ) ) {
+		if ( framework::icon_button( { 28, 28 }, "photon_refresh", true, framework::colors::fg ) )
+			configs::iterate_cfgs( );
+
+		static const char* cfg_name = "";
+		if ( framework::icon_button( { 28, 28 }, "photon_plus", true, framework::colors::fg ) && !std::string( cfg_name ).empty( ) )
+			configs::create( cfg_name );
+
+		framework::textbox( cfg_name, "config name" );
+
+		framework::set_cursor( { 8, 44 } );
+
 		for ( auto& cfg : configs::cfgs ) {
 			framework::config( cfg );
 		}

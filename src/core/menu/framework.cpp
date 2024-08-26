@@ -87,7 +87,7 @@ void gui::framework::end( ) {
 	if ( !cur_dropdown.id.empty( ) ) {
 		auto cur_pos = cur_dropdown.pos;
 
-		const auto size = vec2_t( 140, 24 );
+		const auto size = vec2_t( 168, 28 );
 
 		cur_pos.y += size.y;
 
@@ -106,12 +106,12 @@ void gui::framework::end( ) {
 					cur_dropdown.done  = true;
 				}
 
-				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 4, fonts::smaller, hover ? colors::accent : colors::text, false, util::to_upper( item ).c_str( ) );
+				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, hover ? colors::accent : colors::text, false, util::to_upper( item ).c_str( ) );
 			} else {
 				if ( clicking )
 					cur_dropdown.value ^= ( 1 << i );
 
-				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 4, fonts::smaller, cur_dropdown.value & ( 1 << i ) ? colors::accent : colors::text, false, util::to_upper( item ).c_str( ) );
+				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, cur_dropdown.value & ( 1 << i ) ? colors::accent : colors::text, false, util::to_upper( item ).c_str( ) );
 			}
 
 			cur_pos.y += size.y;
@@ -291,15 +291,14 @@ bool gui::framework::config( const std::string& label ) {
 	const auto size     = vec2_t( cur_menu.size.x - 16, 36 );
 	const auto btn_size = vec2_t( 28, 28 );
 
-	auto cur_pos = cur_menu.pos + cur_menu.cursor;
-	cur_pos.y -= scroll_offset;
+	auto cur_pos = cur_menu.pos + vec2_t( 8, cur_menu.cursor.y - scroll_offset );
 
 	photon->render->draw_rounded_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::fg, 8 );
 	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
 
 	photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 8, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
 
-	cur_menu.cursor.x = align_right( cur_pos, btn_size * 2 ).x - cur_menu.pos.x - 4;
+	cur_menu.cursor.x = align_right( cur_pos, btn_size * 3 ).x - cur_menu.pos.x - 8;
 	cur_menu.cursor.y += 4;
 
 	if ( icon_button( btn_size, "photon_download", true ) )
@@ -308,25 +307,23 @@ bool gui::framework::config( const std::string& label ) {
 	if ( icon_button( btn_size, "photon_upload", true ) )
 		configs::load( label.c_str( ) );
 
+	if ( icon_button( btn_size, "photon_trash_can", true ) )
+		configs::remove( label.c_str( ) );
+
 	cur_menu.cursor.x = 8;
 	cur_menu.cursor.y += size.y + 4;
 
 	return true;
 }
 
-void gui::framework::split( int width ) {
-	cur_menu.cursor.x += width + 8;
-	cur_menu.cursor.y = 8;
-}
-
-bool gui::framework::icon_button( vec2_t size, const std::string& texture, bool same_line ) {
+bool gui::framework::icon_button( vec2_t size, const std::string& texture, bool same_line, color_t color ) {
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 	cur_pos.y -= scroll_offset;
 
 	bool hover    = !cur_menu.block_input && photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
 	bool clicking = hover && photon->input->get_key_press( mouse_left );
 
-	photon->render->draw_filled_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::accent : colors::bg );
+	photon->render->draw_filled_rect( cur_pos.x, cur_pos.y, size.x, size.y, hover ? colors::accent : color );
 	if ( hover )
 		photon->render->draw_outlined_rect( cur_pos.x - 1, cur_pos.y - 1, size.x + 2, size.y + 2, colors::bg, 3 );
 
@@ -339,6 +336,15 @@ bool gui::framework::icon_button( vec2_t size, const std::string& texture, bool 
 		cur_menu.cursor.x += size.x + 4;
 
 	return clicking;
+}
+
+void gui::framework::set_cursor( vec2_t pos ) {
+	cur_menu.cursor = pos;
+}
+
+void gui::framework::split( int width ) {
+	cur_menu.cursor.x += width + 8;
+	cur_menu.cursor.y = 8;
 }
 
 bool gui::framework::button( vec2_t size, const std::string& label, bool enabled, h_font font, color_t color ) {
@@ -529,10 +535,10 @@ void gui::framework::combo( std::size_t& val, const std::vector< std::string >& 
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 	cur_pos.y -= scroll_offset;
 
-	const auto size = vec2_t( 140, 24 );
+	const auto size = vec2_t( 168, 28 );
 
 	auto cur_pos2 = align_right( cur_pos, size );
-	cur_pos2.y -= 2;
+	cur_pos2.y -= 3;
 
 	bool open = cur_dropdown.id == label;
 
@@ -563,8 +569,11 @@ void gui::framework::combo( std::size_t& val, const std::vector< std::string >& 
 
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, open ? colors::accent : colors::fg, 8 );
 	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
+	photon->render->draw_texture( cur_pos2.x + size.x - 20, cur_pos2.y + 10, 8, 8, open ? "photon_caret_up" : "photon_caret_down", colors::fg );
 
-	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 4, fonts::smaller, colors::text, false, util::to_upper( items[ val ] ).c_str( ) );
+	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 32, cur_pos2.y + size.y );
+	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, util::to_upper( items[ val ] ).c_str( ) );
+	interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
 
 	cur_menu.cursor.y += size.y + 16;
 }
@@ -573,10 +582,10 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 	auto cur_pos = cur_menu.pos + cur_menu.cursor;
 	cur_pos.y -= scroll_offset;
 
-	const auto size = vec2_t( 140, 24 );
+	const auto size = vec2_t( 168, 28 );
 
 	auto cur_pos2 = align_right( cur_pos, size );
-	cur_pos2.y -= 2;
+	cur_pos2.y -= 3;
 
 	bool open = cur_dropdown.id == label;
 
@@ -606,6 +615,7 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, open ? colors::accent : colors::fg, 8 );
 	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
+	photon->render->draw_texture( cur_pos2.x + size.x - 20, cur_pos2.y + 10, 8, 8, open ? "photon_caret_up" : "photon_caret_down", colors::fg );
 
 	std::string display_text;
 	bool        comma = false;
@@ -617,9 +627,76 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 		}
 	}
 
-	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 8, cur_pos2.y + size.y );
-	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 4, fonts::smaller, colors::text, false, util::to_upper( display_text ).c_str( ) );
+	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 32, cur_pos2.y + size.y );
+	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, util::to_upper( display_text ).c_str( ) );
 	interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
+
+	cur_menu.cursor.y += size.y + 16;
+}
+
+void gui::framework::textbox( const char*& val, const std::string& label ) {
+	auto cur_pos = cur_menu.pos + cur_menu.cursor;
+	cur_pos.y -= scroll_offset;
+
+	const auto size = vec2_t( 168, 28 );
+
+	bool open = cur_textbox == label;
+
+	bool hover    = !cur_menu.block_input && photon->input->is_cursor_in_area( cur_pos.x, cur_pos.y, cur_pos.x + size.x, cur_pos.y + size.y );
+	bool clicking = photon->input->get_key_press( mouse_left );
+
+	if ( hover && clicking ) {
+		open = !open;
+		if ( open )
+			cur_textbox = label;
+		else
+			cur_textbox.clear( );
+	} else if ( !hover && clicking ) {
+		open = false;
+		cur_textbox.clear( );
+	}
+
+	std::string s{ val };
+
+	if ( open ) {
+		// FIXME: impl holding keys
+
+		if ( photon->input->get_key_press( key_space ) )
+			s += " ";
+
+		if ( photon->input->get_key_press( key_backspace ) && !s.empty( ) )
+			s.pop_back( );
+
+		bool upper = photon->input->get_key_held( key_lshift ) || photon->input->get_key_held( key_rshift );
+
+		// go through actual characters
+		for ( std::size_t i = 1; i < 46; ++i ) {
+			if ( photon->input->get_key_press( ( button_code_t ) i ) ) {
+				char c = *interfaces::input_system->button_code_to_string( ( button_code_t ) i );
+				s += upper ? toupper( c ) : c;
+			}
+		}
+
+		if ( photon->input->get_key_press( key_enter ) || photon->input->get_key_press( key_escape ) )
+			cur_textbox.clear( );
+
+		val = strdup( s.c_str( ) );
+	}
+
+	photon->render->draw_rounded_rect( cur_pos.x, cur_pos.y, size.x, size.y, open ? colors::accent : colors::fg, 8 );
+	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
+
+	if ( s.empty( ) )
+		photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, colors::fg, false, util::to_upper( label ).c_str( ) );
+	else {
+		const auto text_size = photon->render->get_text_size( fonts::smaller, val );
+
+		auto offset = text_size.x > size.x ? text_size.x - size.x : 0;
+
+		interfaces::surface->set_clip_rect( cur_pos.x + 8, cur_pos.y, cur_pos.x + size.x - 8, cur_pos.y + size.y );
+		photon->render->draw_text( cur_pos.x + 8 - offset, cur_pos.y + 6, fonts::smaller, colors::text, false, val );
+		interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
+	}
 
 	cur_menu.cursor.y += size.y + 16;
 }

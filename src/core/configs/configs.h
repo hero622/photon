@@ -14,6 +14,8 @@ namespace configs {
 
 	void save( const char* cfg_name );
 	void load( const char* cfg_name );
+	void create( const char* cfg_name );
+	void remove( const char* cfg_name );
 
 	void begin( const char* module_name );
 	void end( );
@@ -24,4 +26,4 @@ namespace configs {
 	void serialize( const char* var_name, float& var );
 	void serialize( const char* var_name, color_t& var );
 	void deserialize( const char* module_name );
-};  // namespace configs
+}  // namespace configs

@@ -13,5 +13,6 @@ public:
 	virtual void colorpicker( color_t& val, const char* label );                                                   // colorpicker using a 4 value datatype (r, g, b, a).
 	virtual void combo( std::size_t& val, const char* items[], std::size_t items_count, const char* label );       // value is the index of the selected element.
 	virtual void multicombo( std::size_t& val, const char* items[], std::size_t items_count, const char* label );  // value is a bitmask containing selected elements.
+	virtual void textbox( const char*& val, const char* label );                                                   // textbox using c-string value.
 	virtual void separator( const char* label );                                                                   // separator with a label on it.
 };

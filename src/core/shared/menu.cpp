@@ -37,6 +37,9 @@ void c_menu::multicombo( std::size_t& val, const char* items[], std::size_t item
 
 	return gui::framework::multicombo( val, items_vector, label );
 }
+void c_menu::textbox( const char*& val, const char* label ) {
+	return gui::framework::textbox( val, label );
+}
 void c_menu::separator( const char* label ) {
 	return gui::framework::separator( label );
 }

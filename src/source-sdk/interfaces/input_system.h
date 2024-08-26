@@ -8,6 +8,9 @@ public:
 	bool is_button_down( button_code_t code ) {
 		return util::call_virtual< 14, bool >( this, code );
 	}
+	const char* button_code_to_string( button_code_t code ) {
+		return util::call_virtual< 29, const char* >( this, code );
+	}
 	void get_cursor_position( int* x, int* y ) {
 		return util::call_virtual< 45, void >( this, x, y );
 	}

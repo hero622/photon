@@ -97,6 +97,16 @@ void configs::load( const char* cfg_name ) {
 	}
 }
 
+void configs::create( const char* cfg_name ) {
+	save( cfg_name );
+	iterate_cfgs( );
+}
+
+void configs::remove( const char* cfg_name ) {
+	std::remove( util::ssprintf( "photon/cfgs/%s.json", cfg_name ).c_str( ) );
+	iterate_cfgs( );
+}
+
 void configs::begin( const char* module_name ) {
 	cur_mod = module_name;
 }
