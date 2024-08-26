@@ -29,6 +29,9 @@ cmake -B build
 cmake --build build --config Debug/Release
 ```
 
+> [!TIP]
+> Configure paths in `cmake.toml` and use `cmake --install build`.
+
 ### Pull requests
 - Follow the code style.
 - Do not stage files that you had to configure.

@@ -1,10 +1,16 @@
 [cmake]
 version = "3.15"
+cmkr-include = "cmake/cmkr.cmake"
 cpp-flags = ["-m32"] # this spams a bunch of warning when compiling using msvc, TODO: find a way to only do this with gcc
 c-flags = ["-m32"]
 
 [project]
 name = "photon"
+languages = ["C", "CXX"]
+description = "Photon is a mod loader for Portal 2."
+
+[variables]
+PORTAL2_DIR = "D:/SteamLibrary/steamapps/common/Portal 2"
 
 [target.subhook]
 type    = "static"
@@ -46,3 +52,11 @@ compile-definitions = ["NOMINMAX"]
 msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
 gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]
+
+[[install]]
+targets = ["photon"]
+destination = "${PORTAL2_DIR}"
+
+[[install]]
+targets = ["example-mod"]
+destination = "${PORTAL2_DIR}/photon"

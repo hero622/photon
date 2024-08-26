@@ -12,7 +12,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
 	set(CMKR_ROOT_PROJECT ON)
 
 	# Bootstrap cmkr and automatically regenerate CMakeLists.txt
-	include(cmkr.cmake OPTIONAL RESULT_VARIABLE CMKR_INCLUDE_RESULT)
+	include("cmake/cmkr.cmake" OPTIONAL RESULT_VARIABLE CMKR_INCLUDE_RESULT)
 	if(CMKR_INCLUDE_RESULT)
 		cmkr()
 	endif()
@@ -28,7 +28,16 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 ")
 
 set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 ")
 
-project(photon)
+# Variables
+set(PORTAL2_DIR "D:/SteamLibrary/steamapps/common/Portal 2")
+
+project(photon
+	LANGUAGES
+		C
+		CXX
+	DESCRIPTION
+		"Photon is a mod loader for Portal 2."
+)
 
 # Target: subhook
 set(subhook_SOURCES
@@ -239,4 +248,21 @@ endif()
 target_include_directories(example-mod PUBLIC
 	example-mod
 	"src/sdk"
+)
+
+install(
+	TARGETS
+		photon
+	DESTINATION
+		${PORTAL2_DIR}
+	COMPONENT
+		photon
+)
+install(
+	TARGETS
+		example-mod
+	DESTINATION
+		"${PORTAL2_DIR}/photon"
+	COMPONENT
+		example-mod
 )
