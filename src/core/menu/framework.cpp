@@ -20,9 +20,9 @@ void gui::framework::set_theme( bool dark ) {
 		colors::text     = color_t( 0, 0, 0, 200 );
 		colors::disabled = color_t( 0, 0, 0, 64 );
 	} else {
-		colors::bg       = color_t( 21, 21, 21, 255 );
-		colors::fg       = color_t( 59, 59, 59, 255 );
-		colors::text     = color_t( 255, 255, 255, 64 );
+		colors::bg       = color_t( 20, 20, 20, 255 );
+		colors::fg       = color_t( 60, 60, 60, 255 );
+		colors::text     = color_t( 255, 255, 255, 32 );
 		colors::disabled = color_t( 255, 255, 255, 2 );
 	}
 }
@@ -571,9 +571,11 @@ void gui::framework::combo( std::size_t& val, const std::vector< std::string >& 
 	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
 	photon->render->draw_texture( cur_pos2.x + size.x - 20, cur_pos2.y + 10, 8, 8, open ? "photon_caret_up" : "photon_caret_down", colors::fg );
 
-	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 32, cur_pos2.y + size.y );
+	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 20, cur_pos2.y + size.y );
 	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, util::to_upper( items[ val ] ).c_str( ) );
 	interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
+
+	photon->render->draw_gradient( cur_pos2.x + size.x - 52, cur_pos2.y + 1, 32, size.y - 2, { 0, 0, 0, 0 }, colors::bg, true );
 
 	cur_menu.cursor.y += size.y + 16;
 }
@@ -627,9 +629,11 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 		}
 	}
 
-	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 32, cur_pos2.y + size.y );
+	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 20, cur_pos2.y + size.y );
 	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, util::to_upper( display_text ).c_str( ) );
 	interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
+
+	photon->render->draw_gradient( cur_pos2.x + size.x - 52, cur_pos2.y + 1, 32, size.y - 2, { 0, 0, 0, 0 }, colors::bg, true );
 
 	cur_menu.cursor.y += size.y + 16;
 }
