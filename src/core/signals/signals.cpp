@@ -5,10 +5,6 @@
 #include "core/menu/gui.h"
 #include "core/photon.h"
 
-#ifdef _WIN32
-#include <d3d9.h>
-#endif
-
 SIGNAL( int, __rescall, game_frame, bool, simulating );
 SIGNAL( int, __rescall, frame );
 SIGNAL( int, __rescall, set_signon_state, int, state, int, count, void*, unk );
@@ -17,11 +13,6 @@ SIGNAL( int, __rescall, lock_cursor );
 SIGNAL( int, __rescall, in_key_event, int, eventcode, button_code_t, keyname, const char*, current_binding );
 SIGNAL( int, __rescall, update_button_state, const int*, event );
 SIGNAL( int, __rescall, on_screen_size_changed, int, old_width, int, old_height );
-
-#ifdef _WIN32
-SIGNAL( long, __stdcall, d3d9_reset, IDirect3DDevice9*, device, D3DPRESENT_PARAMETERS*, presentation_parameters );
-SIGNAL( long, __stdcall, d3d9_present, IDirect3DDevice9*, device, const RECT*, source_rect, const RECT*, dest_rect, HWND, dest_window_override, const RGNDATA*, dirty_region );
-#endif
 
 SIGNAL_CALLBACK( void, __rescall, game_frame, bool, simulating ) {
 	photon->common->post_event( &plugin, "pre_tick" );
@@ -71,11 +62,6 @@ bool signals::initialize( ) {
 	photon->signal->create( "in_key_event" )->in_module( MODULE( "client" ) )->in_interface( "VClient016" )->from_vtable( 20 )->enable( &in_key_event_handler );
 	photon->signal->create( "update_button_state" )->in_module( MODULE( "vgui2" ) )->in_interface( "VGUI_Input005" )->from_vtable( OS( 87, 88 ) )->enable( &update_button_state_handler );
 	photon->signal->create( "on_screen_size_changed" )->at_address( interfaces::surface )->from_vtable( 114 )->enable( &on_screen_size_changed_handler );
-
-#ifdef _WIN32
-	photon->signal->create( "d3d9_reset" )->at_address( interfaces::d3d_device )->from_vtable( 16 )->enable( &d3d9_reset_handler );
-	photon->signal->create( "d3d9_present" )->at_address( interfaces::d3d_device )->from_vtable( 17 )->enable( &d3d9_present_handler );
-#endif
 
 	photon->signal->get( "game_frame" )->add_callback( &game_frame_cbk );
 	photon->signal->get( "frame" )->add_callback( &frame_cbk );

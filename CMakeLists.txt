@@ -94,8 +94,6 @@ set(photon_SOURCES
 	"src/core/huds/huds.h"
 	"src/core/interfaces/interfaces.cpp"
 	"src/core/interfaces/interfaces.h"
-	"src/core/menu/dx9.cpp"
-	"src/core/menu/dx9.h"
 	"src/core/menu/framework.cpp"
 	"src/core/menu/framework.h"
 	"src/core/menu/gui.cpp"

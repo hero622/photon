@@ -30,14 +30,6 @@ bool interfaces::initialize( ) {
 	font_manager = util::read< c_font_manager* ( * ) ( ) >( util::get_virtual< 132 >( interfaces::surface ) + OS( 0x8, 0x9 ) )( );
 	scheme       = interfaces::scheme_manager->get_i_scheme( 1 );
 
-#ifdef _WIN32
-	bool is_vulkan  = util::get_module_handle( MODULE( "dxvk_d3d9" ) );
-	auto shader_api = is_vulkan ? MODULE( "shaderapivk" ) : MODULE( "shaderapidx9" );
-	d3d_device      = **reinterpret_cast< IDirect3DDevice9*** >( util::pattern_scan( shader_api, "89 1D ? ? ? ? E8 ? ? ? ? 8B 55" ) + 0x2 );
-
-	LOG_PTR( d3d_device );
-#endif
-
 	LOG_PTR( mem_alloc );
 	LOG_PTR( command_line );
 	LOG_PTR( engine );

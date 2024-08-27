@@ -7,7 +7,6 @@
 #include "core/interfaces/interfaces.h"
 #include "core/mods/mods.h"
 #include "core/photon.h"
-#include "dx9.h"
 #include "framework.h"
 
 // unlock the cursor from the game when menu is open
@@ -42,7 +41,7 @@ SIGNAL_CALLBACK( void, __rescall, paint, paint_mode_t, mode ) {
 			huds::edit = false;
 		}
 
-		if ( photon->input->get_key_press( key_escape ) ) {
+		if ( huds::edit && photon->input->get_key_press( key_escape ) ) {
 			gui::open  = true;
 			huds::edit = false;
 		}
@@ -126,14 +125,10 @@ bool gui::initialize( ) {
 	photon->signal->get( "in_key_event" )->add_callback( &in_key_event_cbk );
 	photon->signal->get( "update_button_state" )->add_callback( &update_button_state_cbk );
 
-	dx9::initialize( );
-
 	return true;
 }
 
 void gui::uninitialize( ) {
-	dx9::uninitialize( );
-
 	SAFE_DELETE( hue_tex );
 
 	photon->render->destruct_font( framework::fonts::bigtitle );
@@ -153,6 +148,9 @@ void gui::paint( ) {
 	static int tab = 1;
 
 	static photon_api::i_photon_mod* cur_mod;
+
+	// draw bg
+	photon->render->draw_gradient( 0, 0, screen_size.x, screen_size.y, { 0, 0, 0, 200 }, { 32, 32, 32, 200 }, false );
 
 	// draw title
 	const auto title_size = photon->render->get_text_size( framework::fonts::bigtitle, "PHOTON" );

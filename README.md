@@ -13,9 +13,13 @@
 
 ## Development
 
-### Building
+### Cloning the project
+```
+git clone --recurse-submodules https://github.com/hero622/photon.git
+```
 
-Requires CMake 3.15.
+### Building
+Requires **CMake 3.15** or higher.
 
 #### Windows
 ```
@@ -30,7 +34,8 @@ cmake --build build --config Debug/Release
 ```
 
 > [!TIP]
-> Configure paths in `cmake.toml` and use `cmake --install build`.
+> Configure paths in `cmake.toml` and run `cmake --install build` after building.  
+> This automatically installs the binaries to Portal 2.
 
 ### Pull requests
 - Follow the code style.
@@ -38,6 +43,29 @@ cmake --build build --config Debug/Release
 
 ### Code style
 Use the included `.clang-format` file.
+
+#### Naming
+- `snake_case` for everything.
+- `c_` prefix for classes.
+- `i_` prefix for interfaces.
+- `_t` suffix for data types.
+
+###### Example
+```cpp
+struct vec2_t {
+	float x, y;
+};
+
+class i_example {
+public:
+	virtual void example_fn( ) = 0;
+};
+
+class c_example : public i_example {
+public:
+	virtual void example_fn( );
+};
+```
 
 ## Creating mods
 > [!NOTE]

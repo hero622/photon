@@ -2,15 +2,7 @@
 
 #include "source-sdk/interfaces.h"
 
-#ifdef _WIN32
-#include <d3d9.h>
-#endif
-
 namespace interfaces {
-#ifdef _WIN32
-	inline IDirect3DDevice9* d3d_device;
-#endif
-
 	inline c_console*            console;
 	inline c_font_manager*       font_manager;
 	inline i_command_line*       command_line;
