@@ -134,7 +134,7 @@ bool gui::initialize( ) {
 void gui::uninitialize( ) {
 	dx9::uninitialize( );
 
-	DELETE_PTR( hue_tex );
+	SAFE_DELETE( hue_tex );
 
 	photon->render->destruct_font( framework::fonts::bigtitle );
 	photon->render->destruct_font( framework::fonts::title );

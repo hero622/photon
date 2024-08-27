@@ -34,24 +34,24 @@ void configs::save( const char* cfg_name ) {
 		for ( auto& [ key, value ] : obj.items( ) ) {
 			switch ( value.type( ) ) {
 			case value_t::array: /* array = color_t */ {
-				color_t col = *( color_t* ) ptrs[ module ][ key ].get< uint32_t >( );
+				color_t col = *( color_t* ) ptrs[ module ][ key ].get< uintptr_t >( );
 				value       = { col.r, col.g, col.b, col.a };
 				continue;
 			}
 			case value_t::string:
-				value = *( const char** ) ptrs[ module ][ key ].get< uint32_t >( );
+				value = *( const char** ) ptrs[ module ][ key ].get< uintptr_t >( );
 				continue;
 			case value_t::boolean:
-				value = *( bool* ) ptrs[ module ][ key ].get< uint32_t >( );
+				value = *( bool* ) ptrs[ module ][ key ].get< uintptr_t >( );
 				continue;
 			case value_t::number_integer:
-				value = *( int32_t* ) ptrs[ module ][ key ].get< uint32_t >( );
+				value = *( int32_t* ) ptrs[ module ][ key ].get< uintptr_t >( );
 				continue;
 			case value_t::number_unsigned:
-				value = *( uint32_t* ) ptrs[ module ][ key ].get< uint32_t >( );
+				value = *( uint32_t* ) ptrs[ module ][ key ].get< uintptr_t >( );
 				continue;
 			case value_t::number_float:
-				value = *( float* ) ptrs[ module ][ key ].get< uint32_t >( );
+				value = *( float* ) ptrs[ module ][ key ].get< uintptr_t >( );
 				continue;
 			}
 		}

@@ -135,15 +135,15 @@ void c_photon::unload( ) {
 	util::console::free( );
 #endif
 
-	DELETE_PTR( photon->config );
-	DELETE_PTR( photon->menu );
-	DELETE_PTR( photon->input );
-	DELETE_PTR( photon->render );
-	DELETE_PTR( photon->hud );
-	DELETE_PTR( photon->common );
-	DELETE_PTR( photon->signal );
-	DELETE_PTR( photon->con );
-	DELETE_PTR( photon->common );
-	DELETE_PTR( photon );
-	DELETE_PTR( info );
+	SAFE_DELETE( photon->config );
+	SAFE_DELETE( photon->menu );
+	SAFE_DELETE( photon->input );
+	SAFE_DELETE( photon->render );
+	SAFE_DELETE( photon->hud );
+	SAFE_DELETE( photon->common );
+	SAFE_DELETE( photon->signal );
+	SAFE_DELETE( photon->con );
+	SAFE_DELETE( photon->common );
+	SAFE_DELETE( photon );
+	SAFE_DELETE( info );
 }

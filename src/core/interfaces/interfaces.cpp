@@ -49,5 +49,5 @@ bool interfaces::initialize( ) {
 }
 
 void interfaces::uninitialize( ) {
-	DELETE_PTR( console );
+	SAFE_DELETE( console );
 }
