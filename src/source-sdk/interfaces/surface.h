@@ -78,11 +78,11 @@ public:
 	}
 	void start_drawing( ) {
 		static auto paint_traverse_ex = util::get_virtual< 117 >( this );
-		return util::read< void( __rescall* )( void* ) >( paint_traverse_ex + OS( 0x7f, 0x53d ) )( this );
+		return paint_traverse_ex.rel32< void( __rescall* )( void* ) >( OS( 0x7f, 0x53d ) )( this );
 	}
 	void finish_drawing( ) {
 		static auto paint_traverse_ex = util::get_virtual< 117 >( this );
-		return util::read< void( __rescall* )( ) >( paint_traverse_ex + OS( 0x25b, 0x163 ) )( );
+		return paint_traverse_ex.rel32< void( __rescall* )( ) >( OS( 0x25b, 0x163 ) )( );
 	}
 
 private:

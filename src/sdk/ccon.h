@@ -8,12 +8,13 @@
 
 class c_con {
 public:
-	// TODO: add completion func
-	virtual con_command* create_concmd( const char* name, fn_command_callback_t cbk, const char* help_string = 0, int flags = 0 );  // Create ConCommands.
-	virtual void         destruct_concmd( const char* name );                                                                       // Destruct ConCommands.
+	// todo: add completion func
+	virtual con_command* create_concmd( const char* name, fn_command_callback_t cbk, const char* help_string = 0, int flags = 0 );  // create concommands.
+	virtual void         destruct_concmd( const char* name );                                                                       // destruct concommands.
 
-	virtual void hook_cmd( const char* name, fn_command_callback_t detour );  // Replace ConCommand callback to your own.
-	virtual void unhook_cmd( const char* name );                              // Revert ConCommand callback.
+	virtual void hook_cmd( const char* name, fn_command_callback_t detour );  // replace concommand callback to your own.
+	virtual void unhook_cmd( const char* name );                              // revert concommand callback.
 
-	virtual con_var* find_con_var( const char* name );  // Find a ConVar's pointer by name.
+	virtual con_var*     find_con_var( const char* name );      // find a convar's pointer by name.
+	virtual con_command* find_con_command( const char* name );  // find a concommand's pointer bu name.
 };

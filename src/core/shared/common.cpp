@@ -48,39 +48,61 @@ void c_common::log_warn( const char* fmt, ... ) {
 	free( buf );
 	interfaces::console->warning( str.c_str( ) );
 }
-
-void* c_common::get_interface( const char* module_name, const char* interface_name ) {
-	using create_interface_fn = void* ( * ) ( const char*, int* );
-	const auto fn             = util::get_sym_addr< create_interface_fn >( util::get_module_handle( module_name ), "CreateInterface" );
-
-	if ( fn ) {
-		void* result = nullptr;
-
-		result = fn( interface_name, nullptr );
-
-		if ( !result ) {
-			util::console::log( "[!] couldn't find interface %s in %s.\n", interface_name, module_name );
-			return nullptr;
-		}
-
-		util::console::log( "[+] found interface %s in %s at %p.\n", interface_name, module_name, result );
-
-		return result;
-	}
-
-	util::console::log( "[!] couldn't find CreateInterface fn in %s.\n", module_name );
-
-	return nullptr;
-}
-
 void c_common::post_event( void* sender, const char* msg ) {
 	mods::post_event( sender, msg );
 }
 
-uint8_t* c_common::pattern_scan( const char* module_name, const char* signature ) {
+void* c_common::get_interface( const char* module_name, const char* interface_name ) {
+	return util::get_interface( module_name, interface_name );
+}
+void* c_common::pattern_scan( const char* module_name, const char* signature ) {
 	return util::pattern_scan( module_name, signature );
 }
-
 void* c_common::get_module_handle( const char* module_name ) {
 	return util::get_module_handle( module_name );
+}
+
+int c_common::get_slot( ) {
+	return interfaces::engine_client->get_local_player( );
+}
+bool c_common::is_coop( ) {
+	// FIXME: unfinished
+	if ( !strlen( get_current_map( ) ) )
+		return false;
+
+	if ( *interfaces::game_rules )
+		return ( *interfaces::game_rules )->is_multiplayer( );
+
+	static auto sv_portal_players = photon->con->find_con_var( "sv_portal_players" );
+	return sv_portal_players->get_int( ) == 2;
+}
+bool c_common::is_orange( ) {
+	// FIXME: unfinished
+	static bool is_orange;
+
+	is_orange = is_coop( ) && !get_host_state( )->active_game;
+
+	return is_orange;
+}
+bool c_common::is_splitscreen( ) {
+	// FIXME: unfinished
+	// if ( !is_coop( ) )
+	// 	return false;
+
+	// for ( int i = 0; i < 2; ++i ) {
+	// 	void* player = get_client_entity( i + 1 );
+	// 	if ( !player )
+	// 		continue;
+	// }
+
+	return false;
+}
+const char* c_common::get_current_map( ) {
+	return interfaces::engine_client->get_level_name_short( );
+}
+c_host_state* c_common::get_host_state( ) {
+	return interfaces::host_state;
+}
+void* c_common::get_client_entity( int entnum ) {
+	return interfaces::entity_list->get_client_entity( entnum );
 }

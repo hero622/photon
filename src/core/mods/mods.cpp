@@ -68,7 +68,11 @@ void mods::unload( const char* name ) {
 bool mods::loadall( ) {
 	bool had_fail = false;
 	for ( const auto& entry : std::filesystem::directory_iterator( "photon" ) ) {
-		bool result = load( entry.path( ).stem( ).string( ).c_str( ) );
+		auto path = entry.path( );
+		if ( path.extension( ) != OS( ".dll", ".so" ) )
+			continue;
+
+		bool result = load( path.stem( ).string( ).c_str( ) );
 
 		if ( !result ) {
 			had_fail = true;

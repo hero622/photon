@@ -178,6 +178,38 @@ struct vertex_t {
 	}
 };
 
+enum hoststate_t {
+	hs_new_game = 0,
+	hs_load_game,
+	hs_change_level_sp,
+	hs_change_level_mp,
+	hs_run,
+	hs_game_shutdown,
+	hs_shutdown,
+	hs_restart,
+};
+
+struct c_host_state {
+	hoststate_t current_state;
+	hoststate_t next_state;
+	vec3_t      vec_location;
+	vec3_t      ang_location;  // TODO: make qangle class in future ?
+	char        level_name[ 256 ];
+	char        map_group_name[ 256 ];
+	char        landmark_name[ 256 ];
+	char        save_name[ 256 ];
+	float       short_frame_time;
+
+	bool active_game;
+	bool remember_location;
+	bool background_level;
+	bool waiting_for_connection;
+	bool let_tools_override_load_game_ents;
+	bool split_screen_connect;
+	bool game_has_shut_down_and_flushed_memory;
+	bool workshop_map_download_pending;
+};
+
 #define FCVAR_NONE                    0
 #define FCVAR_UNREGISTERED            ( 1 << 0 )
 #define FCVAR_DEVELOPMENTONLY         ( 1 << 1 )

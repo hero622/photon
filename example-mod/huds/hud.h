@@ -9,4 +9,5 @@ namespace huds {
 
 class c_example_hud : public photon_api::i_hud {
 	virtual void paint( );
+	virtual bool is_splitscreen( ) { return true; };
 };

@@ -16,7 +16,11 @@ void configs::iterate_cfgs( ) {
 	cfgs.clear( );
 
 	for ( const auto& entry : std::filesystem::directory_iterator( "photon/cfgs" ) ) {
-		cfgs.push_back( entry.path( ).stem( ).string( ) );
+		auto path = entry.path( );
+		if ( path.extension( ) != ".json" )
+			continue;
+
+		cfgs.push_back( path.stem( ).string( ) );
 	}
 }
 

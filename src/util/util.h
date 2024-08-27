@@ -20,6 +20,7 @@
 #define _stricmp strcasecmp
 #endif
 
+#include "address.h"
 #include "math.h"
 #include "sdk/platform.h"
 
@@ -41,8 +42,9 @@ namespace util {
 		std::size_t    size;
 	};
 
-	bool          get_module_info( const char* module_name, module_info_t* module_info );
-	std::uint8_t* pattern_scan( const char* module_name, const char* signature ) noexcept;
+	bool      get_module_info( const char* module_name, module_info_t* module_info );
+	address_t pattern_scan( const char* module_name, const char* signature ) noexcept;
+	address_t get_interface( const char* module_name, const char* interface_name );
 
 	template < std::size_t index, typename t, typename... args_t >
 	__forceinline t call_virtual( void* name, args_t... args ) {
@@ -53,14 +55,8 @@ namespace util {
 	}
 
 	template < std::size_t index >
-	__forceinline std::uint8_t* get_virtual( void* name ) {
-		return reinterpret_cast< std::uint8_t* >( ( *static_cast< int** >( name ) )[ index ] );
-	}
-
-	template < typename t >
-	__forceinline t read( std::uint8_t* source ) {
-		auto rel = *reinterpret_cast< int* >( source );
-		return ( t ) ( source + rel + sizeof( rel ) );
+	__forceinline address_t get_virtual( void* name ) {
+		return address_t( ( *static_cast< int** >( name ) )[ index ] );
 	}
 
 	template < typename t >

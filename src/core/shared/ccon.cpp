@@ -70,3 +70,7 @@ void c_con::unhook_cmd( const char* name ) {
 con_var* c_con::find_con_var( const char* name ) {
 	return reinterpret_cast< con_var* >( interfaces::cvar->find_command_base( name ) );
 }
+
+con_command* c_con::find_con_command( const char* name ) {
+	return reinterpret_cast< con_command* >( interfaces::cvar->find_command_base( name ) );
+}

@@ -88,7 +88,7 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 }
 
 bool c_photon::get_info( ) {
-	auto server_plugin_helpers = reinterpret_cast< uint8_t* >( interfaces::server_plugin_helpers );
+	auto server_plugin_helpers = interfaces::server_plugin_helpers.as< uint8_t* >( );
 	auto size                  = *reinterpret_cast< int* >( server_plugin_helpers + SERVER_PLUGIN_SIZE );
 	if ( size > 0 ) {
 		auto plugins = *reinterpret_cast< uint8_t** >( server_plugin_helpers + SERVER_PLUGIN_PLUGINS );
@@ -124,7 +124,8 @@ void c_photon::unload( ) {
 
 	if ( plugin.get_info( ) ) {
 		auto unload_cmd = std::string( "plugin_unload " ) + std::to_string( plugin.info->index );
-		interfaces::engine_client->cbuf_add( unload_cmd.c_str( ), SAFE_UNLOAD_DELAY );
+		auto target     = interfaces::engine_client->get_active_split_screen_slot( );
+		interfaces::engine_client->cbuf_add_text( target, unload_cmd.c_str( ), SAFE_UNLOAD_DELAY );
 	}
 
 	photon->common->log( "Goodbye.\n" );

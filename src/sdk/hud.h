@@ -12,7 +12,8 @@ namespace photon_api {
 		float  scale;   // scale value to multiply by. (currently useless)
 		vec2_t bounds;  // screen boundaries.
 
-		virtual void paint( ) = 0;
+		virtual void paint( )          = 0;
+		virtual bool is_splitscreen( ) = 0;
 	};
 }  // namespace photon_api
 

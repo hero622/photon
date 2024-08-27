@@ -104,7 +104,32 @@ bool util::get_module_info( const char* module_name, module_info_t* module_info 
 	return false;
 }
 
-std::uint8_t* util::pattern_scan( const char* module_name, const char* signature ) noexcept {
+address_t util::get_interface( const char* module_name, const char* interface_name ) {
+	using create_interface_fn = void* ( * ) ( const char*, int* );
+
+	const auto fn = get_sym_addr< create_interface_fn >( get_module_handle( module_name ), "CreateInterface" );
+
+	if ( fn ) {
+		void* result = nullptr;
+
+		result = fn( interface_name, nullptr );
+
+		if ( !result ) {
+			console::log( "[!] couldn't find interface %s in %s.\n", interface_name, module_name );
+			return nullptr;
+		}
+
+		console::log( "[+] found interface %s in %s at %p.\n", interface_name, module_name, result );
+
+		return result;
+	}
+
+	console::log( "[!] couldn't find CreateInterface fn in %s.\n", module_name );
+
+	return nullptr;
+}
+
+address_t util::pattern_scan( const char* module_name, const char* signature ) noexcept {
 	module_info_t module_info;
 
 	if ( !get_module_info( module_name, &module_info ) )
