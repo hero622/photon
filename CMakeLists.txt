@@ -83,6 +83,26 @@ if(MSVC) # msvc
 	)
 endif()
 
+# Target: zip
+set(zip_SOURCES
+	cmake.toml
+	"vendor/zip/src/miniz.h"
+	"vendor/zip/src/zip.c"
+	"vendor/zip/src/zip.h"
+)
+
+add_library(zip STATIC)
+
+target_sources(zip PRIVATE ${zip_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${zip_SOURCES})
+
+add_library(kuba--::zip ALIAS zip)
+if(MSVC) # msvc
+	target_compile_options(zip PUBLIC
+		"/MP"
+	)
+endif()
+
 # Target: photon
 set(photon_SOURCES
 	cmake.toml
@@ -90,6 +110,8 @@ set(photon_SOURCES
 	"src/core/configs/configs.h"
 	"src/core/convars/convars.cpp"
 	"src/core/convars/convars.h"
+	"src/core/gigademos/gigademos.cpp"
+	"src/core/gigademos/gigademos.h"
 	"src/core/huds/huds.cpp"
 	"src/core/huds/huds.h"
 	"src/core/interfaces/interfaces.cpp"
@@ -133,13 +155,16 @@ set(photon_SOURCES
 	"src/source-sdk/interfaces/console.h"
 	"src/source-sdk/interfaces/cvar.h"
 	"src/source-sdk/interfaces/engine_client.h"
+	"src/source-sdk/interfaces/entity_list.h"
 	"src/source-sdk/interfaces/font_manager.h"
+	"src/source-sdk/interfaces/game_rules.h"
 	"src/source-sdk/interfaces/input_system.h"
 	"src/source-sdk/interfaces/mem_alloc.h"
 	"src/source-sdk/interfaces/scheme.h"
 	"src/source-sdk/interfaces/surface.h"
 	"src/source-sdk/plugin.cpp"
 	"src/source-sdk/plugin.h"
+	"src/util/address.h"
 	"src/util/math.h"
 	"src/util/util.cpp"
 	"src/util/util.h"
@@ -188,11 +213,13 @@ target_include_directories(photon PUBLIC
 	src
 	vendor
 	"vendor/json/single_include"
+	"vendor/zip/src"
 )
 
 target_link_libraries(photon PUBLIC
 	Zeex::subhook
 	lvandeve::lodepng
+	kuba--::zip
 )
 
 # Target: example-mod

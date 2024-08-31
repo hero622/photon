@@ -2,6 +2,7 @@
 
 #include "core/configs/configs.h"
 #include "core/convars/convars.h"
+#include "core/gigademos/gigademos.h"
 #include "core/interfaces/interfaces.h"
 #include "core/menu/gui.h"
 #include "core/mods/mods.h"
@@ -70,6 +71,11 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 
 	if ( !gui::initialize( ) ) {
 		photon->common->log_warn( "Failed to initialize gui.\n" );
+		return false;
+	}
+
+	if ( !gigademos::initialize( ) ) {
+		photon->common->log_warn( "Failed to initialize gigademos.\n" );
 		return false;
 	}
 

@@ -31,7 +31,8 @@ bool interfaces::initialize( ) {
 	font_manager = util::get_virtual< 132 >( interfaces::surface ).rel32< c_font_manager* ( * ) ( ) >( OS( 0x8, 0x9 ) )( );
 	scheme       = interfaces::scheme_manager->get_i_scheme( 1 );
 	game_rules   = util::pattern_scan( MODULE( "client" ), "E8 ? ? ? ? C7 06 ? ? ? ? 89 7E 0C" ).rel32( 0x1 ).at< c_game_rules** >( 0x15 );  // TODO: linux
-	host_state   = util::get_virtual< OS( 15, 36 ) >( interfaces::client_state ).at( OS( 0x2ac, 0x4fb ) ).at< c_host_state* >( OS( 0x1, 0x1c ) );
+	// host_state   = util::get_virtual< OS( 15, 36 ) >( interfaces::client_state ).at( OS( 0x2ac, 0x4fb ) ).at< c_host_state* >( OS( 0x1, 0x1c ) );
+	demo_player = util::pattern_scan( MODULE( "engine" ), "A1 ? ? ? ? A3 ? ? ? ? C3 CC CC CC CC CC 68 ? ? ? ? E8" ).as< c_demo_player* ( * ) ( ) >( )( );
 
 	LOG_PTR( mem_alloc );
 	LOG_PTR( command_line );

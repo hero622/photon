@@ -29,13 +29,21 @@ headers = ["vendor/lodepng/lodepng.h"]
 
 msvc.compile-options = ["/MP"]
 
+[target.zip]
+type    = "static"
+alias   = "kuba--::zip"
+sources = ["vendor/zip/src/*.c"]
+headers = ["vendor/zip/src/*.h"]
+
+msvc.compile-options = ["/MP"]
+
 [target.photon]
 type                = "shared"
 sources             = ["src/**.cpp", "src/**.h"]
-include-directories = ["src", "vendor", "vendor/json/single_include"]
+include-directories = ["src", "vendor", "vendor/json/single_include", "vendor/zip/src"]
 compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
-link-libraries      = ["Zeex::subhook", "lvandeve::lodepng"]
+link-libraries      = ["Zeex::subhook", "lvandeve::lodepng", "kuba--::zip"]
 
 msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
 msvc.compile-definitions = ["SUBHOOK_STATIC"]

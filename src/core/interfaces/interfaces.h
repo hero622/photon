@@ -21,6 +21,7 @@ namespace interfaces {
 	inline c_game_rules**        game_rules;
 	inline c_host_state*         host_state;
 	inline i_client_entity_list* entity_list;
+	inline c_demo_player*        demo_player;
 
 	bool initialize( );
 	void uninitialize( );

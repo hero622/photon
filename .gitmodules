@@ -7,3 +7,6 @@
 [submodule "vendor/json"]
 	path = vendor/json
 	url = https://github.com/nlohmann/json
+[submodule "vendor/zip"]
+	path = vendor/zip
+	url = https://github.com/kuba--/zip

@@ -3,6 +3,7 @@
 #include "interfaces/command_line.h"
 #include "interfaces/console.h"
 #include "interfaces/cvar.h"
+#include "interfaces/demo_player.h"
 #include "interfaces/engine_client.h"
 #include "interfaces/entity_list.h"
 #include "interfaces/font_manager.h"

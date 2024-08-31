@@ -22,17 +22,17 @@ SIGNAL_CALLBACK( void, __rescall, game_frame, bool, simulating ) {
 	photon->common->post_event( &plugin, "post_tick" );
 }
 
-SIGNAL_CALLBACK( void, __rescall, frame ) {
-	photon->common->post_event( &plugin, "pre_frame" );
+// SIGNAL_CALLBACK( void, __rescall, frame ) {
+// 	photon->common->post_event( &plugin, "pre_frame" );
 
-	original( ecx );
+// 	original( ecx );
 
-	// XXX: im not sure why we need this condition here, it used to be fine
-	// possibly i changed something about unloading and this doesnt get unhooked early enough?
-	// if there is more stuff being done here later, this might break, this should be looked into !!!
-	if ( photon )
-		photon->common->post_event( &plugin, "post_frame" );
-}
+// 	// XXX: im not sure why we need this condition here, it used to be fine
+// 	// possibly i changed something about unloading and this doesnt get unhooked early enough?
+// 	// if there is more stuff being done here later, this might break, this should be looked into !!!
+// 	if ( photon )
+// 		photon->common->post_event( &plugin, "post_frame" );
+// }
 
 SIGNAL_CALLBACK( void, __rescall, set_signon_state, int, state, int, count, void*, unk ) {
 	original( ecx, state, count, unk );
@@ -64,7 +64,7 @@ bool signals::initialize( ) {
 	photon->signal->create( "on_screen_size_changed" )->at_address( interfaces::surface )->from_vtable( 114 )->enable( &on_screen_size_changed_handler );
 
 	photon->signal->get( "game_frame" )->add_callback( &game_frame_cbk );
-	photon->signal->get( "frame" )->add_callback( &frame_cbk );
+	// photon->signal->get( "frame" )->add_callback( &frame_cbk );
 	photon->signal->get( "set_signon_state" )->add_callback( &set_signon_state_cbk );
 	photon->signal->get( "on_screen_size_changed" )->add_callback( &on_screen_size_changed_cbk );
 
