@@ -4,7 +4,7 @@
 
 class c_game_rules {
 public:
-	bool is_multiplayer( ) {
+	__forceinline bool is_multiplayer( ) {
 		return util::call_virtual< OS( 33, 34 ), bool >( this );
 	}
 };
