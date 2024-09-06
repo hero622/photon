@@ -88,12 +88,11 @@ bool c_photon::load( create_interface_fn interface_factory, create_interface_fn 
 }
 
 bool c_photon::get_info( ) {
-	auto server_plugin_helpers = interfaces::server_plugin_helpers.as< uint8_t* >( );
-	auto size                  = *reinterpret_cast< int* >( server_plugin_helpers + SERVER_PLUGIN_SIZE );
+	auto size = interfaces::server_plugin_helpers.at< int >( 0x14 );
 	if ( size > 0 ) {
-		auto plugins = *reinterpret_cast< uint8_t** >( server_plugin_helpers + SERVER_PLUGIN_PLUGINS );
+		auto plugins = interfaces::server_plugin_helpers.at< c_plugin** >( 0x4 );
 		for ( auto i = 0; i < size; ++i ) {
-			auto ptr = *reinterpret_cast< c_plugin** >( plugins + sizeof( uint8_t* ) * i );
+			auto ptr = plugins[ i ];
 			if ( !std::strcmp( ptr->name, PLUGIN_SIGNATURE ) ) {
 				info->ptr   = ptr;
 				info->index = i;

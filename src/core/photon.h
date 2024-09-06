@@ -7,9 +7,6 @@
 
 #define PLUGIN_SIGNATURE "photon dev"
 
-#define SERVER_PLUGIN_SIZE    16
-#define SERVER_PLUGIN_PLUGINS 4
-
 #define SAFE_UNLOAD_DELAY 33
 
 struct plugin_info_t {

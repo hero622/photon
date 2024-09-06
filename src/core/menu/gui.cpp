@@ -73,8 +73,7 @@ SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
 		 * i didnt want to hook those functions so we just reset
 		 * the struct that those functions update here
 		 */
-		uint8_t* context_addr = ( uint8_t* ) ecx + 0xce8;  // m_hContext
-		int      context      = *( int* ) context_addr;
+		int context = address_t( ecx ).at< int >( 0xce8 );  // m_hContext
 
 		return util::call_virtual< OS( 88, 89 ), void >( ecx, context );  // ResetInputContext
 	}
