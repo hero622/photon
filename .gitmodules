@@ -1,6 +1,6 @@
-[submodule "vendor/subhook"]
-	path = vendor/subhook
-	url = https://github.com/Zeex/subhook
+[submodule "vendor/DynoHook"]
+	path = vendor/DynoHook
+	url = https://github.com/qubka/DynoHook
 [submodule "vendor/lodepng"]
 	path = vendor/lodepng
 	url = https://github.com/lvandeve/lodepng
