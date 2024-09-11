@@ -76,9 +76,7 @@ public:
 > [!NOTE]
 > There's an included [example mod](example-mod) with a few features you can take a look at.
 
-- Download and include the [SDK](src/sdk) in your project.
-- Compile your project as a 32-bit shared library using the **C++20** standard.
-- Use the `/Zc:preprocessor` compiler flag on **MSVC** only!
+Download and include the [SDK](src/sdk) in your project.
 
 #### Barebones mod example
 ```cpp

@@ -31,7 +31,7 @@ compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
 link-libraries      = ["dynohook", "lvandeve::lodepng"]
 
-msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
+msvc.compile-options     = ["/MP"]
 gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]
 
@@ -46,7 +46,7 @@ include-directories = ["example-mod", "src/sdk"]
 compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
 
-msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
+msvc.compile-options     = ["/MP"]
 gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]
 

@@ -151,7 +151,6 @@ target_compile_features(photon PUBLIC
 if(MSVC) # msvc
 	target_compile_options(photon PUBLIC
 		"/MP"
-		"/Zc:preprocessor"
 	)
 endif()
 
@@ -213,7 +212,6 @@ target_compile_features(example-mod PUBLIC
 if(MSVC) # msvc
 	target_compile_options(example-mod PUBLIC
 		"/MP"
-		"/Zc:preprocessor"
 	)
 endif()
 
