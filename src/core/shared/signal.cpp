@@ -93,14 +93,12 @@ void c_signal::enable( signal_t* signal ) {
 	dyno::HookManager::Get( ).hookDetour( signal->addr, fn );
 }
 void c_signal::disable( signal_t* signal ) {
-	dyno::HookManager::Get( ).findDetour( signal->addr )->unhook( );
+	dyno::HookManager::Get( ).unhookDetour( signal->addr );
 }
 signal_t* c_signal::get( const char* name ) {
 	return signals[ name ];
 }
 void c_signal::remove_all( ) {
-	for ( auto& signal : signals ) {
-		signal.second->disable( );
-	}
+	dyno::HookManager::Get( ).unhookAll( );
 	signals.clear( );
 }
