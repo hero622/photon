@@ -48,7 +48,7 @@ namespace util {
 
 	template < std::size_t index, typename t, typename... args_t >
 	__forceinline t call_virtual( void* name, args_t... args ) {
-		using fn_t = t( __rescall* )( void*, args_t... );
+		using fn_t = t( __thiscall* )( void*, args_t... );
 
 		auto fn = ( *reinterpret_cast< fn_t** >( name ) )[ index ];
 		return fn( name, args... );

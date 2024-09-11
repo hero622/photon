@@ -47,42 +47,42 @@ enum class e_return_action : int32_t {
 struct signal_params_t {  // this shadows dyno::IHook
 	template < class T >
 	T get_arg( size_t index ) {
-		auto callconv = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
-		auto reg      = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
-		auto argptr   = ( ( void*( __rescall* ) ( void*, size_t, void* ) )( *( int** ) callconv )[ 3 ] )( callconv, index, reg );
+		auto callconv = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
+		auto reg      = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
+		auto argptr   = ( ( void*( __thiscall* ) ( void*, size_t, void* ) )( *( int** ) callconv )[ 3 ] )( callconv, index, reg );
 
 		return *( T* ) argptr;
 	}
 
 	template < class T >
 	void set_arg( size_t index, T value ) {
-		auto callconv = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
-		auto reg      = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
-		auto argptr   = ( ( void*( __rescall* ) ( void*, size_t, void* ) )( *( int** ) callconv )[ 3 ] )( callconv, index, reg );
+		auto callconv = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
+		auto reg      = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
+		auto argptr   = ( ( void*( __thiscall* ) ( void*, size_t, void* ) )( *( int** ) callconv )[ 3 ] )( callconv, index, reg );
 
 		*( T* ) argptr = value;
 
-		( ( void( __rescall* )( void*, size_t, void*, void* ) )( *( int** ) callconv )[ 4 ] )( callconv, index, reg, argptr );
+		( ( void( __thiscall* )( void*, size_t, void*, void* ) )( *( int** ) callconv )[ 4 ] )( callconv, index, reg, argptr );
 	}
 
 	template < class T >
 	T get_return( ) {
-		auto callconv = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
-		auto reg      = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
-		auto retptr   = ( ( void*( __rescall* ) ( void*, void* ) )( *( int** ) callconv )[ 5 ] )( callconv, reg );
+		auto callconv = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
+		auto reg      = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
+		auto retptr   = ( ( void*( __thiscall* ) ( void*, void* ) )( *( int** ) callconv )[ 5 ] )( callconv, reg );
 
 		return *( T* ) retptr;
 	}
 
 	template < class T >
 	void set_return( T value ) {
-		auto callconv = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
-		auto reg      = ( ( void*( __rescall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
-		auto retptr   = ( ( void*( __rescall* ) ( void*, void* ) )( *( int** ) callconv )[ 5 ] )( callconv, reg );
+		auto callconv = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 12 ] )( this );
+		auto reg      = ( ( void*( __thiscall* ) ( void* ) )( *( int** ) this )[ 13 ] )( this );
+		auto retptr   = ( ( void*( __thiscall* ) ( void*, void* ) )( *( int** ) callconv )[ 5 ] )( callconv, reg );
 
 		*( T* ) retptr = value;
 
-		( ( void( __rescall* )( void*, void*, void* ) )( *( int** ) callconv )[ 6 ] )( callconv, reg, retptr );
+		( ( void( __thiscall* )( void*, void*, void* ) )( *( int** ) callconv )[ 6 ] )( callconv, reg, retptr );
 	}
 };
 

@@ -104,15 +104,15 @@ public:
 	}
 
 	void set_value( const char* value ) {
-		using original_fn = void( __rescall* )( void*, const char* );
+		using original_fn = void( __thiscall* )( void*, const char* );
 		return ( *( original_fn** ) this )[ OS( 12, 19 ) ]( this, value );
 	}
 	void set_value( float value ) {
-		using original_fn = void( __rescall* )( void*, float );
+		using original_fn = void( __thiscall* )( void*, float );
 		return ( *( original_fn** ) this )[ OS( 13, 20 ) ]( this, value );
 	}
 	void set_value( int value ) {
-		using original_fn = void( __rescall* )( void*, int );
+		using original_fn = void( __thiscall* )( void*, int );
 		return ( *( original_fn** ) this )[ OS( 14, 21 ) ]( this, value );
 	}
 };

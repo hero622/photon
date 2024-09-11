@@ -7,17 +7,14 @@
 #ifdef _WIN32
 #define MODULE( name ) name ".dll"
 
-#define __rescall __thiscall
-
 #define DLL_EXPORT extern "C" __declspec( dllexport )
 
 #define OS( win, linux ) win
 #else
 #define MODULE( name ) name ".so"
 
-#define __rescall  __attribute__( ( __cdecl__ ) )
 #define __cdecl    __attribute__( ( __cdecl__ ) )
-#define __fastcall __attribute__( ( __fastcall__ ) )
+#define __thiscall __attribute__( ( __cdecl__ ) )
 
 #define __forceinline inline __attribute__( ( always_inline ) )
 

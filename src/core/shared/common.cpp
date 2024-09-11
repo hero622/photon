@@ -86,14 +86,14 @@ bool c_common::is_orange( ) {
 }
 bool c_common::is_splitscreen( ) {
 	// FIXME: unfinished
-	// if ( !is_coop( ) )
-	// 	return false;
+	if ( !is_coop( ) )
+		return false;
 
-	// for ( int i = 0; i < 2; ++i ) {
-	// 	void* player = get_client_entity( i + 1 );
-	// 	if ( !player )
-	// 		continue;
-	// }
+	for ( int i = 0; i < 2; ++i ) {
+		void* player = get_client_entity( i + 1 );
+		if ( !player )
+			continue;
+	}
 
 	return false;
 }
