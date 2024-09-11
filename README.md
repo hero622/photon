@@ -46,12 +46,17 @@ Use the included `.clang-format` file.
 
 #### Naming
 - `snake_case` for everything.
+- `e_` prefix for enums.
 - `c_` prefix for classes.
 - `i_` prefix for interfaces.
 - `_t` suffix for data types.
 
 ###### Example
 ```cpp
+enum class e_example {
+	example_value
+};
+
 struct vec2_t {
 	float x, y;
 };

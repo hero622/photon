@@ -12,7 +12,8 @@ description = "Photon is a mod loader for Portal 2."
 [variables]
 PORTAL2_DIR = "D:/SteamLibrary/steamapps/common/Portal 2"
 
-[subdir."vendor/DynoHook"]
+[options]
+DYNOHOOK_BUILD_STATIC_RUNTIME = false
 
 [target.lodepng]
 type    = "static"
@@ -33,6 +34,10 @@ link-libraries      = ["dynohook", "lvandeve::lodepng"]
 msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
 gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]
+
+cmake-before = """
+add_subdirectory("vendor/DynoHook" EXCLUDE_FROM_ALL)
+""" # cmkr doesnt allow for this option afaik
 
 [target.example-mod]
 type                = "shared"

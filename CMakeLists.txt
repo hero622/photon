@@ -28,6 +28,9 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-m32 ")
 
 set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-m32 ")
 
+# Options
+option(DYNOHOOK_BUILD_STATIC_RUNTIME "" OFF)
+
 # Variables
 set(PORTAL2_DIR "D:/SteamLibrary/steamapps/common/Portal 2")
 
@@ -38,16 +41,6 @@ project(photon
 	DESCRIPTION
 		"Photon is a mod loader for Portal 2."
 )
-
-# Subdirectory: vendor/DynoHook
-set(CMKR_CMAKE_FOLDER ${CMAKE_FOLDER})
-if(CMAKE_FOLDER)
-	set(CMAKE_FOLDER "${CMAKE_FOLDER}/vendor/DynoHook")
-else()
-	set(CMAKE_FOLDER "vendor/DynoHook")
-endif()
-add_subdirectory("vendor/DynoHook")
-set(CMAKE_FOLDER ${CMKR_CMAKE_FOLDER})
 
 # Target: lodepng
 set(lodepng_SOURCES
@@ -69,6 +62,9 @@ if(MSVC) # msvc
 endif()
 
 # Target: photon
+set(CMKR_TARGET photon)
+add_subdirectory("vendor/DynoHook" EXCLUDE_FROM_ALL)
+
 set(photon_SOURCES
 	cmake.toml
 	"src/core/configs/configs.cpp"
