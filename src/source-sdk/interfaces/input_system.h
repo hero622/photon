@@ -5,10 +5,10 @@ public:
 	__forceinline void enable_input( bool enable ) {
 		return util::call_virtual< 10, void >( this, enable );
 	}
-	__forceinline bool is_button_down( button_code_t code ) {
+	__forceinline bool is_button_down( e_button_code code ) {
 		return util::call_virtual< 14, bool >( this, code );
 	}
-	__forceinline const char* button_code_to_string( button_code_t code ) {
+	__forceinline const char* button_code_to_string( e_button_code code ) {
 		return util::call_virtual< 29, const char* >( this, code );
 	}
 	__forceinline void get_cursor_position( int* x, int* y ) {

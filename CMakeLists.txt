@@ -39,30 +39,15 @@ project(photon
 		"Photon is a mod loader for Portal 2."
 )
 
-# Target: subhook
-set(subhook_SOURCES
-	cmake.toml
-	"vendor/subhook/subhook.c"
-	"vendor/subhook/subhook.h"
-)
-
-add_library(subhook STATIC)
-
-target_sources(subhook PRIVATE ${subhook_SOURCES})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${subhook_SOURCES})
-
-add_library(Zeex::subhook ALIAS subhook)
-if(MSVC) # msvc
-	target_compile_definitions(subhook PUBLIC
-		SUBHOOK_STATIC
-	)
+# Subdirectory: vendor/DynoHook
+set(CMKR_CMAKE_FOLDER ${CMAKE_FOLDER})
+if(CMAKE_FOLDER)
+	set(CMAKE_FOLDER "${CMAKE_FOLDER}/vendor/DynoHook")
+else()
+	set(CMAKE_FOLDER "vendor/DynoHook")
 endif()
-
-if(MSVC) # msvc
-	target_compile_options(subhook PUBLIC
-		"/MP"
-	)
-endif()
+add_subdirectory("vendor/DynoHook")
+set(CMAKE_FOLDER ${CMKR_CMAKE_FOLDER})
 
 # Target: lodepng
 set(lodepng_SOURCES
@@ -157,12 +142,6 @@ target_compile_definitions(photon PUBLIC
 	NOMINMAX
 )
 
-if(MSVC) # msvc
-	target_compile_definitions(photon PUBLIC
-		SUBHOOK_STATIC
-	)
-endif()
-
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "GNU") # gcc
 	target_compile_definitions(photon PUBLIC
 		_GNU_SOURCE
@@ -190,11 +169,14 @@ endif()
 target_include_directories(photon PUBLIC
 	src
 	vendor
+	"vendor/DynoHook/include"
+	"build/vendor/DynoHook/exports"
+	"vendor/DynoHook/asmjit/src"
 	"vendor/json/single_include"
 )
 
 target_link_libraries(photon PUBLIC
-	Zeex::subhook
+	dynohook
 	lvandeve::lodepng
 )
 

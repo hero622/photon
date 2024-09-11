@@ -2,7 +2,7 @@
 
 #include "vector.h"
 
-enum signonstate_t {
+enum e_signonstate {
 	signonstate_none        = 0,
 	signonstate_challenge   = 1,
 	signonstate_connected   = 2,
@@ -15,12 +15,12 @@ enum signonstate_t {
 
 typedef unsigned long h_font;
 
-enum paint_mode_t {
+enum e_paint_mode {
 	paint_uipanels     = ( 1 << 0 ),
 	paint_ingamepanels = ( 1 << 1 ),
 };
 
-enum font_flags_t {
+enum e_font_flags {
 	fontflag_none,
 	fontflag_italic       = 0x001,
 	fontflag_underline    = 0x002,
@@ -36,7 +36,7 @@ enum font_flags_t {
 	fontflag_bitmap       = 0x800,
 };
 
-enum button_code_t {
+enum e_button_code {
 	button_code_invalid = -1,
 	button_code_none    = 0,
 
@@ -178,7 +178,7 @@ struct vertex_t {
 	}
 };
 
-enum hoststate_t {
+enum e_hoststate {
 	hs_new_game = 0,
 	hs_load_game,
 	hs_change_level_sp,
@@ -190,8 +190,8 @@ enum hoststate_t {
 };
 
 struct c_host_state {
-	hoststate_t current_state;
-	hoststate_t next_state;
+	e_hoststate current_state;
+	e_hoststate next_state;
 	vec3_t      vec_location;
 	vec3_t      ang_location;  // TODO: make qangle class in future ?
 	char        level_name[ 256 ];

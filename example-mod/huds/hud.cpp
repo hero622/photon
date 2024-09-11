@@ -14,7 +14,7 @@ void huds::uninitialize( ) {
 	photon->hud->unreg( ex_hud );
 }
 
-void c_example_hud::paint( ) {
+void c_example_hud::draw( ) {
 	photon->hud->draw_begin( this );
 
 	photon->hud->draw_filled_rect( 0, 0, 20, 20, color_t( 255, 0, 0, 255 ) );

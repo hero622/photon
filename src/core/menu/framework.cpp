@@ -675,8 +675,8 @@ void gui::framework::textbox( const char*& val, const std::string& label ) {
 
 		// go through actual characters
 		for ( std::size_t i = key_0; i < key_pad_9; ++i ) {
-			if ( photon->input->get_key_press( ( button_code_t ) i ) ) {
-				char c = *interfaces::input_system->button_code_to_string( ( button_code_t ) i );
+			if ( photon->input->get_key_press( ( e_button_code ) i ) ) {
+				char c = *interfaces::input_system->button_code_to_string( ( e_button_code ) i );
 				s += upper ? toupper( c ) : c;
 			}
 		}

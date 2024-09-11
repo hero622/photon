@@ -4,44 +4,58 @@
 
 #include "sdk/photon.h"
 
-#include <subhook/subhook.h>
+#include <dynohook/conventions/x86_ms_thiscall.h>
+#include <dynohook/manager.h>
 #include <unordered_map>
 
 static std::unordered_map< std::string, signal_t* > signals;
 
+static const char* module_name;
+
+signal_t* signal_t::with_return_type( e_data_type type ) {
+	this->return_type = type;
+	return this;
+}
+signal_t* signal_t::with_callconv( e_callconv callconv ) {
+	this->callconv = callconv;
+	return this;
+}
+signal_t* signal_t::with_parameters( const std::vector< e_data_type >& params ) {
+	this->params = params;
+	return this;
+}
 signal_t* signal_t::in_module( const char* name ) {
 	module_name = name;
-	addr        = photon->common->get_module_handle( module_name );
+	this->addr  = photon->common->get_module_handle( module_name );
 	return this;
 }
 signal_t* signal_t::in_interface( const char* name ) {
-	addr = photon->common->get_interface( module_name, name );
+	this->addr = photon->common->get_interface( module_name, name );
 	return this;
 }
 signal_t* signal_t::at_address( void* address ) {
-	addr = address;
+	this->addr = address;
 	return this;
 }
 signal_t* signal_t::from_vtable( size_t index ) {
-	addr = reinterpret_cast< void* >( ( *reinterpret_cast< int** >( addr ) )[ index ] );
+	this->addr     = reinterpret_cast< void* >( ( *reinterpret_cast< int** >( addr ) )[ index ] );
+	this->callconv = Thiscall;
 	return this;
 }
 signal_t* signal_t::from_pattern( const char* pattern ) {
-	addr = photon->common->pattern_scan( module_name, pattern );
+	this->addr = photon->common->pattern_scan( module_name, pattern );
 	return this;
 }
-signal_t* signal_t::add_callback( void* fn ) {
-	callbacks.push_back( fn );
+signal_t* signal_t::add_callback( e_callback_type type, void* fn ) {
+	dyno::HookManager::Get( ).findDetour( addr )->addCallback( ( dyno::CallbackType ) type, ( dyno::CallbackHandler ) fn );
 	return this;
 }
-signal_t* signal_t::remove_callback( void* fn ) {
-	auto it = std::find( callbacks.begin( ), callbacks.end( ), fn );
-	if ( it != callbacks.end( ) )
-		callbacks.erase( it );
+signal_t* signal_t::remove_callback( e_callback_type type, void* fn ) {
+	dyno::HookManager::Get( ).findDetour( addr )->removeCallback( ( dyno::CallbackType ) type, ( dyno::CallbackHandler ) fn );
 	return this;
 }
-signal_t* signal_t::enable( void* handler ) {
-	photon->signal->enable( this, handler );
+signal_t* signal_t::enable( ) {
+	photon->signal->enable( this );
 	return this;
 }
 signal_t* signal_t::disable( ) {
@@ -56,17 +70,30 @@ signal_t* c_signal::create( const char* name ) {
 }
 void c_signal::remove( const char* name ) {
 	get( name )->disable( );
+	delete get( name );
 	signals.erase( name );
 }
-void c_signal::enable( signal_t* signal, void* handler ) {
-	auto sig  = signal;
-	sig->hook = subhook_new( sig->get_address( ), handler, SUBHOOK_TRAMPOLINE );
-	sig->orig = subhook_get_trampoline( reinterpret_cast< subhook_t >( signal->hook ) );
-	subhook_install( reinterpret_cast< subhook_t >( signal->hook ) );
+void c_signal::enable( signal_t* signal ) {
+	std::vector< dyno::DataObject > params;
+
+	dyno::ConvFunc fn;
+	std::transform( signal->params.begin( ), signal->params.end( ), std::back_inserter( params ), []( e_data_type x ) { return ( dyno::DataType ) x; } );
+	switch ( signal->callconv ) {
+	case Cdecl:
+		fn = [ & ]( ) { return new dyno::x86MsCdecl( params, ( dyno::DataType ) signal->return_type ); };
+		break;
+	case Thiscall:
+		fn = [ & ]( ) { return new dyno::x86MsThiscall( params, ( dyno::DataType ) signal->return_type ); };
+		break;
+	case Stdcall:
+		fn = [ & ]( ) { return new dyno::x86MsStdcall( params, ( dyno::DataType ) signal->return_type ); };
+		break;
+	};
+
+	dyno::HookManager::Get( ).hookDetour( signal->addr, fn );
 }
 void c_signal::disable( signal_t* signal ) {
-	subhook_remove( reinterpret_cast< subhook_t >( signal->hook ) );
-	subhook_free( reinterpret_cast< subhook_t >( signal->hook ) );
+	dyno::HookManager::Get( ).findDetour( signal->addr )->unhook( );
 }
 signal_t* c_signal::get( const char* name ) {
 	return signals[ name ];

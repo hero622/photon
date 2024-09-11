@@ -7,5 +7,5 @@ namespace gui {
 	bool initialize( );
 	void uninitialize( );
 
-	void paint( );
+	void draw( );
 };  // namespace gui

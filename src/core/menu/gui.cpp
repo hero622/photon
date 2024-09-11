@@ -10,29 +10,31 @@
 #include "framework.h"
 
 // unlock the cursor from the game when menu is open
-SIGNAL_CALLBACK( void, __rescall, lock_cursor ) {
+e_return_action lock_cursor( e_callback_type type, signal_params_t* params ) {
 	static void* input_ctx = interfaces::engine_client->get_input_context( 0 );
 
 	if ( gui::open || huds::edit ) {
 		interfaces::surface->unlock_cursor( );
 
 		interfaces::input_stack_system->set_cursor_visible( input_ctx, true );
+
+		return e_return_action::Supercede;
 	} else {
 		interfaces::input_stack_system->set_cursor_visible( input_ctx, false );
 
-		original( ecx );
+		return e_return_action::Handled;
 	}
 }
 
-SIGNAL_CALLBACK( void, __rescall, paint, paint_mode_t, mode ) {
-	original( ecx, mode );
+e_return_action paint( e_callback_type type, signal_params_t* params ) {
+	auto paint_mode = params->get_arg< int >( 1 );
 
 	interfaces::surface->start_drawing( );
 
-	if ( mode == paint_uipanels ) {
+	if ( paint_mode == paint_uipanels ) {
 		photon->input->poll_input( );  // not sure if this is the best place to call this
 
-		huds::paint( );
+		huds::draw( );
 
 		photon->common->post_event( &plugin, "paint" );
 
@@ -47,25 +49,32 @@ SIGNAL_CALLBACK( void, __rescall, paint, paint_mode_t, mode ) {
 		}
 
 		if ( gui::open )
-			gui::paint( );
+			gui::draw( );
 
 		if ( huds::edit )
-			huds::paint_ui( );
+			huds::draw_ui( );
 	}
 
 	interfaces::surface->finish_drawing( );
+
+	return e_return_action::Handled;
 }
 
 // block input to the game when photon's menu is open, only works in game, not in the menu
-SIGNAL_CALLBACK( int, __rescall, in_key_event, int, eventcode, button_code_t, keynum, const char*, current_binding ) {
-	if ( gui::open || huds::edit )
-		return 0;
+e_return_action in_key_event( e_callback_type type, signal_params_t* params ) {
+	if ( gui::open || huds::edit ) {
+		params->set_return< bool >( false );
 
-	return original( ecx, eventcode, keynum, current_binding );
+		return e_return_action::Supercede;
+	}
+
+	return e_return_action::Ignored;
 }
 
 // block input to the menu, vgui has its own input system for some reason, so we have to hook another function
-SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
+e_return_action update_button_state( e_callback_type type, signal_params_t* params ) {
+	void* ecx = params->get_arg< void* >( 0 );
+
 	if ( gui::open || huds::edit ) {
 		/*
 		 * so we cant actually just return here because theres other
@@ -75,10 +84,11 @@ SIGNAL_CALLBACK( void, __rescall, update_button_state, const int*, event ) {
 		 */
 		int context = address_t( ecx ).at< int >( 0xce8 );  // m_hContext
 
-		return util::call_virtual< OS( 88, 89 ), void >( ecx, context );  // ResetInputContext
+		util::call_virtual< OS( 88, 89 ), void >( ecx, context );  // ResetInputContext
+		return e_return_action::Supercede;
 	}
 
-	original( ecx, event );
+	return e_return_action::Ignored;
 }
 
 static color_t* hue_tex;
@@ -119,10 +129,10 @@ bool gui::initialize( ) {
 	}
 	photon->render->load_texture_raw( "photon_hue_gradient", ( uint8_t* ) hue_tex, 1, tex_height );
 
-	photon->signal->get( "lock_cursor" )->add_callback( &lock_cursor_cbk );
-	photon->signal->get( "paint" )->add_callback( &paint_cbk );
-	photon->signal->get( "in_key_event" )->add_callback( &in_key_event_cbk );
-	photon->signal->get( "update_button_state" )->add_callback( &update_button_state_cbk );
+	photon->signal->get( "lock_cursor" )->add_callback( e_callback_type::Pre, &lock_cursor );
+	photon->signal->get( "paint" )->add_callback( e_callback_type::Post, &paint );
+	photon->signal->get( "in_key_event" )->add_callback( e_callback_type::Pre, &in_key_event );
+	photon->signal->get( "update_button_state" )->add_callback( e_callback_type::Pre, &update_button_state );
 
 	return true;
 }
@@ -136,7 +146,7 @@ void gui::uninitialize( ) {
 	photon->render->destruct_font( framework::fonts::smaller );
 }
 
-void gui::paint( ) {
+void gui::draw( ) {
 	const auto screen_size = photon->render->get_screen_size( );
 	const auto screen_half = screen_size / 2;
 

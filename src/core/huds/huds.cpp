@@ -168,9 +168,9 @@ static void align_hud_element( photon_api::i_hud* hud ) {
 	}
 }
 
-void huds::paint( ) {
+void huds::draw( ) {
 	for ( const auto& hud : huds ) {
-		hud->paint( );
+		hud->draw( );
 
 		if ( hud->is_splitscreen( ) && photon->common->is_splitscreen( ) ) {
 			const auto  screen_size      = photon->render->get_screen_size( );
@@ -180,13 +180,13 @@ void huds::paint( ) {
 			auto offset = photon->render->normalize( screen_size / 2 )[ axis ];
 
 			hud->pos[ axis ] += offset;
-			hud->paint( );
+			hud->draw( );
 			hud->pos[ axis ] -= offset;
 		}
 	}
 }
 
-void huds::paint_ui( ) {
+void huds::draw_ui( ) {
 	const auto clr = color_t( 0, 255, 255, 255 );
 
 	const auto screen_size = photon->render->get_screen_size( );

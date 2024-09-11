@@ -10,7 +10,7 @@ void c_input::poll_input( ) {
 	std::copy( cur_keys.begin( ), cur_keys.end( ), old_keys.begin( ) );
 
 	for ( std::size_t i = 0; i < 256; ++i ) {
-		cur_keys[ i ] = interfaces::input_system->is_button_down( ( button_code_t ) i );
+		cur_keys[ i ] = interfaces::input_system->is_button_down( ( e_button_code ) i );
 	}
 
 	interfaces::input_system->get_cursor_position( &cursor_x, &cursor_y );

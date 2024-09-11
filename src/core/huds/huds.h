@@ -12,6 +12,6 @@ namespace huds {
 
 	inline bool edit = false;
 
-	void paint( );
-	void paint_ui( );
+	void draw( );
+	void draw_ui( );
 }  // namespace huds

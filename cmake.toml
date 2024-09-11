@@ -12,14 +12,7 @@ description = "Photon is a mod loader for Portal 2."
 [variables]
 PORTAL2_DIR = "D:/SteamLibrary/steamapps/common/Portal 2"
 
-[target.DynoHook]
-type    = "static"
-alias   = "qubka::DynoHook"
-sources = ["vendor/DynoHook/DynoHook.c"]
-headers = ["vendor/DynoHook/DynoHook.h"]
-
-msvc.compile-options     = ["/MP"]
-msvc.compile-definitions = ["SUBHOOK_STATIC"]
+[subdir."vendor/DynoHook"]
 
 [target.lodepng]
 type    = "static"
@@ -32,13 +25,12 @@ msvc.compile-options = ["/MP"]
 [target.photon]
 type                = "shared"
 sources             = ["src/**.cpp", "src/**.h"]
-include-directories = ["src", "vendor", "vendor/json/single_include"]
+include-directories = ["src", "vendor", "vendor/DynoHook/include", "build/vendor/DynoHook/exports", "vendor/DynoHook/asmjit/src", "vendor/json/single_include"]
 compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
-link-libraries      = ["qubka::DynoHook", "lvandeve::lodepng"]
+link-libraries      = ["dynohook", "lvandeve::lodepng"]
 
 msvc.compile-options     = ["/MP", "/Zc:preprocessor"]
-msvc.compile-definitions = ["SUBHOOK_STATIC"]
 gcc.compile-options      = ["-fPIC", "-fpermissive"]
 gcc.compile-definitions  = ["_GNU_SOURCE"]
 
