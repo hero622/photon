@@ -198,8 +198,3 @@ bool util::replace( std::string& str, const std::string& from, const std::string
 	str.replace( start_pos, from.length( ), to );
 	return true;
 }
-
-std::string util::to_upper( std::string str ) {
-	std::transform( str.begin( ), str.end( ), str.begin( ), ::toupper );
-	return str;
-}

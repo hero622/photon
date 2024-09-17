@@ -22,8 +22,8 @@ void gui::framework::set_theme( bool dark ) {
 	} else {
 		colors::bg       = color_t( 20, 20, 20, 255 );
 		colors::fg       = color_t( 60, 60, 60, 255 );
-		colors::text     = color_t( 255, 255, 255, 32 );
-		colors::disabled = color_t( 255, 255, 255, 2 );
+		colors::text     = color_t( 255, 255, 255, 48 );
+		colors::disabled = color_t( 255, 255, 255, 4 );
 	}
 }
 
@@ -106,12 +106,12 @@ void gui::framework::end( ) {
 					cur_dropdown.done  = true;
 				}
 
-				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, hover ? colors::accent : colors::text, false, util::to_upper( item ).c_str( ) );
+				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, hover ? colors::accent : colors::text, false, item.c_str( ) );
 			} else {
 				if ( clicking )
 					cur_dropdown.value ^= ( 1 << i );
 
-				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, cur_dropdown.value & ( 1 << i ) ? colors::accent : colors::text, false, util::to_upper( item ).c_str( ) );
+				photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, cur_dropdown.value & ( 1 << i ) ? colors::accent : colors::text, false, item.c_str( ) );
 			}
 
 			cur_pos.y += size.y;
@@ -232,8 +232,8 @@ bool gui::framework::tab( int& selected, vec2_t pos, vec2_t size, const std::str
 		photon->render->draw_outlined_rect( pos.x - 1, pos.y - 1, size.x + 2, size.y + 2, colors::bg, 3 );
 
 	if ( !texture ) {
-		const auto text_size = photon->render->get_text_size( fonts::title, util::to_upper( label ).c_str( ) );
-		photon->render->draw_text( pos.x + size.x / 2, pos.y + size.y / 2 - text_size.y / 2, fonts::title, colors::text, true, util::to_upper( label ).c_str( ) );
+		const auto text_size = photon->render->get_text_size( fonts::title, label.c_str( ) );
+		photon->render->draw_text( pos.x + size.x / 2, pos.y + size.y / 2 - text_size.y / 2, fonts::title, colors::text, true, label.c_str( ) );
 	} else {
 		auto tex_size = size / 1.75f;
 		photon->render->draw_texture( pos.x + size.x / 2 - tex_size.x / 2, pos.y + size.y / 2 - tex_size.y / 2, round( tex_size.x ), round( tex_size.y ), label.c_str( ), colors::text );
@@ -296,7 +296,7 @@ bool gui::framework::config( const std::string& label ) {
 	photon->render->draw_rounded_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::fg, 8 );
 	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
 
-	photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 8, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 8, fonts::normal, colors::text, false, label.c_str( ) );
 
 	cur_menu.cursor.x = align_right( cur_pos, btn_size * 3 ).x - cur_menu.pos.x - 8;
 	cur_menu.cursor.y += 4;
@@ -358,9 +358,9 @@ bool gui::framework::button( vec2_t size, const std::string& label, bool enabled
 	if ( hover )
 		photon->render->draw_outlined_rect( cur_pos.x - 1, cur_pos.y - 1, size.x + 2, size.y + 2, colors::bg, 3 );
 
-	const auto text_size = photon->render->get_text_size( font, util::to_upper( label ).c_str( ) );
+	const auto text_size = photon->render->get_text_size( font, label.c_str( ) );
 
-	photon->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + size.y / 2 - text_size.y / 2, font, colors::text, true, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x + size.x / 2, cur_pos.y + size.y / 2 - text_size.y / 2, font, colors::text, true, label.c_str( ) );
 
 	if ( !enabled )
 		photon->render->draw_filled_rect( cur_pos.x, cur_pos.y, size.x, size.y, colors::disabled );
@@ -388,7 +388,7 @@ bool gui::framework::toggle( bool& val, const std::string& label ) {
 		result = true;
 	}
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, val ? colors::accent : colors::fg, 10 );
 
@@ -428,7 +428,7 @@ void gui::framework::slider( int& val, int min, int max, const std::string& labe
 		value = ( float ) val / ( max - min );
 	}
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
 	cur_pos2.y += 6;
 
@@ -436,7 +436,7 @@ void gui::framework::slider( int& val, int min, int max, const std::string& labe
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, value * size.x, size.y - 13, colors::accent, 4 );
 
 	const auto text_size = photon->render->get_text_size( fonts::smaller, util::ssprintf( "%d", val ).c_str( ) );
-	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 12, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%d", val ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 12, cur_pos2.y - 4, fonts::smaller, colors::text, true, util::ssprintf( "%d", val ).c_str( ) );
 
 	cur_pos2 += vec2_t( radius_half, radius_half );
 	cur_pos2.x += value * ( size.x - radius );
@@ -473,7 +473,7 @@ void gui::framework::sliderf( float& val, float min, float max, const std::strin
 		value = val / ( max - min );
 	}
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
 	cur_pos2.y += 6;
 
@@ -481,7 +481,7 @@ void gui::framework::sliderf( float& val, float min, float max, const std::strin
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y + 1, value * size.x, size.y - 13, colors::accent, 4 );
 
 	const auto text_size = photon->render->get_text_size( fonts::smaller, util::ssprintf( "%.1f", val ).c_str( ) );
-	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 12, cur_pos2.y - 3, fonts::smaller, colors::text, true, util::ssprintf( "%.1f", val ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x - text_size.x / 2 - 12, cur_pos2.y - 4, fonts::smaller, colors::text, true, util::ssprintf( "%.1f", val ).c_str( ) );
 
 	cur_pos2 += vec2_t( radius_half, radius_half );
 	cur_pos2.x += value * ( size.x - radius );
@@ -521,7 +521,7 @@ void gui::framework::colorpicker( color_t& val, const std::string& label ) {
 	if ( open )
 		val = cur_colorpicker.value;
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, colors::gray, 8 );
 
@@ -565,14 +565,14 @@ void gui::framework::combo( std::size_t& val, const std::vector< std::string >& 
 		cur_dropdown = dropdown_t( );
 	}
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, open ? colors::accent : colors::fg, 8 );
 	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
 	photon->render->draw_texture( cur_pos2.x + size.x - 20, cur_pos2.y + 10, 8, 8, open ? "photon_caret_up" : "photon_caret_down", colors::fg );
 
 	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 20, cur_pos2.y + size.y );
-	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, util::to_upper( items[ val ] ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, items[ val ].c_str( ) );
 	interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
 
 	photon->render->draw_gradient( cur_pos2.x + size.x - 52, cur_pos2.y + 1, 32, size.y - 2, { 0, 0, 0, 0 }, colors::bg, true );
@@ -613,7 +613,7 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 	if ( open )
 		val = cur_dropdown.value;
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
 	photon->render->draw_rounded_rect( cur_pos2.x, cur_pos2.y, size.x, size.y, open ? colors::accent : colors::fg, 8 );
 	photon->render->draw_rounded_rect( cur_pos2.x + 1, cur_pos2.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
@@ -630,7 +630,7 @@ void gui::framework::multicombo( std::size_t& val, const std::vector< std::strin
 	}
 
 	interfaces::surface->set_clip_rect( cur_pos2.x + 8, cur_pos2.y, cur_pos2.x + size.x - 20, cur_pos2.y + size.y );
-	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, util::to_upper( display_text ).c_str( ) );
+	photon->render->draw_text( cur_pos2.x + 8, cur_pos2.y + 6, fonts::smaller, colors::text, false, display_text.c_str( ) );
 	interfaces::surface->set_clip_rect( cur_menu.pos.x, cur_menu.pos.y, cur_menu.pos.x + cur_menu.size.x, cur_menu.pos.y + cur_menu.size.y );
 
 	photon->render->draw_gradient( cur_pos2.x + size.x - 52, cur_pos2.y + 1, 32, size.y - 2, { 0, 0, 0, 0 }, colors::bg, true );
@@ -691,7 +691,7 @@ void gui::framework::textbox( const char*& val, const std::string& label ) {
 	photon->render->draw_rounded_rect( cur_pos.x + 1, cur_pos.y + 1, size.x - 2, size.y - 2, colors::bg, 8 );
 
 	if ( s.empty( ) )
-		photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, colors::fg, false, util::to_upper( label ).c_str( ) );
+		photon->render->draw_text( cur_pos.x + 8, cur_pos.y + 6, fonts::smaller, colors::fg, false, label.c_str( ) );
 	else {
 		const auto text_size = photon->render->get_text_size( fonts::smaller, val );
 
@@ -711,11 +711,11 @@ void gui::framework::separator( const std::string& label ) {
 
 	const auto size = vec2_t( cur_menu.size.x - cur_menu.cursor.x - 20, 2 );
 
-	const auto text_size = photon->render->get_text_size( fonts::normal, util::to_upper( label ).c_str( ) );
+	const auto text_size = photon->render->get_text_size( fonts::normal, label.c_str( ) );
 
-	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, util::to_upper( label ).c_str( ) );
+	photon->render->draw_text( cur_pos.x, cur_pos.y, fonts::normal, colors::text, false, label.c_str( ) );
 
-	photon->render->draw_filled_rect( cur_pos.x, cur_pos.y + text_size.y, size.x, size.y, colors::text );
+	photon->render->draw_filled_rect( cur_pos.x, cur_pos.y + text_size.y, size.x, size.y, colors::disabled );
 
 	cur_menu.cursor.y += size.y + text_size.y + 8;
 }

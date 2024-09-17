@@ -94,10 +94,10 @@ e_return_action update_button_state( e_callback_type type, signal_params_t* para
 static color_t* hue_tex;
 
 void gui::create_fonts( ) {
-	photon->render->create_font( framework::fonts::smaller, "D-DIN EXP", 16, false, fontflag_antialias );
-	photon->render->create_font( framework::fonts::normal, "D-DIN EXP", 20, true, fontflag_antialias );
-	photon->render->create_font( framework::fonts::title, "D-DIN EXP", 24, true, fontflag_antialias );
-	photon->render->create_font( framework::fonts::bigtitle, "D-DIN EXP", 28, true, fontflag_antialias );
+	photon->render->create_font( framework::fonts::smaller, "Roboto Light", 18, true, fontflag_antialias );
+	photon->render->create_font( framework::fonts::normal, "Roboto Light", 20, true, fontflag_antialias );
+	photon->render->create_font( framework::fonts::title, "Roboto Light", 24, true, fontflag_antialias );
+	photon->render->create_font( framework::fonts::bigtitle, "Roboto Light", 28, true, fontflag_antialias );
 }
 
 bool gui::initialize( ) {
@@ -176,7 +176,7 @@ void gui::draw( ) {
 		if ( framework::icon_button( { 28, 28 }, "photon_plus", true, framework::colors::fg ) && !std::string( cfg_name ).empty( ) )
 			configs::create( cfg_name );
 
-		framework::textbox( cfg_name, "config name" );
+		framework::textbox( cfg_name, "Config Name" );
 
 		framework::set_cursor( { 8, 44 } );
 
@@ -202,31 +202,31 @@ void gui::draw( ) {
 			framework::split( 56 );
 
 			if ( cur_mod ) {
-				framework::separator( util::ssprintf( "%s settings", cur_mod->get_info( ).name ).c_str( ) );
+				framework::separator( util::ssprintf( "%s Settings", cur_mod->get_info( ).name ).c_str( ) );
 
 				cur_mod->paint_menu( );
 			}
 		}
 	}
 	if ( framework::tab( tab, { screen_half.x + 100 + 8, screen_half.y - tab_height / 2 }, { tab_height, tab_height }, "photon_gear", true ) ) {
-		framework::separator( "menu settings" );
+		framework::separator( "Menu Settings" );
 
-		framework::colorpicker( framework::colors::accent, "accent color" );
+		framework::colorpicker( framework::colors::accent, "Accent Color" );
 
 		static bool dark_mode = false;
-		if ( framework::toggle( dark_mode, "dark mode" ) )
+		if ( framework::toggle( dark_mode, "Dark Mode" ) )
 			framework::set_theme( dark_mode );
 
-		framework::separator( "game settings" );
+		framework::separator( "Game Settings" );
 
 		static bool fast_loads = true;
-		if ( framework::toggle( fast_loads, "fast loads" ) )
+		if ( framework::toggle( fast_loads, "Fast Loads" ) )
 			convars::set_fast_loads( fast_loads );
 
-		framework::separator( "hud settings" );
+		framework::separator( "Hud Settings" );
 
-		framework::slider( huds::safezone_x, 0, 32, "hud safezone x" );
-		framework::slider( huds::safezone_y, 0, 32, "hud safezone y" );
+		framework::slider( huds::safezone_x, 0, 32, "Hud Safezone X" );
+		framework::slider( huds::safezone_y, 0, 32, "Hud Safezone Y" );
 	}
 
 	framework::end( );

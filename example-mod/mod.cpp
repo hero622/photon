@@ -68,14 +68,14 @@ photon_api::mod_info_t c_photon_mod::get_info( ) {
 }
 
 void c_photon_mod::paint_menu( ) {
-	photon->menu->toggle( config::example_boolean, "example toggle" );
-	photon->menu->slider( config::example_integer, 0, 100, "example slider" );
-	photon->menu->sliderf( config::example_float, 0.f, 10.f, "example sliderf" );
-	photon->menu->colorpicker( config::example_color, "example colorpicker" );
+	photon->menu->toggle( config::example_boolean, "Example Toggle" );
+	photon->menu->slider( config::example_integer, 0, 100, "Example Slider" );
+	photon->menu->sliderf( config::example_float, 0.f, 10.f, "Example Sliderf" );
+	photon->menu->colorpicker( config::example_color, "Example Colorpicker" );
 
-	photon->menu->separator( "example separator" );
+	photon->menu->separator( "Example Separator" );
 
-	static const char* values[] = { "value 1", "value 2", "value 3" };
-	photon->menu->combo( config::example_combo_value, values, 3, "example combo" );
-	photon->menu->multicombo( config::example_mcombo_value, values, 3, "example multicombo" );
+	static const char* values[] = { "Value 1", "Value 2", "Value 3" };
+	photon->menu->combo( config::example_combo_value, values, 3, "Example Combo" );
+	photon->menu->multicombo( config::example_mcombo_value, values, 3, "Example Multicombo" );
 }
