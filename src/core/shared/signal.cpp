@@ -16,43 +16,65 @@ struct signal_t {
 	photon::e_data_type                return_type{ };
 	photon::e_callconv                 callconv{ };
 	std::vector< photon::e_data_type > params{ };
+	size_t                             owners{ 1 };
 };
 
 photon::c_signal_builder* photon::c_signal_builder::with_return_type( e_data_type type ) {
-	auto signal         = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->return_type = type;
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::with_callconv( e_callconv callconv ) {
 #ifdef _WIN32
-	auto signal      = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->callconv = callconv;
 #endif
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::with_parameters( const std::vector< e_data_type >& params ) {
-	auto signal    = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->params = params;
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::in_module( const char* name ) {
-	auto signal  = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	module_name  = name;
 	signal->addr = photon::get( )->common->get_module_handle( module_name );
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::in_interface( const char* name ) {
-	auto signal  = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->addr = photon::get( )->common->get_interface( module_name, name );
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::at_address( void* address ) {
-	auto signal  = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->addr = address;
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::from_vtable( size_t index ) {
-	auto signal  = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->addr = reinterpret_cast< void* >( ( *reinterpret_cast< int** >( signal->addr ) )[ index ] );
 #ifdef _WIN32
 	signal->callconv = Thiscall;
@@ -60,7 +82,10 @@ photon::c_signal_builder* photon::c_signal_builder::from_vtable( size_t index ) 
 	return this;
 }
 photon::c_signal_builder* photon::c_signal_builder::from_pattern( const char* pattern ) {
-	auto signal  = reinterpret_cast< signal_t* >( this->signal );
+	auto signal = reinterpret_cast< signal_t* >( this->signal );
+	if ( signal->owners > 1 )
+		return this;
+
 	signal->addr = photon::get( )->common->pattern_scan( module_name, pattern );
 	return this;
 }
@@ -84,6 +109,15 @@ photon::c_signal_builder* photon::c_signal_builder::disable( ) {
 }
 
 photon::c_signal_builder* photon::c_signal::create( const char* name ) {
+	if ( signals.contains( name ) ) {
+		auto signal = get( name );
+		reinterpret_cast< signal_t* >( signal->signal )->owners++;
+
+		util::console::log( "[!] signal " PRINT_YELLOW "%s" PRINT_RESET " already exists, increasing owners.\n", name );
+
+		return signal;
+	}
+
 	auto signal    = new c_signal_builder( );
 	signal->signal = new signal_t( );
 	signals.insert( std::make_pair( std::string( name ), signal ) );
@@ -91,6 +125,16 @@ photon::c_signal_builder* photon::c_signal::create( const char* name ) {
 }
 void photon::c_signal::remove( const char* name ) {
 	auto signal = get( name );
+
+	size_t& owners = reinterpret_cast< signal_t* >( signal->signal )->owners;
+	if ( owners > 1 ) {
+		owners--;
+
+		util::console::log( "[!] signal " PRINT_YELLOW "%s" PRINT_RESET " is owned by multiple modules, decreasing owners.\n", name );
+
+		return;
+	}
+
 	signal->disable( );
 	delete signal->signal;
 	delete signal;
@@ -98,6 +142,8 @@ void photon::c_signal::remove( const char* name ) {
 }
 void photon::c_signal::enable( photon::c_signal_builder* signal ) {
 	auto data = reinterpret_cast< signal_t* >( signal->signal );
+	if ( data->owners > 1 )
+		return;
 
 	std::vector< dyno::DataObject > params;
 
@@ -180,6 +226,9 @@ void photon::c_signal::enable( photon::c_signal_builder* signal ) {
 }
 void photon::c_signal::disable( photon::c_signal_builder* signal ) {
 	auto data = reinterpret_cast< signal_t* >( signal->signal );
+	if ( data->owners > 1 )
+		return;
+
 	dyno::HookManager::Get( ).unhookDetour( data->addr );
 
 	/* logging */
